@@ -33,3 +33,7 @@ All art is drawn with SVG/CSS and Unicode symbols; no external assets.
 ## Class selection (v0.2)
 
 On launch, choose one of four level-1 classes, then click **Enter the Vault**. Restart Encounter reopens the class selector. Fighter gets a two-action Power Attack; Rogue gets passive +1d6 sneak attack against flanked/off-guard foes; Cleric gets a two-action ranged Heal; Wizard gets a two-action ranged Force Barrage. Class stats and action controls update to match the selection. These are prototype approximations, not complete PF2E class implementations. Class selection is per encounter; persistent characters are not yet implemented.
+
+## Campaign foundation (v0.3 development)
+
+Start a new campaign after choosing a class, or continue a saved campaign on the same browser. The Ember Road has three consecutive encounters: The Forgotten Vault, The Ashen Crossing, and The Ember Shrine. After victory, receive XP, silver, and a named treasure. Level 2 is reached at 1,000 XP and improves maximum HP, AC, attacks, and damage; Reinforced Armor and the Emberforged Weapon provide additional bonuses. Between encounters, a camp screen shows progression, inventory, and the next mission. Rest at camp to heal the party and restore two potions. Defeat returns you to camp without awarding loot or XP. Progress is stored using browser localStorage; clearing browser storage or using a different device/browser loses that save. This is a linear campaign prototype with simplified leveling, not the complete PF2E advancement system.
