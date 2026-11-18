@@ -11,7 +11,6 @@ let chosenClass='fighter',started=false,specialMode=false;
 function configureHero(){const c=classes[chosenClass];Object.assign(units[0],{name:'Kael • '+c.name,hp:c.hp,max:c.hp,ac:c.ac,attack:c.attack,damage:c.damage,icon:c.icon,color:c.color,classId:chosenClass});}
 function showClassSelection(){started=false;busy=true;const screen=$('classScreen');screen.classList.remove('hidden');const choices=$('classChoices');choices.innerHTML=Object.entries(classes).map(([id,c])=>`<button type="button" class="class-choice ${chosenClass===id?'selected':''}" data-class="${id}" aria-pressed="${chosenClass===id}"><strong>${c.icon} ${c.name}</strong><small>HP ${c.hp} · AC ${c.ac} · Strike +${c.attack}</small><small>${c.description}</small></button>`).join('');choices.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{chosenClass=b.dataset.class;showClassSelection()}));}
 function beginGame(){started=true;busy=false;$('classScreen').classList.add('hidden');reset();}
-$('beginGame').addEventListener('click',beginGame);
 const baseUnits=[
 {id:'hero',name:'Kael • Fighter (You)',team:'ally',x:2,y:6,hp:24,max:24,ac:18,attack:9,damage:8,init:21,icon:'⚔',color:'#6ab5e8',player:true},
 {id:'cleric',name:'Mira • Cleric',team:'ally',x:1,y:6,hp:19,max:19,ac:16,attack:6,damage:5,init:16,icon:'✚',color:'#e6c883'},
@@ -45,4 +44,6 @@ function shortestStep(u,target){let q=[[u.x,u.y]],seen=new Set([`${u.x},${u.y}`]
 function aiAction(){if(finished)return;let u=current();if(u.player){busy=false;render();return}if(actions<=0){endTurn();return}let opponents=units.filter(v=>alive(v)&&v.team!==u.team);if(!opponents.length){checkEnd();return}let nearest=opponents.sort((a,b)=>dist(u,a)-dist(u,b))[0];if(u.id==='cleric'){let wounded=units.filter(v=>alive(v)&&v.team==='ally'&&v.hp<=v.max-7).sort((a,b)=>(a.hp/a.max)-(b.hp/b.max))[0];if(wounded&&dist(u,wounded)<=3&&actions>=2){let n=roll(8)+8;wounded.hp=Math.min(wounded.max,wounded.hp+n);actions-=2;say(`<strong>Mira</strong> casts Heal (2 actions), restoring ${n} HP to ${wounded.name.split(' •')[0]}.`);render();return}}
 if(dist(u,nearest)===1){strike(u,nearest);actions--;render();return}let step=shortestStep(u,nearest);if(step){u.x=step.x;u.y=step.y;actions--;say(`<strong>${u.name.split(' •')[0]}</strong> strides closer.`)}else actions=0;render()}
 function nextAI(){if(finished||current()?.player){busy=false;render();return}busy=true;render();let count=0;function tick(){if(finished||current()?.player){busy=false;render();return}aiAction();if(++count>100){busy=false;return}setTimeout(tick,370)}setTimeout(tick,400)}
-$('restart').addEventListener('click',showClassSelection);showClassSelection();
+$('beginGame').addEventListener('click',beginGame);
+$('restart').addEventListener('click',showClassSelection);
+showClassSelection();
