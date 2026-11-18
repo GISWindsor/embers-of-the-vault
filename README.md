@@ -1,49 +1,72 @@
-# Embers of the Vault — Browser RPG Prototype
+# Embers of the Vault — Browser Tactical RPG
 
-A self-contained, no-dependencies isometric tactical combat demo inspired by Pathfinder Second Edition.
+A dependency-free, browser-based tactical RPG inspired by Pathfinder Second Edition. **v0.8 is merged into `main`; v0.9 is in development in PR #12.** This is a simplified game, not a complete implementation of Pathfinder 2e.
 
-## Run
+**Play:** https://giswindsor.github.io/embers-of-the-vault/  
+**Development preview:** https://giswindsor.github.io/embers-of-the-vault/preview/  
+**v0.9 pull request:** https://github.com/GISWindsor/embers-of-the-vault/pull/12
 
-Open `index.html` in Chrome, Firefox, Edge, or Safari. No server or installation is required.
+## Getting started
 
-Alternatively, in this directory run `python -m http.server 8000` and open http://localhost:8000.
+Play in a modern desktop or mobile browser, or open `index.html` locally. No dependencies or build step are needed. Choose Kael's class (Fighter, Rogue, Cleric, or Wizard), choose two AI companions, and begin an expedition. Progress is saved to browser localStorage, so changing browsers/devices or clearing site data may remove it.
 
-## Play
+## Gameplay and controls
 
-- Choose **Fighter, Rogue, Cleric, or Wizard** for Kael before combat. Mira (cleric) and Vex (rogue) are AI companions.
-- Each combatant gets **three actions** each turn.
-- Select **Stride**, then click a blue tile to move up to four squares (20 feet).
-- Select **Strike**, then click an adjacent enemy to attack. Multiple strikes accrue the normal 0/−5/−10 multiple attack penalty.
-- **Raise Shield** adds +2 AC until your next turn. **Drink Potion** heals once per encounter.
-- The cleric automatically casts a two-action Heal on injured allies.
-- Defeat all three enemies to win; if Kael falls, you lose.
+- **Three-action turns:** Stride, Strike, raise a shield, drink a potion, use a class ability, or end your turn. Some abilities and consumables cost two actions.
+- **Tactical combat:** Isometric grid, obstacles, flanking, multiple attack penalties (0/−5/−10), d20 attack rolls, degrees of success, and critical hits.
+- **Camp:** Rest, equip gear, select companions, inspect stats, make level-up choices, and choose the next destination.
+- **Exploration:** Route selection, scouting with a limited budget, persistent intelligence, and supply searches that can trigger an ambush.
+- **Resources:** Earn XP, silver, and loot from encounters; purchase or use consumables and manage equipment.
+- **Expeditions:** Procedurally assembled five-stage expeditions with alternate routes, enemy groups, terrain, and rewards. Completing an expedition lets the party continue to another with its progression intact.
+- **AI companions:** Select two from Mira (Cleric), Vex (Rogue), Bram (Fighter), and Lyra (Wizard).
 
-## Rules and scope
+## Released features
 
-Includes d20 attack rolls, PF2E's four degrees of success (including natural 20/1 shifts), critical hits at AC+10, multiple attack penalty, flanking/off-guard, shield bonus, turn-based initiative order, and three-action economy. Simplifications: 4-square movement, no diagonal movement, simplified damage and spellcasting, no opportunity attacks, no dying/wounded system, and no full character creation. This is a playable prototype, not a complete PF2E implementation.
+### v0.2–v0.6: Foundations
 
-## Files
+Class selection, a three-action combat system, persistent campaign saves, XP and gear, a four-companion roster, and branching routes through the original Ember Road campaign. These early version descriptions are historical: the game has evolved beyond the original fixed encounters.
 
-- `index.html` — page layout
-- `style.css` — visual design
-- `game.js` — combat, pathfinding, AI, SVG map rendering
+### v0.7: Camp and usability improvements
 
-All art is drawn with SVG/CSS and Unicode symbols; no external assets.
+Updated camp and game interface, with mobile usability improvements including scrolling fixes.
 
-## Class selection (v0.2)
+### v0.8: Procedural expeditions and progression (merged)
 
-On launch, choose one of four level-1 classes, then click **Enter the Vault**. Restart Encounter reopens the class selector. Fighter gets a two-action Power Attack; Rogue gets passive +1d6 sneak attack against flanked/off-guard foes; Cleric gets a two-action ranged Heal; Wizard gets a two-action ranged Force Barrage. Class stats and action controls update to match the selection. These are prototype approximations, not complete PF2E class implementations. Class selection is per encounter; persistent characters are not yet implemented.
+- Five-stage procedural expeditions with multiple route choices.
+- New expeditions after completion while retaining the party, class, level, XP, inventory, silver, and equipment.
+- Enemy and companion scaling as the party levels.
+- Two scouting opportunities per campaign, with discovered intelligence retained.
+- Supply-search ambush chance, with rewards and no advancement of the current expedition stage.
+- Compatibility handling for older campaign saves.
 
-## Campaign foundation (v0.3 development)
+## v0.9 — Development preview (not yet merged)
 
-Start a new campaign after choosing a class, or continue a saved campaign on the same browser. The Ember Road has three consecutive encounters: The Forgotten Vault, The Ashen Crossing, and The Ember Shrine. After victory, receive XP, silver, and a named treasure. Level 2 is reached at 1,000 XP and improves maximum HP, AC, attacks, and damage; Reinforced Armor and the Emberforged Weapon provide additional bonuses. Between encounters, a camp screen shows progression, inventory, and the next mission. Rest at camp to heal the party and restore two potions. Defeat returns you to camp without awarding loot or XP. Progress is stored using browser localStorage; clearing browser storage or using a different device/browser loses that save. This is a linear campaign prototype with simplified leveling, not the complete PF2E advancement system.
+The following features are **on the v0.9 feature branch and preview**, not yet part of the released `main` game:
 
-## Character progression, gear, and party (v0.4 development)
+- **Level-by-level choices:** Two distinct, class-specific options at each level (1–10). Choose one; the choice is permanent and persists in saves. Choices can improve HP, AC, attack, or damage.
+- **Ability unlocks:** At levels 3 and 5, Wizards and Clerics choose between two new spells; Fighters and Rogues choose between two combat techniques. These choices replace the ordinary stat options at those levels.
+- **Companion stat sheets:** The two selected companions appear in a stat row above the four companion-selection choices. Sheets display HP, AC, attack, damage, initiative modifier, and level.
+- **Initiative each round:** All living combatants roll d20 plus their initiative modifier at the beginning of combat and at the start of each new round; turn order can change.
+- **Damage display:** Character sheets show a normal Strike damage range instead of an unexplained base-damage value.
+- **Spell attacks:** Offensive magic attacks roll d20 plus an attack modifier against the target's AC, with misses, hits, and critical hits shown in the log. Healing does not require an attack roll.
+- **Scaling magic:** AI Cleric healing and AI Wizard damage improve with party level; enemy caster attacks use AC and scale with enemy level.
+- **Martial techniques:** Fighters can unlock Shield Bash, Sweeping Strike, Sundering Blow, or Rallying Strike; Rogues can unlock Dirty Trick, Twin Cut, Shadow Strike, or Bleeding Cut, depending on their level 3 and 5 selections.
 
-At level 2, choose one of two class-themed feat options in camp. Feat effects are implemented as simplified bonuses to the existing combat actions, not verbatim Pathfinder 2e feats or a full character builder. Level-up choices persist in the browser save. Gear is not active simply because it is looted: equip or unequip Reinforced Armor and Emberforged Weapon at camp for their respective combat bonuses. Quest keys cannot be equipped. Choose exactly two AI allies from Mira (cleric/healer), Vex (rogue), Bram (fighter), and Lyra (wizard/ranged magic); choices apply to the next encounter and persist in saves. Existing v0.3 browser saves migrate automatically, defaulting to Mira and Vex with unequipped gear and an unchosen level-2 feat.
+**Balance status:** v0.9 mechanics are experimental and still require user browser testing and balancing before merge. The magic rules are deliberately simplified; for example, the game currently uses attack-vs-AC for offensive magic rather than Pathfinder 2e's full distinction between spell attacks and saving-throw spells.
 
-## Branching adventure (v0.6 preview)
+## Rules and limitations
 
-The camp now displays a stylized interactive world map. The first encounter is the Forgotten Vault. At stage two, choose the Ashen Crossing or Whispering Grove; at stage three, choose the Ember Shrine or Cinder Cavern; the Ashen Citadel is the fourth and final encounter. Route choices change enemies, rewards, terrain obstacles, and the battlefield color palette. Defeat lets you retry; the selected route is saved in localStorage. Existing v0.5 saves continue to load; a previously completed campaign remains completed.
+This is a PF2e-inspired prototype, not an official Pathfinder 2e rules implementation. Movement uses four-square Strides and simplified adjacency; combat omits many conditions, reactions, and character-building rules. Spell effects, progression bonuses, enemy AI, and loot are simplified for browser play. Some actions (such as consumable fire effects) also use custom rules.
 
-At 1,500 XP, reach level 3 and select a second class specialization from the remaining class feature. Wizards can cast a two-action Fire Burst on a targeted tile within six squares, dealing 2d6+3 damage to enemies within one Manhattan-distance tile (simplified AoE, no saving throw). Enemy casters use this area spell, archers use ranged Strikes, and combat AI can stride up to four tiles per action instead of just one. These remain PF2E-inspired prototype rules, not full PF2E spell or action mechanics.
+## Project files
+
+- `index.html` — self-contained browser entry point with inline game logic and styles, used by the hosted game.
+- `game.js` — source game logic and combat implementation.
+- `style.css` — source visual styling.
+- `preview/index.html` — preview published through GitHub Pages.
+
+When changing gameplay or styles, keep the standalone `index.html` synchronized with `game.js` and `style.css`. Update this README whenever player-facing mechanics or release status change.
+
+## Development workflow
+
+Features are developed on branches, previewed in the browser, and reviewed in pull requests. **Do not merge an in-development PR into `main` until the user approves the browser playtest and explicitly authorizes the merge.** The `preview/` page may show features that are not yet in the released game.
