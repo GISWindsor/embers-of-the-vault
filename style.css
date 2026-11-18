@@ -27,3 +27,5 @@
 #exploreChoices .camp-option,#merchantChoices .camp-option{min-height:76px}#exploreChoices .camp-option:disabled,#merchantChoices .camp-option:disabled{opacity:.48}
 
 .scouting-intel{margin:-8px 0 20px;padding:12px 14px;background:#202e40;border:1px solid #45576d;border-radius:9px}.scouting-intel h4{color:#f6cf89;margin:0 0 10px}.scouting-entry{font-size:12px;line-height:1.6;padding:8px 0;border-top:1px solid #45576d}.scouting-entry strong{color:#eac68b}.scouting-entry div{color:#d4dce2}
+
+.expedition-map{display:flex;gap:12px;padding:18px;overflow-x:auto;min-height:220px}.expedition-stage{display:flex;flex:1;min-width:125px;flex-direction:column;gap:10px;justify-content:center}.expedition-stage strong{text-align:center;color:#eac68b;font-size:12px}.expedition-node{font-size:12px;padding:12px 6px;min-height:52px}.expedition-node.selected{outline:2px solid #74c4d6}@media(max-width:600px){.expedition-map{flex-direction:column}.expedition-stage{min-width:0;flex-direction:row;flex-wrap:wrap}.expedition-stage strong{width:100%}.expedition-node{flex:1;min-width:90px}}
