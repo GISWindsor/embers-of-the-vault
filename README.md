@@ -41,3 +41,9 @@ Start a new campaign after choosing a class, or continue a saved campaign on the
 ## Character progression, gear, and party (v0.4 development)
 
 At level 2, choose one of two class-themed feat options in camp. Feat effects are implemented as simplified bonuses to the existing combat actions, not verbatim Pathfinder 2e feats or a full character builder. Level-up choices persist in the browser save. Gear is not active simply because it is looted: equip or unequip Reinforced Armor and Emberforged Weapon at camp for their respective combat bonuses. Quest keys cannot be equipped. Choose exactly two AI allies from Mira (cleric/healer), Vex (rogue), Bram (fighter), and Lyra (wizard/ranged magic); choices apply to the next encounter and persist in saves. Existing v0.3 browser saves migrate automatically, defaulting to Mira and Vex with unequipped gear and an unchosen level-2 feat.
+
+## Branching adventure (v0.6 preview)
+
+The camp now displays a stylized interactive world map. The first encounter is the Forgotten Vault. At stage two, choose the Ashen Crossing or Whispering Grove; at stage three, choose the Ember Shrine or Cinder Cavern; the Ashen Citadel is the fourth and final encounter. Route choices change enemies, rewards, terrain obstacles, and the battlefield color palette. Defeat lets you retry; the selected route is saved in localStorage. Existing v0.5 saves continue to load; a previously completed campaign remains completed.
+
+At 1,500 XP, reach level 3 and select a second class specialization from the remaining class feature. Wizards can cast a two-action Fire Burst on a targeted tile within six squares, dealing 2d6+3 damage to enemies within one Manhattan-distance tile (simplified AoE, no saving throw). Enemy casters use this area spell, archers use ranged Strikes, and combat AI can stride up to four tiles per action instead of just one. These remain PF2E-inspired prototype rules, not full PF2E spell or action mechanics.
