@@ -152,3 +152,7 @@ Successful Search for Supplies now has an independent **8%** chance to award an 
 ## Force Barrage cantrip scaling (2026-11-18)
 
 Force Barrage remains an unlimited 2-action, 6-tile, automatically hitting Wizard spell throughout levels 1–10. Its damage is now **(2 + floor((level − 1) / 2))d4 + (level + 1) + equipped spell damage bonus**. Dice increase at levels 3, 5, 7 and 9, keeping it useful throughout the campaign without making attack-roll spells obsolete. This applies to Kael as a Wizard and to Lyra's NPC casting. It never uses spell slots or consumables.
+
+## Healing potion scaling (2026-11-18)
+
+Healing Potions now automatically scale with the party's current level, including existing potions from saves, merchant purchases, and camp replenishment. Levels 1–2 heal **2d4+2** (average 7), levels 3–4 **4d4+4** (average 14), levels 5–6 **6d4+6** (average 21), levels 7–8 **8d4+8** (average 28), and levels 9–10 **10d4+10** (average 35). Potions remain 1 action, restore no more than missing HP, and use the existing consumable count. The battle button and merchant description show the current tier's healing dice. Potion pricing and supply/replenishment rules are unchanged. Existing save compatibility preserved.
