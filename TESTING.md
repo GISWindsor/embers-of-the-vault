@@ -120,3 +120,19 @@ These are **not confirmed user-reported failures**.
 | With Sound On, defeat plays a distinct somber tune once and retreat/retry still works | TEST LATER | Check ordinary encounters and ambushes |
 | With Sound Off (default), neither tune plays; switching Off during a tune stops it | TEST LATER | Browser audio gesture/autoplay restrictions |
 | Starting a new encounter stops any unfinished victory/defeat tune | TEST LATER | No overlap between encounters |
+
+## Full-party manual control — TEST LATER (2026-11-18)
+
+| Test | Status | Notes |
+| --- | --- | --- |
+| Hero and both chosen companions each receive a player-controlled turn in rolled initiative order | TEST LATER | All combinations of two companions |
+| Every party member gets three independent actions, Strike MAP resets on their own turn | TEST LATER | Reroll initiative each round |
+| Active character ring, name, class and action buttons update when companion turn begins | TEST LATER | No AI ally turn |
+| Bram Fighter Power Attack, Vex Rogue Sneak Attack, Mira Cleric Heal, Lyra Wizard Force Barrage and Fire Burst work on manual turns | TEST LATER | Test each with valid targets |
+| Hero's learned level-path spells and techniques are not incorrectly available to other classes | TEST LATER | Companion independent progression not implemented |
+| Companion Stride, Strike, shield, potion and flask actions use companion position and statistics | TEST LATER | Consumables currently party-shared |
+| Companion Rogue Sneak Attack triggers with an ally adjacent to the enemy | TEST LATER | |
+| Party continues fighting if Kael falls; defeat only when no living ally remains | TEST LATER | Check dead turns skipped |
+| End Turn and automatic end at zero actions advance through player characters and enemy AI without freezes | TEST LATER | |
+| Companion HP persistence after victory and save/reload remain intact | TEST LATER | |
+
