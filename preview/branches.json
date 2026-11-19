@@ -25,6 +25,10 @@
       "slug": "feature--combat-log-under-map"
     },
     {
+      "name": "feature/encounter-results-popup",
+      "slug": "feature--encounter-results-popup"
+    },
+    {
       "name": "feature/expedition-variety-bosses",
       "slug": "feature--expedition-variety-bosses"
     },
