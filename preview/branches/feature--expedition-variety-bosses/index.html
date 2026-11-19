@@ -263,7 +263,7 @@ function showLevelModal(){
  }
  const level=Array.from({length:campaign.level},(_,i)=>i+1).find(n=>!campaign.levelPicks?.[n]);if(!level){closeLevelModal();return}
  const choices=levelPicker(),holder=document.createElement('div');holder.innerHTML=choices;
- const current=holder.querySelector('.level-row:nth-child('+level+')');
+ const current=holder.querySelectorAll('.level-row')[level-1];
  overlay.querySelector('#levelModalIntro').textContent='Level '+level+' · '+classes[campaign.classId].name;
  overlay.querySelector('#levelModalChoices').innerHTML=current?current.innerHTML:choices;
  overlay.hidden=false;overlay.style.display='flex';levelModalOpen=true;
