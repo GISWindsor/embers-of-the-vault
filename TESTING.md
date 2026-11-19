@@ -302,3 +302,7 @@ User reported all 21 items in the copy-and-paste playtest checklist as PASS. The
 | Ambush with unselected hero level-up picks starts immediately, without returning to camp | TEST LATER | No automatic feat choice |
 | Ambush with unrested/injured party starts immediately with current HP and consumables | TEST LATER | No free rest |
 | Reload a save with pending ambush: goes straight to combat rather than preparation | TEST LATER | Persistence guard |
+
+| Search-triggered ambush shows Ambush! popup; Enter Encounter goes directly to battle | TEST LATER | No intermediate camp screen |
+| Ambush popup cannot be dismissed by Escape or backdrop click | TEST LATER | No bypass to preparation |
+| Unspent level picks and low HP do not prevent ambush after closing popup | TEST LATER | No forced leveling/rest |
