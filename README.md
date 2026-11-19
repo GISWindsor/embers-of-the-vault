@@ -70,3 +70,11 @@ When changing gameplay or styles, keep the standalone `index.html` synchronized 
 ## Development workflow
 
 Features are developed on branches, previewed in the browser, and reviewed in pull requests. **Do not merge an in-development PR into `main` until the user approves the browser playtest and explicitly authorizes the merge.** The `preview/` page may show features that are not yet in the released game.
+
+## v0.9 spell differentiation and balance (preview)
+
+Force Barrage is an automatic-hit spell again; other offensive spells roll against AC. Level 3 and 5 spells now have descriptions and different damage/effects: cold slows movement, fire burns, lightning chains, divine magic can heal, debuff attacks, or protect the caster. Enemy Strike damage is reduced by 1, with slightly lower high-level HP scaling. These are experimental and need browser playtests.
+
+## Testing policy
+
+Record each check as **PASS**, **FAIL**, or **TEST LATER**. TEST LATER means untested and remains on the future-test backlog; it is not a failure and must not be silently counted as a pass. Avoid requiring every class to reach high levels in one play session. See `TESTING.md` on the development branch for the persistent checklist.
