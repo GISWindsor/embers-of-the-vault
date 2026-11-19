@@ -116,3 +116,12 @@ The preview URL currently redirects into a historically named feature directory;
 - Recheck existing saves, companion AI/progression, loot, equipment bonuses, and the three save slots.
 
 For historical test results and remaining regression checks, see [TESTING.md](TESTING.md).
+
+## Expedition gameplay release (November 2026)
+
+- Expedition maps vary between fork, hub, gauntlet, and crossroads layouts, with combat, merchants, shrines, caches, and unique final bosses.
+- Players commit to one path per stage; unchosen paths cannot be searched or scouted. The next stage starts with no route selected.
+- Shopping is available only through the Traveling Merchant popup on merchant map stops; the camp shopping panel was removed. Random equipment drops remain enabled.
+- Pending level-up choices open in a popup, including after completing an expedition or dismissing a supply result.
+- The map legend uses a compact vertical EXPEDITION key.
+- The stable preview remains at `/preview/`, and the released game is served from the repository root.
