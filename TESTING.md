@@ -306,3 +306,16 @@ User reported all 21 items in the copy-and-paste playtest checklist as PASS. The
 | Search-triggered ambush shows Ambush! popup; Enter Encounter goes directly to battle | TEST LATER | No intermediate camp screen |
 | Ambush popup cannot be dismissed by Escape or backdrop click | TEST LATER | No bypass to preparation |
 | Unspent level picks and low HP do not prevent ambush after closing popup | TEST LATER | No forced leveling/rest |
+
+## Barbarian class playtest (new feature)
+
+- [ ] New game: Barbarian appears in class selection and starts a battle.
+- [ ] Barbarian action bar shows Power Strike (1 action) in place of Strike.
+- [ ] Power Strike costs 1 action and deals its bonus damage on a successful hit.
+- [ ] Raise Shield, Fire Flask and Drink Potion are absent; these actions cannot be invoked.
+- [ ] Reckless Attack costs 2 actions and rolls 2d20, keeping the higher result.
+- [ ] Successful Reckless Attack deals floor(2.5 × normal damage), including critical-hit damage if applicable.
+- [ ] After Reckless Attack, enemy melee/ranged/spell attack rolls use advantage until the Barbarian's next turn.
+- [ ] Reckless vulnerability ends at the start of the Barbarian's next turn, not at the end of the attack turn.
+- [ ] Fighter, Rogue, Cleric and Wizard still play normally.
+- [ ] Ambush popup still launches combat immediately when confirmed, even with pending level choices.
