@@ -160,3 +160,18 @@ These are **not confirmed user-reported failures**.
 | Expedition item drops and sound remain operational after reverting party control | TEST LATER | Regression check |
 
 **Superseded:** Earlier full-party manual-control and independent companion-progression test plans are canceled by user direction; do not treat them as required features.
+
+## Autonomous NPC level-ups — TEST LATER (2026-11-18)
+
+| Test | Status | Notes |
+| --- | --- | --- |
+| On new and existing saves, each NPC automatically picks one of its class's two options at each attained level | TEST LATER | Existing level 2+ campaigns backfill past levels |
+| NPC choices persist after save/load, changing party, and beginning a new expedition | TEST LATER | No rerolls on revisit |
+| NPC sheet shows named choices for each level and updated passive statistics | TEST LATER | Compare level 1, 3, 5, 7, 9 |
+| Fighter uses learned Defensive Stance or multi-target/other combat technique automatically | TEST LATER | |
+| Rogue applies learned Sneak Attack dice with adjacent ally and uses learned techniques | TEST LATER | |
+| Wizard uses independently learned AoE/offensive spells, not just Force Barrage | TEST LATER | |
+| Cleric uses independently learned healing, support, or offensive spells | TEST LATER | |
+| Only Kael can be directly controlled; NPC initiative and combat turn advance automatically | TEST LATER | Essential regression |
+| Old saves, item drops, sound, and level-up selection for Kael still work | TEST LATER | |
+
