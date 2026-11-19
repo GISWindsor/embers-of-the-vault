@@ -1,185 +1,118 @@
-# Embers of the Vault — Browser Tactical RPG
+# Embers of the Vault
 
-A dependency-free, browser-based tactical RPG inspired by Pathfinder Second Edition. **v0.8 is merged into `main`; v0.9 is in development in PR #12.** This is a simplified game, not a complete implementation of Pathfinder 2e.
+**Embers of the Vault** is a free, dependency-free, browser-based tactical RPG inspired by Pathfinder Second Edition (PF2e). It uses original, simplified rules rather than implementing the full tabletop system.
 
-**Play:** https://giswindsor.github.io/embers-of-the-vault/  
-**Development preview:** https://giswindsor.github.io/embers-of-the-vault/preview/  
-**v0.9 pull request:** https://github.com/GISWindsor/embers-of-the-vault/pull/12
+- **Play the main game:** https://giswindsor.github.io/embers-of-the-vault/
+- **Play the development preview:** https://giswindsor.github.io/embers-of-the-vault/preview/
+- **Repository:** https://github.com/GISWindsor/embers-of-the-vault
+
+## Current project status — November 19, 2026
+
+The latest gameplay development has been consolidated into **`main`**, including the Barbarian class, compact camp layout, autonomous companion progression, equipment tiers, and variable-size expedition and ambush encounters. All existing feature branches were checked after consolidation: **none has commits ahead of `main`**.
+
+This is a playable prototype, not a finished or fully balanced release. Recent encounter-size, Barbarian, and compact-camp changes are **published but still need manual browser playtesting**. The historical v0.9 preview/PR status in earlier README revisions is superseded by the consolidation.
 
 ## Getting started
 
-Play in a modern desktop or mobile browser, or open `index.html` locally. No dependencies or build step are needed. Choose Kael's class (Fighter, Rogue, Cleric, or Wizard), choose two AI companions, and begin an expedition. Progress is saved to browser localStorage, so changing browsers/devices or clearing site data may remove it.
+Open either game link in a modern browser, or open the self-contained `index.html` locally. There is no install, dependency download, or build step. Choose a hero class, select **two companions**, and start an expedition.
 
-## Gameplay and controls
+Campaigns are saved in **three browser-local save slots**. They are not cloud-synced: a different browser, device, private session, or cleared site data may not have your saves. Older single-slot saves are migrated to slot 1 where available.
 
-- **Three-action turns:** Stride, Strike, raise a shield, drink a potion, use a class ability, or end your turn. Some abilities and consumables cost two actions.
-- **Tactical combat:** Isometric grid, obstacles, flanking, multiple attack penalties (0/−5/−10), d20 attack rolls, degrees of success, and critical hits.
-- **Camp:** Rest, equip gear, select companions, inspect stats, make level-up choices, and choose the next destination.
-- **Exploration:** Route selection, scouting with a limited budget, persistent intelligence, and supply searches that can trigger an ambush.
-- **Resources:** Earn XP, silver, and loot from encounters; purchase or use consumables and manage equipment.
-- **Expeditions:** Procedurally assembled five-stage expeditions with alternate routes, enemy groups, terrain, and rewards. Completing an expedition lets the party continue to another with its progression intact.
-- **AI companions:** Select two from Mira (Cleric), Vex (Rogue), Bram (Fighter), and Lyra (Wizard).
+## Hero classes
 
-## Released features
+| Class | Role and key abilities |
+| --- | --- |
+| **Barbarian** | High-damage melee attacker. **Power Strike** replaces normal Strike and costs **1 action**. **Reckless Attack** costs **2 actions**, attacks with advantage, and deals **2.5× damage** on a hit; enemy attacks against the Barbarian have advantage until the start of the Barbarian's next turn. Cannot raise a shield, throw fire flasks, or drink healing potions. Base AC **15** before level, equipment, and feat bonuses. |
+| **Fighter** | Durable martial combatant with Power Attack and unlockable defensive or multi-target techniques. |
+| **Rogue** | Mobile attacker with Sneak Attack and progression choices for precision damage or debuffs. |
+| **Cleric** | Healing, protection, and divine offensive abilities; can specialize in Restoration or Judgment. |
+| **Wizard** | Offensive magic with Force Barrage, elemental area attacks, and single-target afflictions. |
 
-### v0.2–v0.6: Foundations
+Hero progression runs through **levels 1–10**. Each level offers two class-specific permanent choices; select one before continuing when a level choice is due. At key levels, choices unlock class techniques or spells. Some previously saved choice IDs now map to revised abilities, so older builds should be checked after loading.
 
-Class selection, a three-action combat system, persistent campaign saves, XP and gear, a four-companion roster, and branching routes through the original Ember Road campaign. These early version descriptions are historical: the game has evolved beyond the original fixed encounters.
+## Combat
 
-### v0.7: Camp and usability improvements
+- **Three-action turns** with Stride, attacks, class abilities, consumables, and other available actions. Abilities can cost one or two actions.
+- **Isometric grid** with obstacles, positioning, attack rolls, critical hits, multiple attack penalties, and simplified tactical rules.
+- **One player-controlled hero.** Companions and enemies act automatically on their own initiative turns; initiative is rerolled each round.
+- **Four available companions:** Bram (Fighter), Vex (Rogue), Mira (Cleric), and Lyra (Wizard). Choose two for the active party.
+- **Autonomous companion development:** Companions gain their own saved, randomized class progression choices, even when not in the active party. Their combat AI uses learned abilities.
+- **Party defeat** occurs when all allied combatants fall.
+- **Separate melee and spell statistics**, dice breakdowns in the combat log, and distinct hit, miss, and critical-hit sounds when sound is enabled.
+- **Targeting previews** for ranged and area attacks. Wizard Force Barrage remains an unlimited, automatically hitting spell that scales with level.
+- **Healing Potions** scale by level and normally cost one action; the Barbarian cannot use them.
 
-Updated camp and game interface, with mobile usability improvements including scrolling fixes.
+Sound is optional and off by default. Effects and short victory/defeat tunes are synthesized in the browser; no external music files are required.
 
-### v0.8: Procedural expeditions and progression (merged)
+## Expeditions and encounters
 
-- Five-stage procedural expeditions with multiple route choices.
-- New expeditions after completion while retaining the party, class, level, XP, inventory, silver, and equipment.
-- Enemy and companion scaling as the party levels.
-- Two scouting opportunities per campaign, with discovered intelligence retained.
-- Supply-search ambush chance, with rewards and no advancement of the current expedition stage.
-- Compatibility handling for older campaign saves.
+Expeditions have **five stages** with alternate destinations, terrain, enemy compositions, XP, silver, and equipment rewards. Completing an expedition allows another while retaining the party's level and persistent resources.
 
-## v0.9 — Development preview (not yet merged)
+**Regular expedition battles and supply-search ambushes can contain 1–10 enemies.** Encounter generation uses a range of compositions, from one powerful foe to a swarm of weak foes:
 
-The following features are **on the v0.9 feature branch and preview**, not yet part of the released `main` game:
+- Solo enemies receive substantially higher HP, stronger attacks, and better defenses.
+- Larger groups have lower individual HP, attack, defense, and damage.
+- Groups of five or more have reduced actions per enemy to help control action-economy pressure.
+- Encounter stats continue to scale with player level. Generated compositions remain stable for a given expedition node or saved ambush.
 
-- **Level-by-level choices:** Two distinct, class-specific options at each level (1–10). Choose one; the choice is permanent and persists in saves. Choices can improve HP, AC, attack, or damage.
-- **Ability unlocks:** At levels 3 and 5, Wizards and Clerics choose between two new spells; Fighters and Rogues choose between two combat techniques. These choices replace the ordinary stat options at those levels.
-- **Companion stat sheets:** The two selected companions appear in a stat row above the four companion-selection choices. Sheets display HP, AC, attack, damage, initiative modifier, and level.
-- **Initiative each round:** All living combatants roll d20 plus their initiative modifier at the beginning of combat and at the start of each new round; turn order can change.
-- **Damage display:** Character sheets show a normal Strike damage range instead of an unexplained base-damage value.
-- **Spell attacks:** Offensive magic attacks roll d20 plus an attack modifier against the target's AC, with misses, hits, and critical hits shown in the log. Healing does not require an attack roll.
-- **Scaling magic:** AI Cleric healing and AI Wizard damage improve with party level; enemy caster attacks use AC and scale with enemy level.
-- **Martial techniques:** Fighters can unlock Shield Bash, Sweeping Strike, Sundering Blow, or Rallying Strike; Rogues can unlock Dirty Trick, Twin Cut, Shadow Strike, or Bleeding Cut, depending on their level 3 and 5 selections.
+The system aims for **roughly comparable encounter difficulty**, not identical challenge across every composition. Its balance still needs playtesting, particularly for solo enemies and groups of 8–10.
 
-**Balance status:** v0.9 mechanics are experimental and still require user browser testing and balancing before merge. The magic rules are deliberately simplified; for example, the game currently uses attack-vs-AC for offensive magic rather than Pathfinder 2e's full distinction between spell attacks and saving-throw spells.
+## Camp, exploration, and ambushes
 
-## Rules and limitations
+The camp screen now uses **collapsible sections** for routes, exploration, merchant, character information, level-up choices, equipment, and companions. Main adventure actions stay accessible in a compact sticky bar.
 
-This is a PF2e-inspired prototype, not an official Pathfinder 2e rules implementation. Movement uses four-square Strides and simplified adjacency; combat omits many conditions, reactions, and character-building rules. Spell effects, progression bonuses, enemy AI, and loot are simplified for browser play. Some actions (such as consumable fire effects) also use custom rules.
+- Choose the next route on the world map.
+- Scout with a limited budget (**two scouting opportunities per campaign**) and retain discovered intelligence.
+- Search for supplies to find silver, possible consumables, and rare equipment.
+- Supply searches have a **30% ambush chance**. An ambush warning appears; confirming it enters combat directly without allowing a rest or preparation detour. Pending ambushes can resume without requiring outstanding level picks.
+- Defeating an ambush awards normal encounter rewards and an additional recovered-supplies cache; losing does not grant that cache.
 
-## Project files
+Supply results appear in a dedicated in-page popup. Ambushes use the same variable-size encounter balancing as regular expedition fights.
 
-- `index.html` — self-contained browser entry point with inline game logic and styles, used by the hosted game.
-- `game.js` — source game logic and combat implementation.
-- `style.css` — source visual styling.
-- `preview/index.html` — preview published through GitHub Pages.
+## Economy, equipment, and saves
 
-When changing gameplay or styles, keep the standalone `index.html` synchronized with `game.js` and `style.css`. Update this README whenever player-facing mechanics or release status change.
+- Earn **XP and silver** through battles, with additional rewards from searches and exploration.
+- Visit the **traveling merchant** for Healing Potions, Fire Flasks, and Vitality Tonics.
+- Collect equipment across **five tiers** unlocked at levels **1, 3, 5, 7, and 9**: Worn, Forged, Enchanted, Runic, and Legendary.
+- Each tier includes a **Vanguard Blade** (melee), **Guardian Armor** (defense), and **Mystic Focus** (spellcasting). Legacy equipment remains supported.
+- Equip weapon, armor, and focus items at camp. Equipment affects subsequent combat stats.
+- Normal expedition victories have a **45%** equipment-drop chance; final-stage victories guarantee an eligible unowned item when available. Successful supply searches have an **8%** chance of an eligible unowned item. Items are not duplicated once acquired.
+- Save data preserves hero progression, companion development, equipment, inventory, silver, and expedition progress.
 
-## Development workflow
+## Controls and rules scope
 
-Features are developed on branches, previewed in the browser, and reviewed in pull requests. **Do not merge an in-development PR into `main` until the user approves the browser playtest and explicitly authorizes the merge.** The `preview/` page may show features that are not yet in the released game.
+Select available actions and board tiles using mouse or touch. The game uses a simplified three-action tactical ruleset: it does **not** reproduce all PF2e conditions, spell saves, reactions, character-building options, or movement rules. For example, most offensive spells use attack rolls against AC, and movement is simplified for the grid.
 
-## v0.9 spell differentiation and balance (preview)
+## Repository layout
 
-Force Barrage is an automatic-hit spell again; other offensive spells roll against AC. Level 3 and 5 spells now have descriptions and different damage/effects: cold slows movement, fire burns, lightning chains, divine magic can heal, debuff attacks, or protect the caster. Enemy Strike damage is reduced by 1, with slightly lower high-level HP scaling. These are experimental and need browser playtests.
+| File / path | Purpose |
+| --- | --- |
+| `index.html` | **Authoritative self-contained main game** served from the repository root; includes inline CSS and JavaScript. |
+| `game.js` | Separate game logic file retained in the repository. **Do not assume it contains every latest inline gameplay change** without checking. |
+| `style.css` | Separate stylesheet retained in the repository; the standalone HTML also has inline styles. |
+| `preview/index.html` | GitHub Pages preview redirect. |
+| `preview/branches/feature--barbarian-class/index.html` | Current preview build used by the redirect; the directory name is historical. |
+| `TESTING.md` | Playtest records and outstanding checks. Some historical test descriptions may predate the latest balance changes. |
 
-## Testing policy
+**Important:** The main standalone `index.html` and the published preview currently contain the consolidated game. The separate `game.js` and `style.css` files should be reviewed before using them as a source of truth for new development.
 
-Record each check as **PASS**, **FAIL**, or **TEST LATER**. TEST LATER means untested and remains on the future-test backlog; it is not a failure and must not be silently counted as a pass. Avoid requiring every class to reach high levels in one play session. See `TESTING.md` on the development branch for the persistent checklist.
+## Development and release workflow
 
-## v0.9: Separate spell and melee accuracy, dice transparency
+1. Start new development from the latest **`main`**.
+2. Implement a change on a short-lived branch.
+3. **Publish the actual playable change to `/preview/`** before asking for a playtest. Merely pushing the feature branch does not update the playable preview.
+4. Test the change in a browser and record **PASS**, **FAIL**, or **TEST LATER** in `TESTING.md`. Do not mark untested checks as passing.
+5. After approval, merge the tested change into **`main`** and keep the public game synchronized.
+6. Confirm no unfinished feature branch is ahead of `main` after consolidation.
 
-- Wizard melee Strike remains +6 at level 1, while spell attack is +9 (matching Fighter's +9 melee accuracy); Cleric melee +7 and spell attack +8. Lyra's and Mira's spell accuracy use separate level-scaled values as well.
-- Melee Strike attack/damage and spell attack/damage are separate stats. Equipped weapons improve melee only. Caster level choices that previously gave generic attack or damage now explicitly increase spell attack or spell damage; martial choices remain melee bonuses. Existing save pick IDs are preserved.
-- Character sheets distinguish melee Strike bonus/damage from spell attack bonus and spell damage bonus. Spell attack breakdown shows class, level and spell-feat contributions.
-- Combat logs show rolled damage dice and modifiers, e.g. `d8(4) + d8(3) + 2 = 9`, in addition to d20 attack checks. Force Barrage remains the unlimited automatic-hit spell. Healing dice are shown too.
-- **Future direction (not implemented):** Make resting and healing between encounters substantially scarcer. Consider limited-use stronger spells, but retain at least one unlimited-use offensive spell. If limited spells are introduced, they must deal some damage even on a failed attack, with additional damage on a successful attack. Design and balance this later, not in this patch.
+The preview URL currently redirects into a historically named feature directory; this does **not** mean the branch is ahead of `main`. A future maintenance improvement would be to publish previews to a neutral, stable directory name.
 
-## v0.9 martial paths (preview; not merged)
+## Current playtest priorities
 
-Rogue: Sneak Attack triggers on a successful melee Strike when any living ally is adjacent to the target (no opposite-side requirement). At levels 3/5/7/9 choose either stacking +1d6 Sneak Attack or an active debuff: Dirty Trick (−1 AC), Bleeding Cut (persistent 1d4 bleed at enemy turn start), Crippling Strike (next Stride limited to 2 tiles), Exposing Strike (−2 AC). Precision bonuses accumulate and hybrid choices are allowed. Bleeding is persistent for the encounter; no recovery check yet.
+- Verify Barbarian Power Strike, **2-action** Reckless Attack, vulnerability, class restrictions, and level-up options.
+- Compare difficulty and turn pacing for **one strong enemy** versus **8–10 weak enemies**, in both expedition battles and supply-search ambushes.
+- Verify the compact camp sections, sticky actions, and mobile scrolling.
+- Verify ambush warning → direct combat, pending ambush recovery, and post-victory supply results.
+- Recheck existing saves, companion AI/progression, loot, equipment bonuses, and the three save slots.
 
-Fighter: at levels 3/5/7/9 choose durability or multi-target damage. Defensive Stance (1 action, +2 AC and 3 temporary HP), Rallying Strike (2-action hit heals 5+level), Iron Resolve (passive −2 incoming melee Strike damage), Bastion (+10 max HP); or Sweeping Strike (all adjacent enemies), Whirlwind Strike (+1d6 each), Cleaving Arc (+1d8 each), Tempest Sweep (+2d6 each). Multi-target abilities cost 2 actions and roll separately for each enemy. These mechanics are experimental and may need balance tuning.
-
-Existing saved level-pick IDs remain intact, but prior martial choices at levels 3, 5, 7 and 9 now resolve to the new paths; previously saved builds may therefore have different effects. Retest save migration.
-
-## v0.9 Cleric paths (preview, not merged)
-
-Cleric chooses independently at levels 3/5/7/9 between **Restoration** and **Judgment**. Level 3: Renewing Prayer (2d8+level ally heal and 3 temporary HP) or Divine Lance (2d8+level spell attack). Level 5: Blessing of Valor (+2 melee/spell accuracy for 2 rounds) or Judgment (2d8+level and -1 enemy attack on hit). Level 7: Restorative Wave (1d8+level heal to each living ally) or Withering Brand (2d6+level and -2 enemy AC on hit). Level 9: Sanctuary Aura (5 temporary HP and +2 AC for 2 rounds to each ally) or Searing Verdict (2d8+level and burning 1d4 on hit). Support spells target allies; offensive spells target enemies. Each costs 2 actions. Existing basic Heal remains available and unlimited. Choices may be mixed across levels.
-
-**Save migration note:** Cleric level 3/5 choices retain IDs a/b, but the ability represented by a prior saved choice may change. Existing level 7/9 choices also change. Check saves before merging. Temporary HP and buffs are combat-only. These paths require browser playtests.
-
-## v0.9 Wizard specializations (preview, not merged)
-
-At levels 3/5/7/9 the Wizard may choose **Elemental Devastation** (large AoE) or **Arcane Affliction** (single-target damage/debuff). Level 3: Flame Burst (radius 1, 2d6+level fire) / Frost Lance (2d6+level, slows). Level 5: Thunderstorm (radius 2, 2d6+level lightning) / Flame Lance (2d6+level, burns). Level 7: Meteor Shower (radius 2, 3d6+level fire) / Crippling Ray (3d8+level, -2 enemy attack on hit). Level 9: Arcane Cataclysm (radius 3, 4d6+level arcane) / Doom Bolt (4d8+level, -2 enemy AC on hit). Each costs two actions and has casting range 6. AoE spells choose a tile and roll separately against each enemy within a Euclidean/circular radius (including diagonals), never hitting allies. Fire Burst remains the basic radius-1 spell; learned Flame Burst, Thunderstorm, Meteor Shower and Arcane Cataclysm use radius 2/3/4/5 respectively. Choices may be mixed across levels. Force Barrage stays unlimited and automatically hits.
-
-**Save compatibility:** Wizard level picks retain IDs a/b, but older saved choices at levels 3/5/7/9 now map to these new effects. Browser testing is required before merging.
-
-## v0.9 interface, loot, sound and save slots
-
-- Header now advertises levels **1–10**. The main landing page header was corrected without merging v0.9 gameplay into main.
-- Level-choice spell rows now display meaningful categories/path names rather than “+0 area spell” or “+0 new spell”.
-- Area spells use Euclidean distance (circular tile selection, including diagonal tiles within radius). Basic Fire Burst is radius 1; learned Flame Burst/Thunderstorm/Meteor Shower/Arcane Cataclysm are radii 2/3/4/5. Casting range remains 6 tiles. Damage dice remain unchanged.
-- Generated expedition stage silver is increased from 18 + 10 × stage to 30 + 16 × stage, plus an additional post-battle cache of 10–20 + 5 × stage silver. Search caches increase from 8–14 to 16–28 silver. Older saved expeditions retain their generated base silver but gain the post-battle cache.
-- Three browser-local save slots. Existing legacy single save is copied into slot 1 (original legacy key is retained); choosing a different slot allows a separate campaign. Starting over in an occupied slot requires confirmation. Saving and continuing use the selected slot. Saves are local to this browser/device, not cloud-synced.
-- Optional **Sound: Off/On** toggle for short synthesized melee and spell sound effects. Sound is off by default; no music is included yet. Browser Web Audio support required.
-- New functionality is syntax-checked but needs manual browser verification. PR #12 remains open and unmerged.
-
-## Encounter-ending music (v0.9 preview)
-
-With **Sound: On**, victory plays a short, original ascending celebratory melody and defeat plays a short, original descending somber melody. Both are synthesized in the browser using Web Audio (no copyrighted music or external audio files). **Sound: Off** is the default; toggling sound off stops a playing ending tune. Encounter-ending music is triggered once at the actual win/loss transition and continues briefly over the camp screen. Starting another encounter stops the previous tune. Music availability depends on browser audio permissions and user interaction.
-
-## v0.9 full-party manual combat control (preview, not merged)
-
-Every allied party member, including the hero and both chosen companions, now has a manual three-action turn in rerolled initiative order. The current acting character is highlighted on the board and shown in the action header; the actions adapt to the actor's class: Fighter Power Attack, Rogue passive Sneak Attack, Cleric Heal, and Wizard Force Barrage/Fire Burst, alongside Stride, Strike, shield, potions and fire flasks. Enemies remain AI-controlled. The hero's selected level-path techniques/spells stay exclusive to the hero; companions currently use their baseline class abilities and existing level-scaled statistics, **not independent level-up choices or inventories**. Consumables remain party-shared. Party defeat now requires all allied characters to fall instead of immediately losing when Kael falls. This is a first full-party-control implementation; manual browser testing is required before merge.
-
-## Expedition item treasure drops (v0.9 preview)
-
-Fixed missing item rewards in procedurally generated expeditions. Each victorious normal expedition encounter now has a 45% chance to award one previously unowned piece of equipment from the existing equipment pool: Reinforced Armor, Emberforged Weapon, Warded Cloak, Cinder Talisman. The final stage of each expedition guarantees an unowned equipment item if any remain. Ambushes still grant silver/XP, not equipment. Duplicates are not awarded; after all four items are collected, there are no further equipment drops from this pool. Item rewards appear in victory text, inventory, and camp equip options; existing saved expeditions are compatible and future wins use the new rules. Past wins are not retroactively awarded items. This is a first loot fix; item diversity and level-scaled loot are future design work.
-
-## Party-control direction restored (2026-11-18)
-
-The intended design is a simulation of adventuring with other players: **only Kael is directly controlled by the human player**. Bram, Vex, Mira and Lyra are AI-controlled party members, acting independently on their own initiative turns with their existing class-based behavior. The experimental manual-companion-control and independent companion level-choice changes have been canceled. Hero level-up choices remain available as before. Procedural expedition equipment drops, sound, and other v0.9 features remain. This decision supersedes the earlier full-party manual combat-control section above.
-
-## Autonomous NPC class progression (v0.9 preview, 2026-11-18)
-
-Kael remains the only player-controlled combatant. All four named companions independently choose one of their own class's two level-up options at every attained level, including levels already reached in existing saves. Choices are randomized once and saved under `npcLevelPicks`, keyed by companion identity, including companions currently outside the party. They remain permanent across party swaps, save/load, and expeditions. Companion sheets display every selection. Passive HP, AC, melee attack/damage, spell attack/damage, damage reduction and Rogue Sneak Attack dice bonuses are applied in combat. Companion AI can use learned Fighter/Rogue combat techniques, Wizard offensive/area spells, and Cleric healing/support/offensive spells. NPC behavior is automatic; the player cannot select their paths or command their turns. Existing saves are migrated without reset. No claim of browser playtest verification; use TESTING.md. This replaces the earlier canceled *manual companion control* plan, not the AI-party design.
-
-## Critical hits and ranged targeting (2026-11-18)
-
-A new original layered Web Audio critical-success sting (sharp impact, bass thump, metallic finish) replaces the ordinary melee hit sound on melee critical successes and plays on offensive spell critical successes, including NPC/enemy attacks. Respects the Sound On/Off toggle; no downloaded sound files. When selecting Fire Flask (5-tile throw), Fire Burst (6-tile cast), learned spells (6 tiles), or ranged class special (6 tiles), legal targeting range appears dark red instead of movement blue. Hovering a legal tile previews the full affected radius in brighter red for fire flasks and area spells; the blast radius can extend beyond the throw/cast range. The underlying rules for valid targets, ranges, and damage are unchanged. Browser verification pending.
-
-## Distinct miss sounds (2026-11-18)
-
-Melee misses now play a light, descending whoosh instead of the successful Strike impact. Offensive spell misses play a separate hollow dissipating shimmer instead of the successful spell tone. Critical failures use a longer, lower-pitched tail of the relevant miss sound. Successful hits retain their prior sounds and critical successes retain the layered critical sting. Applies equally to hero, NPC and enemy attack rolls. Force Barrage remains automatic hit with normal spell sound; the Sound toggle mutes miss sounds too. Synthesized via Web Audio, with no external assets.
-
-## Level-scaled treasure and rare supply-search finds (2026-11-18)
-
-Successful Search for Supplies now has an independent **8%** chance to award an unowned level-appropriate equipment item, in addition to the existing 16–28 silver and possible Fire Flask; the 30% ambush risk remains unchanged. Expedition victories have a **45%** equipment chance; final-stage victories guarantee an unowned item when the current tier has one remaining. Five gear tiers unlock at levels 1, 3, 5, 7, and 9 (Worn, Forged, Enchanted, Runic, Legendary). Each tier has a Vanguard Blade (+tier melee attack/damage), Guardian Armor (+tier AC), and Mystic Focus (+tier spell attack/damage): 15 new unique items total. Existing legacy equipment remains usable. A third equipment slot, Focus, lets casters equip magical gear independently of weapons and armor. Loot is added to persistent inventory, can be equipped at camp, and affects hero stats and subsequent fights. Items do not repeat once acquired; after all three current-tier items have been found, that tier cannot drop more until the next tier unlocks. Existing saves are compatible; no retroactive drops. Browser playtesting pending.
-
-## Force Barrage cantrip scaling (2026-11-18)
-
-Force Barrage remains an unlimited 2-action, 6-tile, automatically hitting Wizard spell throughout levels 1–10. Its damage is now **(2 + floor((level − 1) / 2))d4 + (level + 1) + equipped spell damage bonus**. Dice increase at levels 3, 5, 7 and 9, keeping it useful throughout the campaign without making attack-roll spells obsolete. This applies to Kael as a Wizard and to Lyra's NPC casting. It never uses spell slots or consumables.
-
-## Healing potion scaling (2026-11-18)
-
-Healing Potions now automatically scale with the party's current level, including existing potions from saves, merchant purchases, and camp replenishment. Levels 1–2 heal **2d4+2** (average 7), levels 3–4 **4d4+4** (average 14), levels 5–6 **6d4+6** (average 21), levels 7–8 **8d4+8** (average 28), and levels 9–10 **10d4+10** (average 35). Potions remain 1 action, restore no more than missing HP, and use the existing consumable count. The battle button and merchant description show the current tier's healing dice. Potion pricing and supply/replenishment rules are unchanged. Existing save compatibility preserved.
-
-## Supply search result pop-up (2026-11-18)
-
-After choosing **Search for Supplies**, the game now displays a separate, centered modal result window. A successful search lists silver, any Fire Flask, and any rare level-scaled equipment, with a special gold-highlighted rare discovery. An ambush instead shows a distinct warning and **Prepare for Ambush** button. The modal closes with its action button, Escape, or a click on the backdrop. The underlying camp screen and saved rewards update immediately; search odds and item mechanics remain unchanged. No browser pop-up permission or new tab is required.
-
-### Supply modal dismissal hotfix (2026-11-18)
-
-Collect and Continue now explicitly hides the supply-result overlay using both the hidden attribute and display:none, and sets aria-hidden. The popup restores its visible display when opened again. Button click stops propagation and prevents default. This addresses reports of the popup remaining visible after clicking Collect and Continue.
-
-### Supply ambushes (2026-11-18)
-
-When Search for Supplies triggers an ambush, the modal's **Fight Now** button starts combat immediately with the current party, equipment, HP and resources. Escape and backdrop click cannot dismiss the ambush popup to access camp preparation. Winning grants the normal encounter XP/silver and an additional recovered supply cache (16–28 silver, 50% Fire Flask, 8% chance for an unowned current-tier item), shown in a results popup. Defeat gives no cache. Normal successful searches are unchanged.
-
-### Immediate ambush correction
-
-An ambush now calls `beginAmbush()` synchronously from the Search for Supplies click handler, immediately after saving the pending encounter. No ambush confirmation modal or camp preparation screen is shown. On victory the recovered-supplies result modal still appears. This change is isolated on `feature/immediate-supply-ambush` until playtested.
-
-### Ambush readiness bypass
-
-A triggered or resumed pending ambush ignores missing hero level picks and other preparation prerequisites. Combat starts immediately with existing HP, equipment, party, and consumables; no automatic rest or leveling. Camp screen rendering redirects pending ambushes straight to combat. This does not change normal expedition readiness checks.
-
-### Ambush alert interaction (current)
-
-A search-triggered ambush opens the Ambush! alert. Clicking **Enter Encounter** closes it and starts combat directly, bypassing missing level choices or rest requirements. The alert cannot be dismissed with Escape or by clicking outside. The party fights with its existing resources. Winning awards the recovered supply cache. Resuming a pending ambush starts combat without camp preparation.
-
-### Barbarian Reckless Attack correction
-Reckless Attack costs **1 action**. It attacks with advantage and deals 2.5× damage on a successful hit; incoming attack rolls against the Barbarian have advantage until the start of the Barbarian's next turn. Normal multiple attack penalties still apply.
+For historical test results and remaining regression checks, see [TESTING.md](TESTING.md).
