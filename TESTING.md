@@ -1,6 +1,6 @@
 # Embers of the Vault — v0.9 Active Playtest Checklist
 
-Updated 2026-11-18. This is the **active, untested backlog only**, verified against the current v0.9 game.js. Rows now include user-confirmed **PASS** results alongside outstanding **TEST LATER** checks; no FAIL results reported. Completed PASS checks and obsolete tests for replaced abilities have been removed. Do not re-add passed checks without a relevant code change. Test classes and levels over multiple sessions; there is no requirement to reach level 9 in one playtest.
+Updated 2026-11-19. This is the **active, untested backlog only**, verified against the current v0.9 game.js. Rows now include user-confirmed **PASS** results alongside outstanding **TEST LATER** checks; no FAIL results reported. Completed PASS checks and obsolete tests for replaced abilities have been removed. Do not re-add passed checks without a relevant code change. Test classes and levels over multiple sessions; there is no requirement to reach level 9 in one playtest.
 
 **Status:** 14 checks confirmed PASS on 2026-11-18; PR #12 remains open and unmerged. Update individual rows to PASS or FAIL when the user reports results; keep untested rows deferred.
 
@@ -94,3 +94,20 @@ These are **not confirmed user-reported failures**.
 
 **Previously passed and removed from active backlog:** initiative rerolls each round; dead units do not skip/repeat turns; core d20 magic-vs-AC mechanics; Force Barrage automatic hit; understandable learned-spell descriptions; original distinct spell effects; original spell finishing-blow continuation; and early difficulty adjustment. **Obsolete and removed:** old Fighter Shield Bash/Sundering Blow, Rogue Twin Cut/Shadow Strike, Wizard Arcane Lance/Storm Lance, Cleric Sunfire/Sacred Flame, and the older level 3/5 generic skill/spell tests. **Not in the test backlog:** the future restricted-rest/limited-spell idea, because it has not been implemented.
 
+
+## New v0.9 changes — TEST LATER (2026-11-19)
+
+| Test | Status | Notes |
+| --- | --- | --- |
+| Main page and preview header display Levels 1–10 without prematurely merging v0.9 gameplay | TEST LATER | Main index.html header only |
+| Level-up spell cards show Area Spell / Debuff Spell and path names, never +0 | TEST LATER | Verify all four classes' ability cards |
+| Fire Burst remains radius 1; Flame Burst radius 2, Thunderstorm 3, Meteor Shower 4, Cataclysm 5 | TEST LATER | Check clear progression |
+| AoE circular area includes diagonal targets within Euclidean radius, excludes targets outside circle | TEST LATER | Test (1,1), (2,2), (3,3) offsets where appropriate |
+| Existing generated expeditions and new expeditions grant increased treasure silver correctly | TEST LATER | No double award on replay |
+| Searching caches grants 16–28 silver and optional fire flask | TEST LATER | Ambush chance unchanged |
+| Existing legacy single save migrates to Slot 1 without deleting original | TEST LATER | Back up browser storage before testing |
+| Three save slots keep independent classes, party, level, inventory and progress | TEST LATER | Switching slots, reload browser, continue |
+| Starting a new campaign in an occupied slot requires confirmation and cancel preserves save | TEST LATER | |
+| Sound effects default off; Sound toggle plays short sounds on melee and spell attacks | TEST LATER | User gesture required; no music yet |
+
+**Regression note:** The user's earlier PASS for Flame Burst radius 1 and Thunderstorm radius 2 applied to the previous implementation. The newly expanded radii and circular targeting must be tested, but unrelated prior PASS results remain valid.
