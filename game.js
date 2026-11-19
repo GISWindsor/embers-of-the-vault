@@ -205,11 +205,11 @@ function showSupplyResult({ambush=false,silver=0,flask=false,treasure=null}){
   overlay=document.createElement('div');overlay.id='supplyResultOverlay';overlay.className='supply-result-overlay';overlay.hidden=true;
   overlay.innerHTML='<section class="supply-result-dialog" role="dialog" aria-modal="true" aria-labelledby="supplyResultTitle"><div class="supply-result-emblem" id="supplyResultEmblem"></div><h2 id="supplyResultTitle"></h2><p id="supplyResultIntro"></p><div id="supplyResultLoot"></div><button type="button" id="supplyResultClose">Continue</button></section>';
   document.body.appendChild(overlay);
-  overlay.querySelector('#supplyResultClose').addEventListener('click',closeSupplyResult);
+  overlay.querySelector('#supplyResultClose').addEventListener('click',event=>{event.preventDefault();event.stopPropagation();closeSupplyResult()});
   overlay.addEventListener('click',event=>{if(event.target===overlay)closeSupplyResult()});
   document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!overlay.hidden){event.preventDefault();closeSupplyResult()}});
  }
- overlay.hidden=false;
+ overlay.hidden=false;overlay.style.display='flex';overlay.removeAttribute('aria-hidden');
  const title=overlay.querySelector('#supplyResultTitle'),intro=overlay.querySelector('#supplyResultIntro'),loot=overlay.querySelector('#supplyResultLoot'),emblem=overlay.querySelector('#supplyResultEmblem'),button=overlay.querySelector('#supplyResultClose');
  title.textContent=ambush?'Ambush!':treasure?'Rare Discovery!':'Supplies Found';
  emblem.textContent=ambush?'⚔':treasure?'✦':'✧';
@@ -218,7 +218,12 @@ function showSupplyResult({ambush=false,silver=0,flask=false,treasure=null}){
  button.textContent=ambush?'Prepare for Ambush':'Collect and Continue';
  overlay._previousFocus=document.activeElement;button.focus();
 }
-function closeSupplyResult(){const overlay=document.getElementById('supplyResultOverlay');if(!overlay||overlay.hidden)return;overlay.hidden=true;overlay._previousFocus?.focus()}
+function closeSupplyResult(){
+ const overlay=document.getElementById('supplyResultOverlay');if(!overlay)return;
+ const previousFocus=overlay._previousFocus;
+ overlay.hidden=true;overlay.style.display='none';overlay.setAttribute('aria-hidden','true');
+ if(previousFocus?.isConnected&&!previousFocus.disabled)previousFocus.focus();
+}
 function campActivities(){const explored=campaign.explored.includes(campaign.route),scouted=campaign.scouted.includes(campaign.route),remaining=Math.max(0,SCOUT_LIMIT-campaign.scouted.length),shop=$('merchantChoices'),explore=$('exploreChoices');
 explore.innerHTML='<div class="camp-note">Search each location once. Each attempt has a 30% chance of triggering an ambush instead of finding supplies. You have <strong>'+remaining+' of '+SCOUT_LIMIT+' scouting opportunities</strong> remaining for the entire campaign. Scouted intelligence stays revealed.</div><button class="camp-option" data-explore="search" '+(explored||campaign.cleared||!!campaign.ambush?'disabled':'')+'><strong>Search for Supplies</strong><small>'+(explored?'Already searched this location.':'Find 16–28 silver, possibly a fire flask, and rarely level-scaled equipment.')+'</small></button><button class="camp-option" data-explore="scout" '+(scouted||remaining===0||campaign.cleared||!!campaign.ambush?'disabled':'')+'><strong>Scout the Enemy</strong><small>'+(scouted?'Already scouted; report remains below.':remaining===0?'No scouting opportunities remaining.':'Reveal the enemy roster permanently (uses 1 scouting opportunity).')+'</small></button>';
 const intel=$('scoutingIntel');intel.innerHTML=campaign.scouted.length?'<h4>Scouting Journal</h4>'+campaign.scouted.map(id=>'<div class="scouting-entry">'+scoutingReport(id)+'</div>').join(''):'<p class="camp-note">No enemy intelligence collected yet.</p>';
