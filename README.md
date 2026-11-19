@@ -78,3 +78,11 @@ Force Barrage is an automatic-hit spell again; other offensive spells roll again
 ## Testing policy
 
 Record each check as **PASS**, **FAIL**, or **TEST LATER**. TEST LATER means untested and remains on the future-test backlog; it is not a failure and must not be silently counted as a pass. Avoid requiring every class to reach high levels in one play session. See `TESTING.md` on the development branch for the persistent checklist.
+
+## v0.9: Separate spell and melee accuracy, dice transparency
+
+- Wizard melee Strike remains +6 at level 1, while spell attack is +9 (matching Fighter's +9 melee accuracy); Cleric melee +7 and spell attack +8. Lyra's and Mira's spell accuracy use separate level-scaled values as well.
+- Melee Strike attack/damage and spell attack/damage are separate stats. Equipped weapons improve melee only. Caster level choices that previously gave generic attack or damage now explicitly increase spell attack or spell damage; martial choices remain melee bonuses. Existing save pick IDs are preserved.
+- Character sheets distinguish melee Strike bonus/damage from spell attack bonus and spell damage bonus. Spell attack breakdown shows class, level and spell-feat contributions.
+- Combat logs show rolled damage dice and modifiers, e.g. `d8(4) + d8(3) + 2 = 9`, in addition to d20 attack checks. Force Barrage remains the unlimited automatic-hit spell. Healing dice are shown too.
+- **Future direction (not implemented):** Make resting and healing between encounters substantially scarcer. Consider limited-use stronger spells, but retain at least one unlimited-use offensive spell. If limited spells are introduced, they must deal some damage even on a failed attack, with additional damage on a successful attack. Design and balance this later, not in this patch.
