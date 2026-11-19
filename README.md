@@ -140,3 +140,7 @@ Kael remains the only player-controlled combatant. All four named companions ind
 ## Critical hits and ranged targeting (2026-11-18)
 
 A new original layered Web Audio critical-success sting (sharp impact, bass thump, metallic finish) replaces the ordinary melee hit sound on melee critical successes and plays on offensive spell critical successes, including NPC/enemy attacks. Respects the Sound On/Off toggle; no downloaded sound files. When selecting Fire Flask (5-tile throw), Fire Burst (6-tile cast), learned spells (6 tiles), or ranged class special (6 tiles), legal targeting range appears dark red instead of movement blue. Hovering a legal tile previews the full affected radius in brighter red for fire flasks and area spells; the blast radius can extend beyond the throw/cast range. The underlying rules for valid targets, ranges, and damage are unchanged. Browser verification pending.
+
+## Distinct miss sounds (2026-11-18)
+
+Melee misses now play a light, descending whoosh instead of the successful Strike impact. Offensive spell misses play a separate hollow dissipating shimmer instead of the successful spell tone. Critical failures use a longer, lower-pitched tail of the relevant miss sound. Successful hits retain their prior sounds and critical successes retain the layered critical sting. Applies equally to hero, NPC and enemy attack rolls. Force Barrage remains automatic hit with normal spell sound; the Sound toggle mutes miss sounds too. Synthesized via Web Audio, with no external assets.
