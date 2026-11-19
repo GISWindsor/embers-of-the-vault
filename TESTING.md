@@ -1,101 +1,96 @@
-# Embers of the Vault — v0.9 Playtest Tracker
+# Embers of the Vault — v0.9 Active Playtest Checklist
 
-Statuses: **PASS** = tested and works; **FAIL** = tested and broken; **TEST LATER** = deferred, not a failure. Preserve all TEST LATER entries for subsequent sessions. Do not require every class to reach level 5 in a single session.
+Updated 2026-11-18. This is the **active, untested backlog only**, verified against the current v0.9 game.js. Every entry below is **TEST LATER**, not a reported failure. Completed PASS checks and obsolete tests for replaced abilities have been removed. Do not re-add passed checks without a relevant code change. Test classes and levels over multiple sessions; there is no requirement to reach level 9 in one playtest.
 
-Updated 2026-11-18 after user playtest and spell/balance changes. Latest user report: five additional PASS results (Force Barrage/AC rules, descriptions, distinct spell effects, improved difficulty, and finishing-blow continuation). Individual variant tests and all other TEST LATER entries remain deferred. Previously passing checks are noted as **PASS (prior build)** when affected by a subsequent change; retest only where specifically indicated.
+**Status:** PR #12 remains open and unmerged. Update individual rows to PASS or FAIL when the user reports results; keep untested rows deferred.
 
-| Test | Status | Notes |
-| --- | --- | --- |
-| Magic d20 attacks vs AC, misses, crits | PASS (prior build) | Retest newly differentiated spells |
-| Initiative rerolls every round | PASS | |
-| Death mid-round does not skip/repeat turns | PASS | |
-| Wizard spells roll vs AC | PASS (prior build) | Force Barrage is now intentionally auto-hit |
-| Fighter Power Attack, level 3/5 techniques, action costs | TEST LATER | |
-| Rogue Sneak Attack, level 3/5 techniques, action costs | TEST LATER | |
-| Cleric Heal and learned offensive spells | TEST LATER | |
-| One of two level choices per level | TEST LATER | |
-| Level 3/5 choice unlocks only selected ability | TEST LATER | |
-| Reload persists abilities, gear, party, progression | TEST LATER | |
-| Mira and Lyra magic/healing scale appropriately | TEST LATER | |
-| Bram and Vex remain useful | TEST LATER | |
-| Complete encounter and advance expedition stage | TEST LATER | |
-| Defeat/retry and scouting/ambush | TEST LATER | |
-| Force Barrage always hits; other offensive spells roll vs AC | PASS | Confirmed in browser playtest |
-| Each learned spell displays a meaningful description | PASS | Confirmed understandable before selection |
-| New learned spells have distinct functioning effects | PASS | User confirmed in browser playtest; individual spell variants remain deferred below |
-| Frost slows; Flame burns; Storm chains | TEST LATER | Wizard effects |
-| Sunfire heals; Judgment weakens attacks; Sacred Flame guards | TEST LATER | Cleric effects |
-| Spell effects resolve without freezing combat on a killing blow | PASS | Confirmed combat continues after spell defeats enemy |
-| Difficulty after reduced enemy damage and HP scaling | PASS | User reports fairer difficulty without being too easy; broader later-expedition balance remains untested |
-
-**Known code-review follow-ups:** Audit action costs when fewer than two actions remain; audit post-hit effects on finishing blows; confirm spell status effects reset appropriately. These are not reported user failures yet.
-
-When the user submits results, update this file without discarding TEST LATER entries. Merge PR #12 only with explicit user approval.
-
-## Newly requested checks — 2026-11-18
+## General progression, persistence and expedition
 
 | Test | Status | Notes |
 | --- | --- | --- |
-| Wizard melee Strike remains weak while spell attack is near Fighter accuracy | TEST LATER | Level 1 Wizard +6 melee, +9 spell; Fighter +9 melee |
-| Cleric and AI caster spell attack scales separately from melee | TEST LATER | |
-| Caster level choice labels distinguish spell attack and spell damage | TEST LATER | Verify old saves retain picks |
-| Weapon bonuses only affect melee stats, not spell attack | TEST LATER | |
-| Damage log shows individual dice and flat modifiers for spells, Strikes, Heal | TEST LATER | e.g. d8(4) + d8(3) + 2 |
-| Force Barrage remains unlimited and automatically hits | PASS (prior build) | Retest only if affected |
-| Future restricted-rest/limited-spell design | TEST LATER | Not implemented; planning backlog only |
+| Only one of two choices can be selected per level, and only the chosen ability unlocks | TEST LATER | Check levels 3/5/7/9 |
+| Reload retains level picks, unlocked abilities, equipment, party and expedition progress | TEST LATER | Include reloading a battle-ready save |
+| Existing saves still load; old level-choice IDs map to the newly replaced abilities without breaking play | TEST LATER | Prior ability meanings changed; communicate this clearly |
+| Complete an encounter and advance to the next expedition stage | TEST LATER | |
+| Defeat, retry, scouting and ambush flow | TEST LATER | |
+| Later-expedition enemy balance remains fair | TEST LATER | Early difficulty was previously PASS; only later levels untested |
+| Two-action skills/spells cannot activate with fewer than two actions | TEST LATER | Check targeting and resource use |
+| Offensive spell or multi-target finishing blows resolve encounter without lost turns or frozen UI | TEST LATER | Previous basic finishing-blow test PASS; check new mechanics only |
+| Debuffs, buffs, temporary HP and damage-over-time expire/reset at the intended time | TEST LATER | Across rounds and encounters |
+| Damage log displays individual dice and modifiers for melee, offensive spells and Heal | TEST LATER | Verify critical-hit math |
+| Wizard melee Strike +6 vs spell attack +9 and Fighter melee +9 at level 1 | TEST LATER | Differentiate spell and weapon attacks |
+| Cleric and AI caster spell attack scales independently of melee | TEST LATER | |
+| Caster level choices clearly distinguish spell attack from spell damage | TEST LATER | |
+| Weapon upgrades improve melee only, not spell attacks | TEST LATER | |
+| Mira/Lyra magic and healing scale with level; Bram/Vex remain useful | TEST LATER | Compare higher-level encounters |
 
-## New martial paths — browser test backlog (2026-11-18)
-
-All checks below default to TEST LATER; previously deferred checks above remain unchanged. Select PASS, FAIL, or TEST LATER for each tested item.
-
-| Test | Status | Notes |
-| --- | --- | --- |
-| Rogue Sneak Attack triggers with any living ally adjacent to target | TEST LATER | No opposite-side requirement |
-| Rogue Precision picks at levels 3/5/7/9 stack d6 correctly | TEST LATER | Mixed-path builds supported |
-| Dirty Trick reduces AC by 1 on hit | TEST LATER | |
-| Bleeding Cut deals persistent 1d4 at enemy turn start | TEST LATER | |
-| Crippling Strike slows next enemy Stride | TEST LATER | |
-| Exposing Strike reduces AC by 2 on hit | TEST LATER | |
-| Fighter Defensive Stance costs 1 action and grants AC/temporary HP | TEST LATER | |
-| Fighter Rallying Strike heals on hit | TEST LATER | |
-| Fighter Iron Resolve reduces incoming Strike damage by 2 | TEST LATER | Spell damage reduction is not implemented |
-| Fighter Bastion increases maximum HP by 10 | TEST LATER | |
-| Fighter Sweeping/Whirlwind/Cleaving/Tempest hit all adjacent enemies | TEST LATER | Separate hit/damage rolls and 2-action cost |
-| Prior saves preserve level choices and correctly migrate new effects | TEST LATER | IDs preserved; old selections reinterpreted |
-| Full encounters and combat end correctly with multi-target killing blows | TEST LATER | |
-
-## Cleric Restoration / Judgment paths — TEST LATER (2026-11-18)
+## Fighter — durability and cleaving
 
 | Test | Status | Notes |
 | --- | --- | --- |
-| Level 3 Renewing Prayer heals ally and grants temporary HP | TEST LATER | Two actions, ally target |
-| Level 3 Divine Lance damages enemy using spell attack vs AC | TEST LATER | Two actions |
-| Level 5 Blessing of Valor buffs melee and spell attack for two rounds | TEST LATER | Two actions, ally target |
-| Level 5 Judgment damages and debuffs enemy attack | TEST LATER | Two actions |
-| Level 7 Restorative Wave heals every living ally | TEST LATER | Two actions, ally target to activate |
-| Level 7 Withering Brand damages and reduces enemy AC | TEST LATER | Two actions |
-| Level 9 Sanctuary Aura buffs AC and temp HP of all allies | TEST LATER | Two actions, ally target to activate |
-| Level 9 Searing Verdict damages and burns enemy | TEST LATER | Two actions |
-| Healing and buffs work without an enemy target and expire correctly | TEST LATER | |
-| Hybrid Cleric build mixes Restoration and Judgment choices | TEST LATER | |
-| Previously saved Cleric choices and progression behave after update | TEST LATER | IDs retained but options reinterpreted |
-| Basic Cleric Heal remains available and unlimited | TEST LATER | |
+| Power Attack deals its extra d8 and consumes two actions | TEST LATER | Base Fighter action still present |
+| Level 3 Defensive Stance costs one action and grants +2 AC plus 3 temporary HP | TEST LATER | Check when bonuses expire |
+| Level 3 Sweeping Strike hits all adjacent enemies, each with its own attack roll | TEST LATER | Two actions |
+| Level 5 Rallying Strike heals 5 + level HP on hit | TEST LATER | |
+| Level 5 Whirlwind Strike hits all adjacent enemies for +1d6 per successful hit | TEST LATER | |
+| Level 7 Iron Resolve prevents 2 incoming melee Strike damage | TEST LATER | Not spell damage in current implementation |
+| Level 7 Cleaving Arc hits all adjacent enemies for +1d8 per hit | TEST LATER | |
+| Level 9 Bastion adds 10 maximum HP | TEST LATER | |
+| Level 9 Tempest Sweep hits all adjacent enemies for +2d6 per hit | TEST LATER | |
+| Fighter can mix durability and cleaving picks at different levels | TEST LATER | |
 
-
-## Wizard AoE / single-target paths — TEST LATER (2026-11-18)
+## Rogue — precision and sabotage
 
 | Test | Status | Notes |
 | --- | --- | --- |
-| Level 3 Flame Burst hits enemies in radius 1 with separate attack/damage rolls | TEST LATER | 2 actions |
-| Level 3 Frost Lance slows target after successful attack | TEST LATER | |
-| Level 5 Thunderstorm hits enemies in radius 2 | TEST LATER | |
-| Level 5 Flame Lance applies burn after successful attack | TEST LATER | |
-| Level 7 Meteor Shower hits enemies in radius 2 | TEST LATER | |
-| Level 7 Crippling Ray damages and reduces enemy attack by 2 | TEST LATER | |
-| Level 9 Arcane Cataclysm hits enemies in radius 3 | TEST LATER | |
-| Level 9 Doom Bolt damages and reduces enemy AC by 2 | TEST LATER | |
-| AoE can target an empty tile in range, never harms allies, and resolves victory correctly | TEST LATER | |
-| Hybrid Wizard can choose both AoE and single-target at different levels | TEST LATER | |
-| Force Barrage remains unlimited and auto-hits | PASS (prior build) | Retest if affected |
-| Existing Wizard saves remain playable and level picks migrate sensibly | TEST LATER | Existing IDs now mean new choices |
+| Sneak Attack activates when any living ally is adjacent to the target | TEST LATER | Opposite-side flanking no longer required |
+| Precision picks at levels 3/5/7/9 stack +1d6 Sneak Attack each | TEST LATER | Check dice log and critical hits |
+| Level 3 Dirty Trick reduces enemy AC by 1 on hit | TEST LATER | |
+| Level 5 Bleeding Cut deals persistent 1d4 at start of enemy turns | TEST LATER | Current bleed has no recovery check |
+| Level 7 Crippling Strike limits enemy's next Stride to 2 tiles | TEST LATER | |
+| Level 9 Exposing Strike reduces enemy AC by 2 on hit | TEST LATER | |
+| Rogue can mix Sneak Attack upgrades and sabotage techniques | TEST LATER | |
+
+## Cleric — restoration and judgment
+
+| Test | Status | Notes |
+| --- | --- | --- |
+| Basic Heal remains unlimited and can target an ally | TEST LATER | Two actions |
+| Level 3 Renewing Prayer heals 2d8 + level and grants 3 temporary HP | TEST LATER | Ally target |
+| Level 3 Divine Lance deals 2d8 + level vs enemy AC | TEST LATER | |
+| Level 5 Blessing of Valor grants +2 melee and spell attack for two rounds | TEST LATER | Check duration |
+| Level 5 Judgment deals 2d8 + level and reduces enemy attack by 1 on hit | TEST LATER | |
+| Level 7 Restorative Wave heals all living allies 1d8 + level | TEST LATER | |
+| Level 7 Withering Brand deals 2d6 + level and reduces enemy AC by 2 on hit | TEST LATER | |
+| Level 9 Sanctuary Aura grants all allies 5 temporary HP and +2 AC for two rounds | TEST LATER | |
+| Level 9 Searing Verdict deals 2d8 + level and burns on hit | TEST LATER | |
+| Support spells work without an enemy target and cannot target enemies | TEST LATER | |
+| Cleric can mix Restoration and Judgment choices | TEST LATER | |
+
+## Wizard — elemental devastation and arcane affliction
+
+| Test | Status | Notes |
+| --- | --- | --- |
+| Level 3 Flame Burst hits enemies within radius 1 with separate attack/damage rolls | TEST LATER | |
+| Level 3 Frost Lance deals damage and slows next Stride on hit | TEST LATER | |
+| Level 5 Thunderstorm hits enemies within radius 2 | TEST LATER | |
+| Level 5 Flame Lance deals damage and burns on hit | TEST LATER | |
+| Level 7 Meteor Shower hits enemies within radius 2 for 3d6 + level | TEST LATER | |
+| Level 7 Crippling Ray deals 3d8 + level and reduces enemy attack by 2 on hit | TEST LATER | |
+| Level 9 Arcane Cataclysm hits enemies within radius 3 for 4d6 + level | TEST LATER | |
+| Level 9 Doom Bolt deals 4d8 + level and reduces enemy AC by 2 on hit | TEST LATER | |
+| AoE can target an empty tile in range, excludes allies, and resolves last-enemy kills | TEST LATER | |
+| Wizard can mix AoE and single-target spell choices | TEST LATER | |
+
+## Code-review concerns to verify during tests
+
+These are **not confirmed user-reported failures**.
+
+| Test | Status | Notes |
+| --- | --- | --- |
+| Post-hit debuff/secondary effects resolve correctly when the primary hit ends the encounter | TEST LATER | Current code may return early after checkEnd() |
+| Round-based spell buffs actually decrement and expire at round transitions | TEST LATER | Review endTurn() and advanceDead() behavior |
+| Area spell attack penalties and damage rolls behave consistently across multiple targets | TEST LATER | Check each target gets independent attack and dice |
+
+**Previously passed and removed from active backlog:** initiative rerolls each round; dead units do not skip/repeat turns; core d20 magic-vs-AC mechanics; Force Barrage automatic hit; understandable learned-spell descriptions; original distinct spell effects; original spell finishing-blow continuation; and early difficulty adjustment. **Obsolete and removed:** old Fighter Shield Bash/Sundering Blow, Rogue Twin Cut/Shadow Strike, Wizard Arcane Lance/Storm Lance, Cleric Sunfire/Sacred Flame, and the older level 3/5 generic skill/spell tests. **Not in the test backlog:** the future restricted-rest/limited-spell idea, because it has not been implemented.
 
