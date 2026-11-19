@@ -63,3 +63,21 @@ All checks below default to TEST LATER; previously deferred checks above remain 
 | Fighter Sweeping/Whirlwind/Cleaving/Tempest hit all adjacent enemies | TEST LATER | Separate hit/damage rolls and 2-action cost |
 | Prior saves preserve level choices and correctly migrate new effects | TEST LATER | IDs preserved; old selections reinterpreted |
 | Full encounters and combat end correctly with multi-target killing blows | TEST LATER | |
+
+## Cleric Restoration / Judgment paths — TEST LATER (2026-11-18)
+
+| Test | Status | Notes |
+| --- | --- | --- |
+| Level 3 Renewing Prayer heals ally and grants temporary HP | TEST LATER | Two actions, ally target |
+| Level 3 Divine Lance damages enemy using spell attack vs AC | TEST LATER | Two actions |
+| Level 5 Blessing of Valor buffs melee and spell attack for two rounds | TEST LATER | Two actions, ally target |
+| Level 5 Judgment damages and debuffs enemy attack | TEST LATER | Two actions |
+| Level 7 Restorative Wave heals every living ally | TEST LATER | Two actions, ally target to activate |
+| Level 7 Withering Brand damages and reduces enemy AC | TEST LATER | Two actions |
+| Level 9 Sanctuary Aura buffs AC and temp HP of all allies | TEST LATER | Two actions, ally target to activate |
+| Level 9 Searing Verdict damages and burns enemy | TEST LATER | Two actions |
+| Healing and buffs work without an enemy target and expire correctly | TEST LATER | |
+| Hybrid Cleric build mixes Restoration and Judgment choices | TEST LATER | |
+| Previously saved Cleric choices and progression behave after update | TEST LATER | IDs retained but options reinterpreted |
+| Basic Cleric Heal remains available and unlimited | TEST LATER | |
+
