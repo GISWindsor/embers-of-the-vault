@@ -250,3 +250,5 @@ These are **not confirmed user-reported failures**.
 | Repeated searches of same location remain disabled after closing result | TEST LATER | No double awards |
 | All three save slots, equipment, and expedition progression still work | TEST LATER | Regression |
 
+
+| Supply popup Collect and Continue actually dismisses overlay, then can reopen on another location | TEST LATER | Hotfix: explicit display:none, hidden and aria-hidden; test in browser |
