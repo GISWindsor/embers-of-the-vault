@@ -176,3 +176,7 @@ An ambush now calls `beginAmbush()` synchronously from the Search for Supplies c
 ### Ambush readiness bypass
 
 A triggered or resumed pending ambush ignores missing hero level picks and other preparation prerequisites. Combat starts immediately with existing HP, equipment, party, and consumables; no automatic rest or leveling. Camp screen rendering redirects pending ambushes straight to combat. This does not change normal expedition readiness checks.
+
+### Ambush alert interaction (current)
+
+A search-triggered ambush opens the Ambush! alert. Clicking **Enter Encounter** closes it and starts combat directly, bypassing missing level choices or rest requirements. The alert cannot be dismissed with Escape or by clicking outside. The party fights with its existing resources. Winning awards the recovered supply cache. Resuming a pending ambush starts combat without camp preparation.
