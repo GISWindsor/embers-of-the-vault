@@ -2,7 +2,7 @@
 
 Statuses: **PASS** = tested and works; **FAIL** = tested and broken; **TEST LATER** = deferred, not a failure. Preserve all TEST LATER entries for subsequent sessions. Do not require every class to reach level 5 in a single session.
 
-Updated 2026-11-18 after user playtest and spell/balance changes. Previously passing checks are noted as **PASS (prior build)** when affected by a subsequent change; retest only where specifically indicated.
+Updated 2026-11-18 after user playtest and spell/balance changes. Latest user report: five additional PASS results (Force Barrage/AC rules, descriptions, distinct spell effects, improved difficulty, and finishing-blow continuation). Individual variant tests and all other TEST LATER entries remain deferred. Previously passing checks are noted as **PASS (prior build)** when affected by a subsequent change; retest only where specifically indicated.
 
 | Test | Status | Notes |
 | --- | --- | --- |
@@ -20,12 +20,13 @@ Updated 2026-11-18 after user playtest and spell/balance changes. Previously pas
 | Bram and Vex remain useful | TEST LATER | |
 | Complete encounter and advance expedition stage | TEST LATER | |
 | Defeat/retry and scouting/ambush | TEST LATER | |
-| Force Barrage always hits; other offensive spells roll vs AC | TEST LATER | New spell rules |
-| Each learned spell displays a meaningful description | TEST LATER | New spell descriptions |
+| Force Barrage always hits; other offensive spells roll vs AC | PASS | Confirmed in browser playtest |
+| Each learned spell displays a meaningful description | PASS | Confirmed understandable before selection |
+| New learned spells have distinct functioning effects | PASS | User confirmed in browser playtest; individual spell variants remain deferred below |
 | Frost slows; Flame burns; Storm chains | TEST LATER | Wizard effects |
 | Sunfire heals; Judgment weakens attacks; Sacred Flame guards | TEST LATER | Cleric effects |
-| Spell effects resolve without freezing combat on a killing blow | TEST LATER | Edge case |
-| Difficulty after reduced enemy damage and HP scaling | TEST LATER | Compare early and later expeditions |
+| Spell effects resolve without freezing combat on a killing blow | PASS | Confirmed combat continues after spell defeats enemy |
+| Difficulty after reduced enemy damage and HP scaling | PASS | User reports fairer difficulty without being too easy; broader later-expedition balance remains untested |
 
 **Known code-review follow-ups:** Audit action costs when fewer than two actions remain; audit post-hit effects on finishing blows; confirm spell status effects reset appropriately. These are not reported user failures yet.
 
