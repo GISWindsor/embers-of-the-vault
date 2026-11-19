@@ -49,6 +49,10 @@
       "slug": "feature--procedural-campaigns-party-progression"
     },
     {
+      "name": "feature/refillable-potion-capacity",
+      "slug": "feature--refillable-potion-capacity"
+    },
+    {
       "name": "feature/scouting-budget-persistent-intel",
       "slug": "feature--scouting-budget-persistent-intel"
     },
