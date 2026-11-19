@@ -8,7 +8,7 @@ cleric:{name:'Cleric',hp:21,ac:17,attack:7,spellAttack:8,damage:6,icon:'✚',col
 wizard:{name:'Wizard',hp:15,ac:15,attack:6,spellAttack:9,damage:4,icon:'✦',color:'#b6a3f1',special:'Force Barrage',description:'Arcane caster. Force Barrage automatically hits; other offensive spells roll against spell attack.'}
 };
 let chosenClass='fighter',started=false,specialMode=false;
-let soundEnabled=false,audioContext=null;
+let soundEnabled=true,audioContext=null;
 function playSound(kind){if(!soundEnabled)return;try{const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)return;audioContext=audioContext||new Audio();if(audioContext.state==='suspended')audioContext.resume();const now=audioContext.currentTime,osc=audioContext.createOscillator(),gain=audioContext.createGain();osc.type=kind==='hit'?'triangle':kind==='spell'?'sine':'square';osc.frequency.setValueAtTime(kind==='hit'?170:kind==='spell'?480:340,now);osc.frequency.exponentialRampToValueAtTime(kind==='hit'?90:kind==='spell'?720:260,now+.13);gain.gain.setValueAtTime(.045,now);gain.gain.exponentialRampToValueAtTime(.001,now+.17);osc.connect(gain);gain.connect(audioContext.destination);osc.start(now);osc.stop(now+.18)}catch(e){console.warn('Sound unavailable',e)}}
 let endingMusicNodes=[];
 function stopEndingMusic(){for(const node of endingMusicNodes){try{node.stop()}catch(e){}}endingMusicNodes=[]}
