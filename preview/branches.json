@@ -25,6 +25,10 @@
       "slug": "feature--combat-log-under-map"
     },
     {
+      "name": "feature/expedition-variety-bosses",
+      "slug": "feature--expedition-variety-bosses"
+    },
+    {
       "name": "feature/immediate-supply-ambush",
       "slug": "feature--immediate-supply-ambush"
     },
