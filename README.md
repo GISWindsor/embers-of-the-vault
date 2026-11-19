@@ -172,3 +172,7 @@ When Search for Supplies triggers an ambush, the modal's **Fight Now** button st
 ### Immediate ambush correction
 
 An ambush now calls `beginAmbush()` synchronously from the Search for Supplies click handler, immediately after saving the pending encounter. No ambush confirmation modal or camp preparation screen is shown. On victory the recovered-supplies result modal still appears. This change is isolated on `feature/immediate-supply-ambush` until playtested.
+
+### Ambush readiness bypass
+
+A triggered or resumed pending ambush ignores missing hero level picks and other preparation prerequisites. Combat starts immediately with existing HP, equipment, party, and consumables; no automatic rest or leveling. Camp screen rendering redirects pending ambushes straight to combat. This does not change normal expedition readiness checks.
