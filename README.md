@@ -160,3 +160,7 @@ Healing Potions now automatically scale with the party's current level, includin
 ## Supply search result pop-up (2026-11-18)
 
 After choosing **Search for Supplies**, the game now displays a separate, centered modal result window. A successful search lists silver, any Fire Flask, and any rare level-scaled equipment, with a special gold-highlighted rare discovery. An ambush instead shows a distinct warning and **Prepare for Ambush** button. The modal closes with its action button, Escape, or a click on the backdrop. The underlying camp screen and saved rewards update immediately; search odds and item mechanics remain unchanged. No browser pop-up permission or new tab is required.
+
+### Supply modal dismissal hotfix (2026-11-18)
+
+Collect and Continue now explicitly hides the supply-result overlay using both the hidden attribute and display:none, and sets aria-hidden. The popup restores its visible display when opened again. Button click stops propagation and prevents default. This addresses reports of the popup remaining visible after clicking Collect and Continue.
