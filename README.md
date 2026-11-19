@@ -156,3 +156,7 @@ Force Barrage remains an unlimited 2-action, 6-tile, automatically hitting Wizar
 ## Healing potion scaling (2026-11-18)
 
 Healing Potions now automatically scale with the party's current level, including existing potions from saves, merchant purchases, and camp replenishment. Levels 1–2 heal **2d4+2** (average 7), levels 3–4 **4d4+4** (average 14), levels 5–6 **6d4+6** (average 21), levels 7–8 **8d4+8** (average 28), and levels 9–10 **10d4+10** (average 35). Potions remain 1 action, restore no more than missing HP, and use the existing consumable count. The battle button and merchant description show the current tier's healing dice. Potion pricing and supply/replenishment rules are unchanged. Existing save compatibility preserved.
+
+## Supply search result pop-up (2026-11-18)
+
+After choosing **Search for Supplies**, the game now displays a separate, centered modal result window. A successful search lists silver, any Fire Flask, and any rare level-scaled equipment, with a special gold-highlighted rare discovery. An ambush instead shows a distinct warning and **Prepare for Ambush** button. The modal closes with its action button, Escape, or a click on the backdrop. The underlying camp screen and saved rewards update immediately; search odds and item mechanics remain unchanged. No browser pop-up permission or new tab is required.
