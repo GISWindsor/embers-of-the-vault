@@ -190,3 +190,15 @@ These are **not confirmed user-reported failures**.
 | Area spell hover shows appropriate radius and resets when moving pointer or changing mode | TEST LATER | Flame Burst, Thunderstorm, Meteor Shower, Cataclysm |
 | Stride continues to highlight blue; melee Strike retains existing target indicators | TEST LATER | |
 
+
+## Distinct miss sounds — TEST LATER (2026-11-18)
+
+| Test | Status | Notes |
+| --- | --- | --- |
+| Missed melee Strike plays airy whoosh, not the successful hit impact | TEST LATER | Hero, NPC, and enemies |
+| Missed offensive spell plays hollow dissipating sound, not successful spell tone | TEST LATER | All attack-roll spells and Fire Flask/area spell targets |
+| Critical failure has longer lower miss sound | TEST LATER | Melee and spells |
+| Successful hits and critical successes retain their existing distinct sounds | TEST LATER | Regression |
+| Force Barrage automatic hit retains normal spell sound | TEST LATER | Cannot miss |
+| Sound Off mutes miss sounds and Sound On restores them | TEST LATER | |
+
