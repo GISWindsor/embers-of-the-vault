@@ -283,3 +283,15 @@ User reported all 21 items in the copy-and-paste playtest checklist as PASS. The
 | 21 | Save and Continue | PASS — user confirmed |
 
 **Consolidated batch totals:** 21 PASS, 0 FAIL, 0 TEST LATER. Other preexisting backlog statuses are unchanged.
+
+
+## Immediate supply ambush and recovered cache — TEST LATER (2026-11-18)
+
+| Test | Status | Notes |
+| --- | --- | --- |
+| Supply-search ambush opens Fight Now modal and pressing it starts combat immediately | TEST LATER | No intermediate camp preparation |
+| Ambush modal cannot be dismissed by Escape or clicking outside | TEST LATER | Prevent preparation exploit |
+| Existing party, equipment, HP and consumables carry into ambush unchanged | TEST LATER | No automatic rest or change |
+| Winning ambush grants normal encounter XP/silver and an additional 16–28 silver supply cache | TEST LATER | Popup shows cache |
+| Winning ambush may recover Fire Flask and rare level-tier equipment | TEST LATER | 50% flask, 8% rare equipment conditional on pool |
+| Losing ambush awards no recovered cache; normal successful search remains unchanged | TEST LATER | Regression |
