@@ -252,3 +252,34 @@ These are **not confirmed user-reported failures**.
 
 
 | Supply popup Collect and Continue actually dismisses overlay, then can reopen on another location | TEST LATER | Hotfix: explicit display:none, hidden and aria-hidden; test in browser |
+
+
+## User-confirmed v0.9 consolidated playtest — 21 PASS (2026-11-18)
+
+User reported all 21 items in the copy-and-paste playtest checklist as PASS. These are user-reported results, not automated browser tests. Detailed earlier TEST LATER rows are retained where they ask for narrower or additional checks not necessarily covered by the consolidated checklist.
+
+| # | Playtest | Result |
+| --- | --- | --- |
+| 1 | Supply Search Results Window | PASS — user confirmed |
+| 2 | Collect and Continue Button | PASS — user confirmed |
+| 3 | Pop-up Reopening | PASS — user confirmed |
+| 4 | Ambush Pop-up | PASS — user confirmed |
+| 5 | Search Reward Persistence | PASS — user confirmed |
+| 6 | Equipment Drops After Combat | PASS — user confirmed |
+| 7 | Guaranteed Boss Treasure | PASS — user confirmed |
+| 8 | Rare Equipment From Searching | PASS — user confirmed |
+| 9 | Level-Scaled Equipment | PASS — user confirmed |
+| 10 | Equipment Bonuses | PASS — user confirmed |
+| 11 | Force Barrage at Low Levels | PASS — user confirmed |
+| 12 | Force Barrage at Higher Levels | PASS — user confirmed |
+| 13 | Healing Potion Scaling | PASS — user confirmed |
+| 14 | Healing Potion Display | PASS — user confirmed |
+| 15 | Melee Hit and Miss Sounds | PASS — user confirmed |
+| 16 | Spell Hit and Miss Sounds | PASS — user confirmed |
+| 17 | Critical Hit Sounds | PASS — user confirmed |
+| 18 | Ranged Target Indicators | PASS — user confirmed |
+| 19 | Companion Level-Ups | PASS — user confirmed |
+| 20 | Companion Autonomy | PASS — user confirmed |
+| 21 | Save and Continue | PASS — user confirmed |
+
+**Consolidated batch totals:** 21 PASS, 0 FAIL, 0 TEST LATER. Other preexisting backlog statuses are unchanged.
