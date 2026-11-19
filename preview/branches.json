@@ -1,0 +1,60 @@
+{
+  "branches": [
+    {
+      "name": "feature/branching-campaign-world-map",
+      "slug": "feature--branching-campaign-world-map"
+    },
+    {
+      "name": "feature/camp-exploration-merchant",
+      "slug": "feature--camp-exploration-merchant"
+    },
+    {
+      "name": "feature/campaign-foundation",
+      "slug": "feature--campaign-foundation"
+    },
+    {
+      "name": "feature/character-progression-equipment-party",
+      "slug": "feature--character-progression-equipment-party"
+    },
+    {
+      "name": "feature/character-sheet-stats",
+      "slug": "feature--character-sheet-stats"
+    },
+    {
+      "name": "feature/combat-log-under-map",
+      "slug": "feature--combat-log-under-map"
+    },
+    {
+      "name": "feature/immediate-supply-ambush",
+      "slug": "feature--immediate-supply-ambush"
+    },
+    {
+      "name": "feature/immediate-supply-ambush-v2",
+      "slug": "feature--immediate-supply-ambush-v2"
+    },
+    {
+      "name": "feature/player-class-selection",
+      "slug": "feature--player-class-selection"
+    },
+    {
+      "name": "feature/procedural-campaigns-party-progression",
+      "slug": "feature--procedural-campaigns-party-progression"
+    },
+    {
+      "name": "feature/scouting-budget-persistent-intel",
+      "slug": "feature--scouting-budget-persistent-intel"
+    },
+    {
+      "name": "feature/supply-search-ambush",
+      "slug": "feature--supply-search-ambush"
+    },
+    {
+      "name": "feature/v09-level-paths-companion-sheets",
+      "slug": "feature--v09-level-paths-companion-sheets"
+    },
+    {
+      "name": "fix/iphone-world-map-scroll",
+      "slug": "fix--iphone-world-map-scroll"
+    }
+  ]
+}
