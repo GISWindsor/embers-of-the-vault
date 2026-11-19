@@ -43,3 +43,23 @@ When the user submits results, update this file without discarding TEST LATER en
 | Damage log shows individual dice and flat modifiers for spells, Strikes, Heal | TEST LATER | e.g. d8(4) + d8(3) + 2 |
 | Force Barrage remains unlimited and automatically hits | PASS (prior build) | Retest only if affected |
 | Future restricted-rest/limited-spell design | TEST LATER | Not implemented; planning backlog only |
+
+## New martial paths — browser test backlog (2026-11-18)
+
+All checks below default to TEST LATER; previously deferred checks above remain unchanged. Select PASS, FAIL, or TEST LATER for each tested item.
+
+| Test | Status | Notes |
+| --- | --- | --- |
+| Rogue Sneak Attack triggers with any living ally adjacent to target | TEST LATER | No opposite-side requirement |
+| Rogue Precision picks at levels 3/5/7/9 stack d6 correctly | TEST LATER | Mixed-path builds supported |
+| Dirty Trick reduces AC by 1 on hit | TEST LATER | |
+| Bleeding Cut deals persistent 1d4 at enemy turn start | TEST LATER | |
+| Crippling Strike slows next enemy Stride | TEST LATER | |
+| Exposing Strike reduces AC by 2 on hit | TEST LATER | |
+| Fighter Defensive Stance costs 1 action and grants AC/temporary HP | TEST LATER | |
+| Fighter Rallying Strike heals on hit | TEST LATER | |
+| Fighter Iron Resolve reduces incoming Strike damage by 2 | TEST LATER | Spell damage reduction is not implemented |
+| Fighter Bastion increases maximum HP by 10 | TEST LATER | |
+| Fighter Sweeping/Whirlwind/Cleaving/Tempest hit all adjacent enemies | TEST LATER | Separate hit/damage rolls and 2-action cost |
+| Prior saves preserve level choices and correctly migrate new effects | TEST LATER | IDs preserved; old selections reinterpreted |
+| Full encounters and combat end correctly with multi-target killing blows | TEST LATER | |
