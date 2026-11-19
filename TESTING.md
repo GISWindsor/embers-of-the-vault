@@ -31,3 +31,15 @@ Updated 2026-11-18 after user playtest and spell/balance changes. Latest user re
 **Known code-review follow-ups:** Audit action costs when fewer than two actions remain; audit post-hit effects on finishing blows; confirm spell status effects reset appropriately. These are not reported user failures yet.
 
 When the user submits results, update this file without discarding TEST LATER entries. Merge PR #12 only with explicit user approval.
+
+## Newly requested checks — 2026-11-18
+
+| Test | Status | Notes |
+| --- | --- | --- |
+| Wizard melee Strike remains weak while spell attack is near Fighter accuracy | TEST LATER | Level 1 Wizard +6 melee, +9 spell; Fighter +9 melee |
+| Cleric and AI caster spell attack scales separately from melee | TEST LATER | |
+| Caster level choice labels distinguish spell attack and spell damage | TEST LATER | Verify old saves retain picks |
+| Weapon bonuses only affect melee stats, not spell attack | TEST LATER | |
+| Damage log shows individual dice and flat modifiers for spells, Strikes, Heal | TEST LATER | e.g. d8(4) + d8(3) + 2 |
+| Force Barrage remains unlimited and automatically hits | PASS (prior build) | Retest only if affected |
+| Future restricted-rest/limited-spell design | TEST LATER | Not implemented; planning backlog only |
