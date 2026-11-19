@@ -1,26 +1,26 @@
 # Embers of the Vault — v0.9 Active Playtest Checklist
 
-Updated 2026-11-18. This is the **active, untested backlog only**, verified against the current v0.9 game.js. Every entry below is **TEST LATER**, not a reported failure. Completed PASS checks and obsolete tests for replaced abilities have been removed. Do not re-add passed checks without a relevant code change. Test classes and levels over multiple sessions; there is no requirement to reach level 9 in one playtest.
+Updated 2026-11-18. This is the **active, untested backlog only**, verified against the current v0.9 game.js. Rows now include user-confirmed **PASS** results alongside outstanding **TEST LATER** checks; no FAIL results reported. Completed PASS checks and obsolete tests for replaced abilities have been removed. Do not re-add passed checks without a relevant code change. Test classes and levels over multiple sessions; there is no requirement to reach level 9 in one playtest.
 
-**Status:** PR #12 remains open and unmerged. Update individual rows to PASS or FAIL when the user reports results; keep untested rows deferred.
+**Status:** 14 checks confirmed PASS on 2026-11-18; PR #12 remains open and unmerged. Update individual rows to PASS or FAIL when the user reports results; keep untested rows deferred.
 
 ## General progression, persistence and expedition
 
 | Test | Status | Notes |
 | --- | --- | --- |
-| Only one of two choices can be selected per level, and only the chosen ability unlocks | TEST LATER | Check levels 3/5/7/9 |
-| Reload retains level picks, unlocked abilities, equipment, party and expedition progress | TEST LATER | Include reloading a battle-ready save |
-| Existing saves still load; old level-choice IDs map to the newly replaced abilities without breaking play | TEST LATER | Prior ability meanings changed; communicate this clearly |
-| Complete an encounter and advance to the next expedition stage | TEST LATER | |
-| Defeat, retry, scouting and ambush flow | TEST LATER | |
-| Later-expedition enemy balance remains fair | TEST LATER | Early difficulty was previously PASS; only later levels untested |
-| Two-action skills/spells cannot activate with fewer than two actions | TEST LATER | Check targeting and resource use |
-| Offensive spell or multi-target finishing blows resolve encounter without lost turns or frozen UI | TEST LATER | Previous basic finishing-blow test PASS; check new mechanics only |
+| Only one of two choices can be selected per level, and only the chosen ability unlocks | PASS |Check levels 3/5/7/9; User confirmed 2026-11-18 |
+| Reload retains level picks, unlocked abilities, equipment, party and expedition progress | PASS |Include reloading a battle-ready save; User confirmed 2026-11-18 |
+| Existing saves still load; old level-choice IDs map to the newly replaced abilities without breaking play | PASS |Prior ability meanings changed; communicate this clearly; User confirmed 2026-11-18 |
+| Complete an encounter and advance to the next expedition stage | PASS |; User confirmed 2026-11-18 |
+| Defeat, retry, scouting and ambush flow | PASS |; User confirmed 2026-11-18 |
+| Later-expedition enemy balance remains fair | PASS |Early difficulty was previously PASS; only later levels untested; User confirmed 2026-11-18 |
+| Two-action skills/spells cannot activate with fewer than two actions | PASS |Check targeting and resource use; User confirmed 2026-11-18 |
+| Offensive spell or multi-target finishing blows resolve encounter without lost turns or frozen UI | PASS |Previous basic finishing-blow test PASS; check new mechanics only; User confirmed 2026-11-18 |
 | Debuffs, buffs, temporary HP and damage-over-time expire/reset at the intended time | TEST LATER | Across rounds and encounters |
 | Damage log displays individual dice and modifiers for melee, offensive spells and Heal | TEST LATER | Verify critical-hit math |
-| Wizard melee Strike +6 vs spell attack +9 and Fighter melee +9 at level 1 | TEST LATER | Differentiate spell and weapon attacks |
+| Wizard melee Strike +6 vs spell attack +9 and Fighter melee +9 at level 1 | PASS |Differentiate spell and weapon attacks; User confirmed 2026-11-18 |
 | Cleric and AI caster spell attack scales independently of melee | TEST LATER | |
-| Caster level choices clearly distinguish spell attack from spell damage | TEST LATER | |
+| Caster level choices clearly distinguish spell attack from spell damage | PASS |; User confirmed 2026-11-18 |
 | Weapon upgrades improve melee only, not spell attacks | TEST LATER | |
 | Mira/Lyra magic and healing scale with level; Bram/Vex remain useful | TEST LATER | Compare higher-level encounters |
 
@@ -71,16 +71,16 @@ Updated 2026-11-18. This is the **active, untested backlog only**, verified agai
 
 | Test | Status | Notes |
 | --- | --- | --- |
-| Level 3 Flame Burst hits enemies within radius 1 with separate attack/damage rolls | TEST LATER | |
+| Level 3 Flame Burst hits enemies within radius 1 with separate attack/damage rolls | PASS |; User confirmed 2026-11-18 |
 | Level 3 Frost Lance deals damage and slows next Stride on hit | TEST LATER | |
-| Level 5 Thunderstorm hits enemies within radius 2 | TEST LATER | |
+| Level 5 Thunderstorm hits enemies within radius 2 | PASS |; User confirmed 2026-11-18 |
 | Level 5 Flame Lance deals damage and burns on hit | TEST LATER | |
 | Level 7 Meteor Shower hits enemies within radius 2 for 3d6 + level | TEST LATER | |
 | Level 7 Crippling Ray deals 3d8 + level and reduces enemy attack by 2 on hit | TEST LATER | |
 | Level 9 Arcane Cataclysm hits enemies within radius 3 for 4d6 + level | TEST LATER | |
 | Level 9 Doom Bolt deals 4d8 + level and reduces enemy AC by 2 on hit | TEST LATER | |
-| AoE can target an empty tile in range, excludes allies, and resolves last-enemy kills | TEST LATER | |
-| Wizard can mix AoE and single-target spell choices | TEST LATER | |
+| AoE can target an empty tile in range, excludes allies, and resolves last-enemy kills | PASS |; User confirmed 2026-11-18 |
+| Wizard can mix AoE and single-target spell choices | PASS |; User confirmed 2026-11-18 |
 
 ## Code-review concerns to verify during tests
 
