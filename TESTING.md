@@ -111,3 +111,12 @@ These are **not confirmed user-reported failures**.
 | Sound effects default off; Sound toggle plays short sounds on melee and spell attacks | TEST LATER | User gesture required; no music yet |
 
 **Regression note:** The user's earlier PASS for Flame Burst radius 1 and Thunderstorm radius 2 applied to the previous implementation. The newly expanded radii and circular targeting must be tested, but unrelated prior PASS results remain valid.
+
+## Encounter-ending music — TEST LATER (2026-11-19)
+
+| Test | Status | Notes |
+| --- | --- | --- |
+| With Sound On, victory plays a brief upbeat original tune once, including multi-target final blows | TEST LATER | Tune continues into camp, does not loop |
+| With Sound On, defeat plays a distinct somber tune once and retreat/retry still works | TEST LATER | Check ordinary encounters and ambushes |
+| With Sound Off (default), neither tune plays; switching Off during a tune stops it | TEST LATER | Browser audio gesture/autoplay restrictions |
+| Starting a new encounter stops any unfinished victory/defeat tune | TEST LATER | No overlap between encounters |
