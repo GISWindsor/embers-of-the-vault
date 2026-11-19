@@ -31,6 +31,13 @@
 .expedition-map{display:flex;gap:12px;padding:18px;overflow-x:auto;min-height:220px}.expedition-stage{display:flex;flex:1;min-width:125px;flex-direction:column;gap:10px;justify-content:center}.expedition-stage strong{text-align:center;color:#eac68b;font-size:12px}.expedition-node{font-size:12px;padding:12px 6px;min-height:52px}.expedition-node.selected{outline:2px solid #74c4d6}@media(max-width:600px){.expedition-map{flex-direction:column}.expedition-stage{min-width:0;flex-direction:row;flex-wrap:wrap}.expedition-stage strong{width:100%}.expedition-node{flex:1;min-width:90px}}
 
 .companion-sheets{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:14px}.companion-sheet{display:flex;flex-direction:column;gap:6px;padding:12px;border:1px solid #526679;border-radius:8px;background:#172534;font-size:13px}.level-row{display:flex;flex-wrap:wrap;gap:8px;padding:12px 0;border-top:1px solid #43566a}.level-row>strong{width:100%}.level-row .camp-option{flex:1;min-width:140px}
+#levelModalChoices{display:block;margin:14px 0 18px;text-align:left}
+#levelModalChoices .level-modal-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:0;border:0;align-items:stretch}
+#levelModalChoices .level-modal-row>strong{grid-column:1/-1;display:block;width:auto;font-size:17px;margin-bottom:3px}
+#levelModalChoices .level-modal-row .camp-option{width:100%;min-width:0;min-height:90px;padding:16px;display:flex;flex-direction:column;justify-content:center;gap:4px}
+#levelModalChoices .level-modal-row .camp-option small{margin-top:0}
+@media(max-width:520px){#levelModalChoices .level-modal-row{grid-template-columns:1fr}}
+
 
 .companion-sheets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;width:100%;margin-bottom:16px}.companion-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;width:100%}.companion-choices .camp-option{width:100%;min-width:0;min-height:88px;align-self:stretch}.companion-sheet{min-width:0}@media(max-width:520px){.companion-sheets,.companion-choices{grid-template-columns:1fr}}
  .save-slots-wrap{margin:10px 0 18px;text-align:left}.save-slots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:8px 0}.save-slot{display:flex;flex-direction:column;align-items:flex-start;gap:4px;background:#233146;border:1px solid #52657c}.save-slot.selected{border:2px solid #e6bd79;background:#34415a}.save-slot small{font-size:11px;text-align:left}#soundToggle{padding:7px 10px;font-size:12px}@media(max-width:520px){.save-slots{grid-template-columns:1fr}} \n.supply-result-overlay[hidden]{display:none}.supply-result-overlay{position:fixed;inset:0;z-index:1000;background:#060b13d9;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(5px)}.supply-result-dialog{width:min(440px,100%);border:2px solid #a67d43;border-radius:16px;background:linear-gradient(160deg,#263246,#111a27 75%);box-shadow:0 22px 90px #000c,0 0 38px #c9943b33;padding:30px;text-align:center;color:#f1e9d9}.supply-result-emblem{font-size:45px;color:#f6cf89}.supply-result-dialog h2{font-size:26px;margin:10px 0}.supply-result-dialog p{color:#bfc9d4;line-height:1.5}.supply-result-entry{background:#101a29;border:1px solid #425166;border-radius:9px;padding:12px;margin:9px 0;font-weight:700}.supply-result-rare{border-color:#f1c26b;background:#48351d;color:#ffdc94}.supply-result-rare small{display:block;font-size:12px;margin-top:5px;color:#e9c78e}.supply-result-dialog button{margin-top:15px;min-width:190px;background:#70502c;border-color:#e3b56a}.supply-result-dialog button:focus-visible{outline:3px solid #fff;outline-offset:3px}
@@ -265,7 +272,7 @@ function showLevelModal(){
  const choices=levelPicker(),holder=document.createElement('div');holder.innerHTML=choices;
  const current=holder.querySelectorAll('.level-row')[level-1];
  overlay.querySelector('#levelModalIntro').textContent='Level '+level+' · '+classes[campaign.classId].name;
- overlay.querySelector('#levelModalChoices').innerHTML=current?current.innerHTML:choices;
+ overlay.querySelector('#levelModalChoices').innerHTML=current?'<div class="level-row level-modal-row">'+current.innerHTML+'</div>':choices;
  overlay.hidden=false;overlay.style.display='flex';levelModalOpen=true;
 }
 let merchantModalOpen=false;
