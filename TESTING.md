@@ -148,3 +148,15 @@ These are **not confirmed user-reported failures**.
 | No duplicate equipment awards and no broken rewards after all four items are owned | TEST LATER | |
 | Ambushes still grant XP and silver but not equipment | TEST LATER | |
 
+
+## NPC companion direction — TEST LATER (2026-11-18)
+
+| Test | Status | Notes |
+| --- | --- | --- |
+| Only Kael's turns accept player commands; both companions take AI turns automatically | TEST LATER | Supersedes manual party control tests above |
+| Mira heals injured allies, Lyra casts Force Barrage, Bram/Vex move and strike | TEST LATER | Class-specific AI behaviors |
+| Companion initiative advances automatically and returns control to Kael without stalling | TEST LATER | |
+| Only Kael has level-up choice controls; prior hero choices and saved expeditions remain intact | TEST LATER | Independent companion progression canceled |
+| Expedition item drops and sound remain operational after reverting party control | TEST LATER | Regression check |
+
+**Superseded:** Earlier full-party manual-control and independent companion-progression test plans are canceled by user direction; do not treat them as required features.
