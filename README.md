@@ -86,3 +86,11 @@ Record each check as **PASS**, **FAIL**, or **TEST LATER**. TEST LATER means unt
 - Character sheets distinguish melee Strike bonus/damage from spell attack bonus and spell damage bonus. Spell attack breakdown shows class, level and spell-feat contributions.
 - Combat logs show rolled damage dice and modifiers, e.g. `d8(4) + d8(3) + 2 = 9`, in addition to d20 attack checks. Force Barrage remains the unlimited automatic-hit spell. Healing dice are shown too.
 - **Future direction (not implemented):** Make resting and healing between encounters substantially scarcer. Consider limited-use stronger spells, but retain at least one unlimited-use offensive spell. If limited spells are introduced, they must deal some damage even on a failed attack, with additional damage on a successful attack. Design and balance this later, not in this patch.
+
+## v0.9 martial paths (preview; not merged)
+
+Rogue: Sneak Attack triggers on a successful melee Strike when any living ally is adjacent to the target (no opposite-side requirement). At levels 3/5/7/9 choose either stacking +1d6 Sneak Attack or an active debuff: Dirty Trick (−1 AC), Bleeding Cut (persistent 1d4 bleed at enemy turn start), Crippling Strike (next Stride limited to 2 tiles), Exposing Strike (−2 AC). Precision bonuses accumulate and hybrid choices are allowed. Bleeding is persistent for the encounter; no recovery check yet.
+
+Fighter: at levels 3/5/7/9 choose durability or multi-target damage. Defensive Stance (1 action, +2 AC and 3 temporary HP), Rallying Strike (2-action hit heals 5+level), Iron Resolve (passive −2 incoming melee Strike damage), Bastion (+10 max HP); or Sweeping Strike (all adjacent enemies), Whirlwind Strike (+1d6 each), Cleaving Arc (+1d8 each), Tempest Sweep (+2d6 each). Multi-target abilities cost 2 actions and roll separately for each enemy. These mechanics are experimental and may need balance tuning.
+
+Existing saved level-pick IDs remain intact, but prior martial choices at levels 3, 5, 7 and 9 now resolve to the new paths; previously saved builds may therefore have different effects. Retest save migration.
