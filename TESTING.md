@@ -81,3 +81,21 @@ All checks below default to TEST LATER; previously deferred checks above remain 
 | Previously saved Cleric choices and progression behave after update | TEST LATER | IDs retained but options reinterpreted |
 | Basic Cleric Heal remains available and unlimited | TEST LATER | |
 
+
+## Wizard AoE / single-target paths — TEST LATER (2026-11-18)
+
+| Test | Status | Notes |
+| --- | --- | --- |
+| Level 3 Flame Burst hits enemies in radius 1 with separate attack/damage rolls | TEST LATER | 2 actions |
+| Level 3 Frost Lance slows target after successful attack | TEST LATER | |
+| Level 5 Thunderstorm hits enemies in radius 2 | TEST LATER | |
+| Level 5 Flame Lance applies burn after successful attack | TEST LATER | |
+| Level 7 Meteor Shower hits enemies in radius 2 | TEST LATER | |
+| Level 7 Crippling Ray damages and reduces enemy attack by 2 | TEST LATER | |
+| Level 9 Arcane Cataclysm hits enemies in radius 3 | TEST LATER | |
+| Level 9 Doom Bolt damages and reduces enemy AC by 2 | TEST LATER | |
+| AoE can target an empty tile in range, never harms allies, and resolves victory correctly | TEST LATER | |
+| Hybrid Wizard can choose both AoE and single-target at different levels | TEST LATER | |
+| Force Barrage remains unlimited and auto-hits | PASS (prior build) | Retest if affected |
+| Existing Wizard saves remain playable and level picks migrate sensibly | TEST LATER | Existing IDs now mean new choices |
+
