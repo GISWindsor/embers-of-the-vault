@@ -283,3 +283,57 @@ User reported all 21 items in the copy-and-paste playtest checklist as PASS. The
 | 21 | Save and Continue | PASS — user confirmed |
 
 **Consolidated batch totals:** 21 PASS, 0 FAIL, 0 TEST LATER. Other preexisting backlog statuses are unchanged.
+
+
+## Immediate supply ambush and recovered cache — TEST LATER (2026-11-18)
+
+| Test | Status | Notes |
+| --- | --- | --- |
+| Supply-search ambush opens Fight Now modal and pressing it starts combat immediately | TEST LATER | No intermediate camp preparation |
+| Ambush modal cannot be dismissed by Escape or clicking outside | TEST LATER | Prevent preparation exploit |
+| Existing party, equipment, HP and consumables carry into ambush unchanged | TEST LATER | No automatic rest or change |
+| Winning ambush grants normal encounter XP/silver and an additional 16–28 silver supply cache | TEST LATER | Popup shows cache |
+| Winning ambush may recover Fire Flask and rare level-tier equipment | TEST LATER | 50% flask, 8% rare equipment conditional on pool |
+| Losing ambush awards no recovered cache; normal successful search remains unchanged | TEST LATER | Regression |
+
+| Search for Supplies triggers an ambush and immediately opens combat without an extra button or camp interaction | TEST LATER | User-reported bug fixed on feature branch; test in browser |
+| Ambush victory still opens recovered-supplies modal and keeps cache | TEST LATER | Verify after automatic start |
+
+| Ambush with unselected hero level-up picks starts immediately, without returning to camp | TEST LATER | No automatic feat choice |
+| Ambush with unrested/injured party starts immediately with current HP and consumables | TEST LATER | No free rest |
+| Reload a save with pending ambush: goes straight to combat rather than preparation | TEST LATER | Persistence guard |
+
+| Search-triggered ambush shows Ambush! popup; Enter Encounter goes directly to battle | TEST LATER | No intermediate camp screen |
+| Ambush popup cannot be dismissed by Escape or backdrop click | TEST LATER | No bypass to preparation |
+| Unspent level picks and low HP do not prevent ambush after closing popup | TEST LATER | No forced leveling/rest |
+
+## Barbarian class playtest (new feature)
+
+- [ ] New game: Barbarian appears in class selection and starts a battle.
+- [ ] Barbarian action bar shows Power Strike (1 action) in place of Strike.
+- [ ] Power Strike costs 1 action and deals its bonus damage on a successful hit.
+- [ ] Raise Shield, Fire Flask and Drink Potion are absent; these actions cannot be invoked.
+- [ ] Reckless Attack costs 1 action and rolls 2d20, keeping the higher result.
+- [ ] Successful Reckless Attack deals floor(2.5 × normal damage), including critical-hit damage if applicable.
+- [ ] After Reckless Attack, enemy melee/ranged/spell attack rolls use advantage until the Barbarian's next turn.
+- [ ] Reckless vulnerability ends at the start of the Barbarian's next turn, not at the end of the attack turn.
+- [ ] Fighter, Rogue, Cleric and Wizard still play normally.
+- [ ] Ambush popup still launches combat immediately when confirmed, even with pending level choices.
+
+- [ ] Reckless Attack is usable with exactly one action remaining and consumes only that action.
+- [ ] Repeated Reckless Attacks in a turn apply the normal multiple attack penalty; vulnerability does not stack.
+
+## Barbarian Plan A — Berserker progression playtest
+
+- [ ] Levels 1, 2, 4, 6, 8, 10 retain the previously offered HP/AC/attack/damage stat choices.
+- [ ] At levels 3, 5, 7, 9, two unique Berserker choices appear with descriptions; only the selected one activates.
+- [ ] Level 3 Bloodlust: defeating an enemy restores 15% of maximum HP (rounded up, capped at max).
+- [ ] Level 3 Savage Cleave: after a kill, with an action remaining and an adjacent enemy, a 1-action follow-up attack is available; it does not increase MAP.
+- [ ] Level 5 Frenzy: 1-action activation, once per encounter, +25% outgoing damage and -2 AC for two turns.
+- [ ] Level 5 Executioner: +50% outgoing damage against enemies below 30% HP, not at or above the threshold.
+- [ ] Level 7 Death Defiance: the first otherwise fatal attack leaves Barbarian at 1 HP; subsequent fatal hits do not.
+- [ ] Level 7 Unstoppable Assault: first kill each turn restores 1 action, not repeated on subsequent kills in the same turn.
+- [ ] Level 9 Avatar of Rage: 1-action activation once per encounter, +50% damage and 20% max-HP temporary HP for two turns.
+- [ ] Level 9 Bloodbath: each kill adds +10% outgoing damage for encounter, capped at +50%.
+- [ ] Reckless Attack remains a 1-action attack with advantage and 2.5x damage; vulnerability lasts until the next Barbarian turn.
+- [ ] Non-Barbarian classes and ambush entry still work.

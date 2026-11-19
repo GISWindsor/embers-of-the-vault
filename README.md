@@ -165,6 +165,21 @@ After choosing **Search for Supplies**, the game now displays a separate, center
 
 Collect and Continue now explicitly hides the supply-result overlay using both the hidden attribute and display:none, and sets aria-hidden. The popup restores its visible display when opened again. Button click stops propagation and prevents default. This addresses reports of the popup remaining visible after clicking Collect and Continue.
 
-## Testing branch preview hub
+### Supply ambushes (2026-11-18)
 
-Open https://giswindsor.github.io/embers-of-the-vault/preview/ to choose a playable snapshot of any published `feature/**`, `fix/**`, `beta/**`, or `testing/**` branch. Each has its own path `/preview/branches/<branch-name-with-slashes-replaced-by-double-hyphens>/`. The `.github/workflows/publish-branch-previews.yml` workflow republishes a branch's standalone `index.html` and updates `preview/branches.json` when that branch is pushed; the workflow requires GitHub Actions write permission to `main`. The hub and snapshots are hosted from `main` as published artifacts, but development game changes remain isolated on their feature branches until merged. Older branches are available as snapshots, not necessarily maintained or current. Save slots may share local storage across paths on the same site.
+When Search for Supplies triggers an ambush, the modal's **Fight Now** button starts combat immediately with the current party, equipment, HP and resources. Escape and backdrop click cannot dismiss the ambush popup to access camp preparation. Winning grants the normal encounter XP/silver and an additional recovered supply cache (16–28 silver, 50% Fire Flask, 8% chance for an unowned current-tier item), shown in a results popup. Defeat gives no cache. Normal successful searches are unchanged.
+
+### Immediate ambush correction
+
+An ambush now calls `beginAmbush()` synchronously from the Search for Supplies click handler, immediately after saving the pending encounter. No ambush confirmation modal or camp preparation screen is shown. On victory the recovered-supplies result modal still appears. This change is isolated on `feature/immediate-supply-ambush` until playtested.
+
+### Ambush readiness bypass
+
+A triggered or resumed pending ambush ignores missing hero level picks and other preparation prerequisites. Combat starts immediately with existing HP, equipment, party, and consumables; no automatic rest or leveling. Camp screen rendering redirects pending ambushes straight to combat. This does not change normal expedition readiness checks.
+
+### Ambush alert interaction (current)
+
+A search-triggered ambush opens the Ambush! alert. Clicking **Enter Encounter** closes it and starts combat directly, bypassing missing level choices or rest requirements. The alert cannot be dismissed with Escape or by clicking outside. The party fights with its existing resources. Winning awards the recovered supply cache. Resuming a pending ambush starts combat without camp preparation.
+
+### Barbarian Reckless Attack correction
+Reckless Attack costs **1 action**. It attacks with advantage and deals 2.5× damage on a successful hit; incoming attack rolls against the Barbarian have advantage until the start of the Barbarian's next turn. Normal multiple attack penalties still apply.
