@@ -116,3 +116,7 @@ At levels 3/5/7/9 the Wizard may choose **Elemental Devastation** (large AoE) or
 - Three browser-local save slots. Existing legacy single save is copied into slot 1 (original legacy key is retained); choosing a different slot allows a separate campaign. Starting over in an occupied slot requires confirmation. Saving and continuing use the selected slot. Saves are local to this browser/device, not cloud-synced.
 - Optional **Sound: Off/On** toggle for short synthesized melee and spell sound effects. Sound is off by default; no music is included yet. Browser Web Audio support required.
 - New functionality is syntax-checked but needs manual browser verification. PR #12 remains open and unmerged.
+
+## Encounter-ending music (v0.9 preview)
+
+With **Sound: On**, victory plays a short, original ascending celebratory melody and defeat plays a short, original descending somber melody. Both are synthesized in the browser using Web Audio (no copyrighted music or external audio files). **Sound: Off** is the default; toggling sound off stops a playing ending tune. Encounter-ending music is triggered once at the actual win/loss transition and continues briefly over the camp screen. Starting another encounter stops the previous tune. Music availability depends on browser audio permissions and user interaction.
