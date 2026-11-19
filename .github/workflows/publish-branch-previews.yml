@@ -1,0 +1,59 @@
+name: Publish branch testing previews
+on:
+  push:
+    branches:
+      - 'feature/**'
+      - 'fix/**'
+      - 'beta/**'
+      - 'testing/**'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: branch-previews
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source branch
+        uses: actions/checkout@v4
+        with:
+          path: source
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: published
+          fetch-depth: 0
+      - name: Update branch preview and manifest
+        env:
+          SOURCE_BRANCH: ${{ github.ref_name }}
+        run: |
+          python3 - <<'PY'
+          import json, os, pathlib, shutil
+          name=os.environ['SOURCE_BRANCH']
+          slug=name.replace('/','--')
+          source=pathlib.Path('source/index.html')
+          if not source.exists():
+              raise SystemExit('Branch has no index.html')
+          target=pathlib.Path('published/preview/branches')/slug/'index.html'
+          target.parent.mkdir(parents=True,exist_ok=True)
+          shutil.copyfile(source,target)
+          manifest=pathlib.Path('published/preview/branches.json')
+          data=json.loads(manifest.read_text()) if manifest.exists() else {'branches':[]}
+          data['branches']=[entry for entry in data['branches'] if entry['name']!=name]
+          data['branches'].append({'name':name,'slug':slug})
+          data['branches'].sort(key=lambda entry:entry['name'])
+          manifest.write_text(json.dumps(data,indent=2)+'\n')
+          PY
+      - name: Commit preview update to main
+        working-directory: published
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add preview/branches preview/branches.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Publish preview for ${{ github.ref_name }}"
+          git pull --rebase origin main
+          git push origin HEAD:main
