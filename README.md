@@ -164,3 +164,11 @@ After choosing **Search for Supplies**, the game now displays a separate, center
 ### Supply modal dismissal hotfix (2026-11-18)
 
 Collect and Continue now explicitly hides the supply-result overlay using both the hidden attribute and display:none, and sets aria-hidden. The popup restores its visible display when opened again. Button click stops propagation and prevents default. This addresses reports of the popup remaining visible after clicking Collect and Continue.
+
+### Supply ambushes (2026-11-18)
+
+When Search for Supplies triggers an ambush, the modal's **Fight Now** button starts combat immediately with the current party, equipment, HP and resources. Escape and backdrop click cannot dismiss the ambush popup to access camp preparation. Winning grants the normal encounter XP/silver and an additional recovered supply cache (16–28 silver, 50% Fire Flask, 8% chance for an unowned current-tier item), shown in a results popup. Defeat gives no cache. Normal successful searches are unchanged.
+
+### Immediate ambush correction
+
+An ambush now calls `beginAmbush()` synchronously from the Search for Supplies click handler, immediately after saving the pending encounter. No ambush confirmation modal or camp preparation screen is shown. On victory the recovered-supplies result modal still appears. This change is isolated on `feature/immediate-supply-ambush` until playtested.
