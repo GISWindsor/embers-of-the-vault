@@ -94,3 +94,9 @@ Rogue: Sneak Attack triggers on a successful melee Strike when any living ally i
 Fighter: at levels 3/5/7/9 choose durability or multi-target damage. Defensive Stance (1 action, +2 AC and 3 temporary HP), Rallying Strike (2-action hit heals 5+level), Iron Resolve (passive −2 incoming melee Strike damage), Bastion (+10 max HP); or Sweeping Strike (all adjacent enemies), Whirlwind Strike (+1d6 each), Cleaving Arc (+1d8 each), Tempest Sweep (+2d6 each). Multi-target abilities cost 2 actions and roll separately for each enemy. These mechanics are experimental and may need balance tuning.
 
 Existing saved level-pick IDs remain intact, but prior martial choices at levels 3, 5, 7 and 9 now resolve to the new paths; previously saved builds may therefore have different effects. Retest save migration.
+
+## v0.9 Cleric paths (preview, not merged)
+
+Cleric chooses independently at levels 3/5/7/9 between **Restoration** and **Judgment**. Level 3: Renewing Prayer (2d8+level ally heal and 3 temporary HP) or Divine Lance (2d8+level spell attack). Level 5: Blessing of Valor (+2 melee/spell accuracy for 2 rounds) or Judgment (2d8+level and -1 enemy attack on hit). Level 7: Restorative Wave (1d8+level heal to each living ally) or Withering Brand (2d6+level and -2 enemy AC on hit). Level 9: Sanctuary Aura (5 temporary HP and +2 AC for 2 rounds to each ally) or Searing Verdict (2d8+level and burning 1d4 on hit). Support spells target allies; offensive spells target enemies. Each costs 2 actions. Existing basic Heal remains available and unlimited. Choices may be mixed across levels.
+
+**Save migration note:** Cleric level 3/5 choices retain IDs a/b, but the ability represented by a prior saved choice may change. Existing level 7/9 choices also change. Check saves before merging. Temporary HP and buffs are combat-only. These paths require browser playtests.
