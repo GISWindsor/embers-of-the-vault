@@ -202,3 +202,17 @@ These are **not confirmed user-reported failures**.
 | Force Barrage automatic hit retains normal spell sound | TEST LATER | Cannot miss |
 | Sound Off mutes miss sounds and Sound On restores them | TEST LATER | |
 
+
+## Level-scaled equipment and rare supply search drops — TEST LATER (2026-11-18)
+
+| Test | Status | Notes |
+| --- | --- | --- |
+| Successful supply search has rare ~8% equipment chance alongside silver/flask | TEST LATER | 30% ambush behavior remains |
+| Search award appears in inventory and equipment options and survives reload | TEST LATER | No retroactive awards |
+| Normal expedition victories have ~45% equipment chance | TEST LATER | Subject to unowned current-tier pool |
+| Final expedition stage guarantees an unowned current-tier item | TEST LATER | No guarantee when pool exhausted |
+| Equipment tiers unlock at levels 1, 3, 5, 7, 9 | TEST LATER | 15 new unique items |
+| Vanguard Blade increases melee attack/damage, Guardian Armor increases AC | TEST LATER | Bonuses increase with tier |
+| Mystic Focus has separate equip slot and increases spell attack/damage | TEST LATER | Does not affect melee |
+| Existing equipment, save slots, NPC progression, sound and ranged indicators still work | TEST LATER | Regression |
+
