@@ -136,3 +136,15 @@ These are **not confirmed user-reported failures**.
 | End Turn and automatic end at zero actions advance through player characters and enemy AI without freezes | TEST LATER | |
 | Companion HP persistence after victory and save/reload remain intact | TEST LATER | |
 
+
+## Expedition item loot fix — TEST LATER (2026-11-18)
+
+| Test | Status | Notes |
+| --- | --- | --- |
+| Normal expedition victories can award equipment; expected drop chance 45% | TEST LATER | Random, check across several fights |
+| Final stage of an expedition guarantees one unowned equipment item | TEST LATER | If pool not exhausted |
+| Item reward is shown in victory text, camp inventory, and equip options | TEST LATER | Equip bonuses apply next fight |
+| Existing in-progress second expedition saves remain valid and can earn items on next victory | TEST LATER | No retroactive drops |
+| No duplicate equipment awards and no broken rewards after all four items are owned | TEST LATER | |
+| Ambushes still grant XP and silver but not equipment | TEST LATER | |
+
