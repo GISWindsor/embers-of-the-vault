@@ -62,7 +62,7 @@
 const W=9,H=8,CX=490,CY=105,TW=90,TH=45;
 const terrain=new Set(['3,2','5,3','2,5','6,5']);
 const classes={
-barbarian:{name:'Barbarian',hp:29,ac:15,attack:8,damage:10,icon:'🪓',color:'#dc875e',special:'Reckless Attack',description:'Power Strike replaces Strike (1 action). Reckless Attack (2 actions): advantage and ×2.5 damage; enemies attack you with advantage until your next turn. Cannot raise shield, throw fire flasks, or drink healing potions.'},
+barbarian:{name:'Barbarian',hp:29,ac:15,attack:8,damage:10,icon:'🪓',color:'#dc875e',special:'Reckless Attack',description:'Power Strike replaces Strike (1 action). Reckless Attack (2 actions): advantage and ×2.5 damage; enemies attack you with advantage until your next turn. Cannot raise shield or throw fire flasks; may drink healing potions only outside combat.'},
 fighter:{name:'Fighter',hp:24,ac:18,attack:9,damage:8,icon:'⚔',color:'#6ab5e8',special:'Power Attack',description:'Heavy armor and precise weapon attacks. Power Attack costs 2 actions and deals an extra weapon die.'},
 rogue:{name:'Rogue',hp:19,ac:17,attack:7,damage:6,icon:'◆',color:'#a7d5a2',special:'Sneak Attack',description:'Mobile striker. Your melee Strikes deal +1d6 precision damage to off-guard enemies.'},
 cleric:{name:'Cleric',hp:21,ac:17,attack:7,spellAttack:8,damage:6,icon:'✚',color:'#e6c883',special:'Heal',description:'Divine healer. Cast a two-action Heal spell on yourself or an ally within 6 tiles.'},
