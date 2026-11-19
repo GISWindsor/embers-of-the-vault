@@ -322,3 +322,18 @@ User reported all 21 items in the copy-and-paste playtest checklist as PASS. The
 
 - [ ] Reckless Attack is usable with exactly one action remaining and consumes only that action.
 - [ ] Repeated Reckless Attacks in a turn apply the normal multiple attack penalty; vulnerability does not stack.
+
+## Barbarian Plan A — Berserker progression playtest
+
+- [ ] Levels 1, 2, 4, 6, 8, 10 retain the previously offered HP/AC/attack/damage stat choices.
+- [ ] At levels 3, 5, 7, 9, two unique Berserker choices appear with descriptions; only the selected one activates.
+- [ ] Level 3 Bloodlust: defeating an enemy restores 15% of maximum HP (rounded up, capped at max).
+- [ ] Level 3 Savage Cleave: after a kill, with an action remaining and an adjacent enemy, a 1-action follow-up attack is available; it does not increase MAP.
+- [ ] Level 5 Frenzy: 1-action activation, once per encounter, +25% outgoing damage and -2 AC for two turns.
+- [ ] Level 5 Executioner: +50% outgoing damage against enemies below 30% HP, not at or above the threshold.
+- [ ] Level 7 Death Defiance: the first otherwise fatal attack leaves Barbarian at 1 HP; subsequent fatal hits do not.
+- [ ] Level 7 Unstoppable Assault: first kill each turn restores 1 action, not repeated on subsequent kills in the same turn.
+- [ ] Level 9 Avatar of Rage: 1-action activation once per encounter, +50% damage and 20% max-HP temporary HP for two turns.
+- [ ] Level 9 Bloodbath: each kill adds +10% outgoing damage for encounter, capped at +50%.
+- [ ] Reckless Attack remains a 1-action attack with advantage and 2.5x damage; vulnerability lasts until the next Barbarian turn.
+- [ ] Non-Barbarian classes and ambush entry still work.
