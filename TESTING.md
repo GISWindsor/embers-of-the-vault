@@ -216,3 +216,14 @@ These are **not confirmed user-reported failures**.
 | Mystic Focus has separate equip slot and increases spell attack/damage | TEST LATER | Does not affect melee |
 | Existing equipment, save slots, NPC progression, sound and ranged indicators still work | TEST LATER | Regression |
 
+
+## Force Barrage endgame scaling — TEST LATER (2026-11-18)
+
+| Test | Status | Notes |
+| --- | --- | --- |
+| Level 1 Force Barrage deals 2d4+2 plus focus bonus | TEST LATER | Always hits, 2 actions |
+| Levels 3, 5, 7, 9 increase dice to 3d4, 4d4, 5d4, 6d4 | TEST LATER | Flat modifier also increases every level |
+| Level 10 Force Barrage deals 6d4+11 plus focus bonus | TEST LATER | Unlimited through endgame |
+| Lyra NPC Force Barrage uses the same level scaling | TEST LATER | |
+| Force Barrage requires no consumables or spell slots; range remains 6 | TEST LATER | |
+
