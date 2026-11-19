@@ -315,7 +315,8 @@ function makeExpedition(number){
  return {number,seed,layout,nodes}
 }
 function expeditionNode(id){return campaign?.expedition?.nodes.flat().find(n=>n.id===id)}
-function levelThreshold(level){return level===1?1000:1500+(level-2)*850}
+const LEVEL_XP_THRESHOLDS=[0,1000,2200,3600,5200,7000,9000,11200,13600,16200];
+function levelThreshold(level){return LEVEL_XP_THRESHOLDS[Math.max(0,Math.min(9,level))]}
 function expeditionLevelUp(){let msg='';while(campaign.level<10&&campaign.xp>=levelThreshold(campaign.level)){campaign.level++;if(campaign.hp!==null)campaign.hp+=8;msg=' Party reached level '+campaign.level+'!'}developCompanions();return msg}
 function beginNextExpedition(){if(!campaign?.expedition||!campaign.cleared||campaign.dead)return;campaign.expedition=makeExpedition(campaign.expedition.number+1);campaign.chapter=0;campaign.route=campaign.expedition.nodes[0][0].id;campaign.cleared=false;campaign.ambush=null;campaign.explored=[];campaign.scouted=[];campaign.visitedStops=[];campaign.routeCommitted=false;campaignStatus('Expedition '+campaign.expedition.number+' begins! Your party, equipment and experience carry forward.')}
 function scaleEncounter(source){if(!campaign||!source.enemies?.length)return source;const level=Math.max(1,campaign.level||1),stage=Math.max(0,campaign.chapter||0),ambush=!!campaign.ambush;const tier=ambush?-1:stage>=3?1:0;const targetLevel=Math.max(1,level+tier);const referenceLevel=Math.min(3,stage+1);const delta=targetLevel-referenceLevel;return {...source,enemies:source.enemies.map((e,i)=>{const variance=ambush?0:(i===source.enemies.length-1&&stage>=3?1:0);const adjustment=delta+variance;return {...e,hp:Math.max(8,e.hp+adjustment*6),ac:Math.max(10,e.ac+adjustment),attack:e.attack+adjustment,damage:Math.max(1,e.damage+Math.max(0,adjustment)*2-1),spellAttack:(e.spellAttack??e.attack)+adjustment,init:e.init+Math.max(0,adjustment),level:Math.max(1,referenceLevel+adjustment)}})}}
