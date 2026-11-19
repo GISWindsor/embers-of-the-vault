@@ -295,3 +295,6 @@ User reported all 21 items in the copy-and-paste playtest checklist as PASS. The
 | Winning ambush grants normal encounter XP/silver and an additional 16–28 silver supply cache | TEST LATER | Popup shows cache |
 | Winning ambush may recover Fire Flask and rare level-tier equipment | TEST LATER | 50% flask, 8% rare equipment conditional on pool |
 | Losing ambush awards no recovered cache; normal successful search remains unchanged | TEST LATER | Regression |
+
+| Search for Supplies triggers an ambush and immediately opens combat without an extra button or camp interaction | TEST LATER | User-reported bug fixed on feature branch; test in browser |
+| Ambush victory still opens recovered-supplies modal and keeps cache | TEST LATER | Verify after automatic start |
