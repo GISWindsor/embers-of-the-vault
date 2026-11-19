@@ -298,3 +298,7 @@ User reported all 21 items in the copy-and-paste playtest checklist as PASS. The
 
 | Search for Supplies triggers an ambush and immediately opens combat without an extra button or camp interaction | TEST LATER | User-reported bug fixed on feature branch; test in browser |
 | Ambush victory still opens recovered-supplies modal and keeps cache | TEST LATER | Verify after automatic start |
+
+| Ambush with unselected hero level-up picks starts immediately, without returning to camp | TEST LATER | No automatic feat choice |
+| Ambush with unrested/injured party starts immediately with current HP and consumables | TEST LATER | No free rest |
+| Reload a save with pending ambush: goes straight to combat rather than preparation | TEST LATER | Persistence guard |
