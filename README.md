@@ -103,6 +103,16 @@ Cleric chooses independently at levels 3/5/7/9 between **Restoration** and **Jud
 
 ## v0.9 Wizard specializations (preview, not merged)
 
-At levels 3/5/7/9 the Wizard may choose **Elemental Devastation** (large AoE) or **Arcane Affliction** (single-target damage/debuff). Level 3: Flame Burst (radius 1, 2d6+level fire) / Frost Lance (2d6+level, slows). Level 5: Thunderstorm (radius 2, 2d6+level lightning) / Flame Lance (2d6+level, burns). Level 7: Meteor Shower (radius 2, 3d6+level fire) / Crippling Ray (3d8+level, -2 enemy attack on hit). Level 9: Arcane Cataclysm (radius 3, 4d6+level arcane) / Doom Bolt (4d8+level, -2 enemy AC on hit). Each costs two actions and has casting range 6. AoE spells choose a tile and roll separately against each enemy within Manhattan-distance radius, never hitting allies. Choices may be mixed across levels. Force Barrage stays unlimited and automatically hits.
+At levels 3/5/7/9 the Wizard may choose **Elemental Devastation** (large AoE) or **Arcane Affliction** (single-target damage/debuff). Level 3: Flame Burst (radius 1, 2d6+level fire) / Frost Lance (2d6+level, slows). Level 5: Thunderstorm (radius 2, 2d6+level lightning) / Flame Lance (2d6+level, burns). Level 7: Meteor Shower (radius 2, 3d6+level fire) / Crippling Ray (3d8+level, -2 enemy attack on hit). Level 9: Arcane Cataclysm (radius 3, 4d6+level arcane) / Doom Bolt (4d8+level, -2 enemy AC on hit). Each costs two actions and has casting range 6. AoE spells choose a tile and roll separately against each enemy within a Euclidean/circular radius (including diagonals), never hitting allies. Fire Burst remains the basic radius-1 spell; learned Flame Burst, Thunderstorm, Meteor Shower and Arcane Cataclysm use radius 2/3/4/5 respectively. Choices may be mixed across levels. Force Barrage stays unlimited and automatically hits.
 
 **Save compatibility:** Wizard level picks retain IDs a/b, but older saved choices at levels 3/5/7/9 now map to these new effects. Browser testing is required before merging.
+
+## v0.9 interface, loot, sound and save slots
+
+- Header now advertises levels **1–10**. The main landing page header was corrected without merging v0.9 gameplay into main.
+- Level-choice spell rows now display meaningful categories/path names rather than “+0 area spell” or “+0 new spell”.
+- Area spells use Euclidean distance (circular tile selection, including diagonal tiles within radius). Basic Fire Burst is radius 1; learned Flame Burst/Thunderstorm/Meteor Shower/Arcane Cataclysm are radii 2/3/4/5. Casting range remains 6 tiles. Damage dice remain unchanged.
+- Generated expedition stage silver is increased from 18 + 10 × stage to 30 + 16 × stage, plus an additional post-battle cache of 10–20 + 5 × stage silver. Search caches increase from 8–14 to 16–28 silver. Older saved expeditions retain their generated base silver but gain the post-battle cache.
+- Three browser-local save slots. Existing legacy single save is copied into slot 1 (original legacy key is retained); choosing a different slot allows a separate campaign. Starting over in an occupied slot requires confirmation. Saving and continuing use the selected slot. Saves are local to this browser/device, not cloud-synced.
+- Optional **Sound: Off/On** toggle for short synthesized melee and spell sound effects. Sound is off by default; no music is included yet. Browser Web Audio support required.
+- New functionality is syntax-checked but needs manual browser verification. PR #12 remains open and unmerged.
