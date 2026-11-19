@@ -180,3 +180,6 @@ A triggered or resumed pending ambush ignores missing hero level picks and other
 ### Ambush alert interaction (current)
 
 A search-triggered ambush opens the Ambush! alert. Clicking **Enter Encounter** closes it and starts combat directly, bypassing missing level choices or rest requirements. The alert cannot be dismissed with Escape or by clicking outside. The party fights with its existing resources. Winning awards the recovered supply cache. Resuming a pending ambush starts combat without camp preparation.
+
+### Barbarian Reckless Attack correction
+Reckless Attack costs **1 action**. It attacks with advantage and deals 2.5× damage on a successful hit; incoming attack rolls against the Barbarian have advantage until the start of the Barbarian's next turn. Normal multiple attack penalties still apply.
