@@ -164,3 +164,7 @@ After choosing **Search for Supplies**, the game now displays a separate, center
 ### Supply modal dismissal hotfix (2026-11-18)
 
 Collect and Continue now explicitly hides the supply-result overlay using both the hidden attribute and display:none, and sets aria-hidden. The popup restores its visible display when opened again. Button click stops propagation and prevents default. This addresses reports of the popup remaining visible after clicking Collect and Continue.
+
+## Testing branch preview hub
+
+Open https://giswindsor.github.io/embers-of-the-vault/preview/ to choose a playable snapshot of any published `feature/**`, `fix/**`, `beta/**`, or `testing/**` branch. Each has its own path `/preview/branches/<branch-name-with-slashes-replaced-by-double-hyphens>/`. The `.github/workflows/publish-branch-previews.yml` workflow republishes a branch's standalone `index.html` and updates `preview/branches.json` when that branch is pushed; the workflow requires GitHub Actions write permission to `main`. The hub and snapshots are hosted from `main` as published artifacts, but development game changes remain isolated on their feature branches until merged. Older branches are available as snapshots, not necessarily maintained or current. Save slots may share local storage across paths on the same site.
