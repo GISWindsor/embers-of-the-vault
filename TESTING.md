@@ -238,3 +238,15 @@ These are **not confirmed user-reported failures**.
 | Potion never exceeds maximum HP and consumes one potion and one action | TEST LATER | |
 | Existing saved potions and camp-replenished or purchased potions scale automatically | TEST LATER | No save migration needed |
 
+
+## Supply search result modal — TEST LATER (2026-11-18)
+
+| Test | Status | Notes |
+| --- | --- | --- |
+| Successful search opens separate centered modal listing silver and optional Fire Flask | TEST LATER | Camp stays in background |
+| Rare item search shows gold-highlighted item name and persists in inventory | TEST LATER | 8% conditional chance |
+| Ambush opens warning modal with Prepare for Ambush button | TEST LATER | Existing encounter remains accessible |
+| Continue, Escape, and backdrop click close modal | TEST LATER | Keyboard accessibility |
+| Repeated searches of same location remain disabled after closing result | TEST LATER | No double awards |
+| All three save slots, equipment, and expedition progression still work | TEST LATER | Regression |
+
