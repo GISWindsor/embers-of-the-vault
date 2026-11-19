@@ -337,3 +337,10 @@ User reported all 21 items in the copy-and-paste playtest checklist as PASS. The
 - [ ] Level 9 Bloodbath: each kill adds +10% outgoing damage for encounter, capped at +50%.
 - [ ] Reckless Attack remains a 1-action attack with advantage and 2.5x damage; vulnerability lasts until the next Barbarian turn.
 - [ ] Non-Barbarian classes and ambush entry still work.
+
+
+## Current baseline acceptance — November 19, 2026
+
+**Status: ACCEPTED / NO OPEN PLAYTEST REQUESTS.** The project owner reports that they or other testers have exercised most of the current features and that the consolidated game feels good in its current state. Previous historical `TEST LATER` and unchecked rows above are retained as archival records, **not active testing assignments**. They are not retroactively labeled PASS: no individual result is being invented. The previous testing backlog is administratively closed at the owner's direction. New playtests should be requested only for future substantive changes or a newly reported defect.
+
+**Next development focus:** expedition map topology and noncombat stops; meaningful ways to spend silver; distinct final bosses with telegraphed lair mechanics, tactical behavior, and capped reinforcements.
