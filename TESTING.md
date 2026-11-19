@@ -175,3 +175,18 @@ These are **not confirmed user-reported failures**.
 | Only Kael can be directly controlled; NPC initiative and combat turn advance automatically | TEST LATER | Essential regression |
 | Old saves, item drops, sound, and level-up selection for Kael still work | TEST LATER | |
 
+
+## Critical-hit audio and red range previews — TEST LATER (2026-11-18)
+
+| Test | Status | Notes |
+| --- | --- | --- |
+| Critical melee success plays layered sting rather than normal Strike sound | TEST LATER | Hero and NPC/enemy attacks |
+| Critical offensive spell success plays sting in addition to spell sound | TEST LATER | Wizard/Cleric spells, AI too |
+| Ordinary melee/spell attacks and victory/defeat songs unchanged | TEST LATER | Audio regression |
+| Sound Off mutes critical sting | TEST LATER | Sound defaults On |
+| Fire Flask selection highlights throw tiles red up to 5-tile Manhattan range | TEST LATER | Requires flask and 2 actions |
+| Fire Flask hover shows full 1-tile AoE in brighter red | TEST LATER | Preview may extend beyond throw range |
+| Ranged spell/class special selection highlights range 6 red | TEST LATER | Legal cast/target rules unchanged |
+| Area spell hover shows appropriate radius and resets when moving pointer or changing mode | TEST LATER | Flame Burst, Thunderstorm, Meteor Shower, Cataclysm |
+| Stride continues to highlight blue; melee Strike retains existing target indicators | TEST LATER | |
+
