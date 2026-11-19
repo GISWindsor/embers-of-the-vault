@@ -117,14 +117,11 @@ The preview URL currently redirects into a historically named feature directory;
 
 For historical test results and remaining regression checks, see [TESTING.md](TESTING.md).
 
-## In development: expedition variety and signature bosses
+## Expedition gameplay release (November 2026)
 
-The `feature/expedition-variety-bosses` branch is published to the [development preview](https://giswindsor.github.io/embers-of-the-vault/preview/) but is **not yet merged into the main game**.
-
-- New expeditions select one of four route-width patterns: **fork, hub, gauntlet, crossroads**. The map identifies combat, merchants, shrines, caches and bosses.
-- Some intermediate combat nodes are replaced with **noncombat stops**. Visiting a stop advances the expedition without a battle. Hidden caches award silver. Shrines offer full-party restoration for 35 silver.
-- Traveling Merchant stops offer **guaranteed, unowned, level-eligible equipment** priced at 45 + 35 × item level silver. The regular camp merchant still sells consumables.
-- Every generated expedition ends with one of three distinct bosses: **Ashen Warlord** (up to two reinforcement waves), **Cinder Oracle** (telegraphed round-delayed area hazard), or **Vault Sentinel** (close-range lair tremor). Bosses become stronger at half HP and award additional XP/silver.
-- Existing saved expedition node structures remain usable; new layouts and special bosses appear on newly generated expeditions. This is an initial implementation and has not yet received browser verification.
-
-Historical checklist entries were closed as active assignments by the project owner; no replay of the prior baseline checklist is requested.
+- Expedition maps vary between fork, hub, gauntlet, and crossroads layouts, with combat, merchants, shrines, caches, and unique final bosses.
+- Players commit to one path per stage; unchosen paths cannot be searched or scouted. The next stage starts with no route selected.
+- Shopping is available only through the Traveling Merchant popup on merchant map stops; the camp shopping panel was removed. Random equipment drops remain enabled.
+- Pending level-up choices open in a popup, including after completing an expedition or dismissing a supply result.
+- The map legend uses a compact vertical EXPEDITION key.
+- The stable preview remains at `/preview/`, and the released game is served from the repository root.
