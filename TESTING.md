@@ -227,3 +227,14 @@ These are **not confirmed user-reported failures**.
 | Lyra NPC Force Barrage uses the same level scaling | TEST LATER | |
 | Force Barrage requires no consumables or spell slots; range remains 6 | TEST LATER | |
 
+
+## Level-scaled healing potions — TEST LATER (2026-11-18)
+
+| Test | Status | Notes |
+| --- | --- | --- |
+| Levels 1–2 potion heals 2d4+2 | TEST LATER | Average 7 |
+| Levels 3–4, 5–6, 7–8, 9–10 heal 4d4+4, 6d4+6, 8d4+8, 10d4+10 | TEST LATER | Verify dice log and actual HP restored |
+| Potion button and merchant description show current-level healing | TEST LATER | |
+| Potion never exceeds maximum HP and consumes one potion and one action | TEST LATER | |
+| Existing saved potions and camp-replenished or purchased potions scale automatically | TEST LATER | No save migration needed |
+
