@@ -343,9 +343,11 @@ function makeExpedition(number){
    const id='exp'+number+'-'+stage+'-'+lane,name=names.splice(Math.floor(rnd()*names.length),1)[0],walls=[];
    for(let j=0;j<5;j++){const w=(3+Math.floor(rnd()*3))+','+(1+Math.floor(rnd()*5));if(!walls.includes(w))walls.push(w)}
    const enemies=[];for(let i=0;i<(stage>2?3:2);i++){const e=pool[Math.floor(rnd()*pool.length)];enemies.push({...e,id:id+'-enemy'+i,x:6+i%2,y:i===2?0:i+1})}
+   // Shared low-complexity entry encounter for every expedition.
+   if(stage===0){enemies.length=0;for(let i=0;i<2;i++)enemies.push({...chapters[1].enemies[i],id:id+'-enemy'+i,x:6+i,y:2+i});}
    const kind=isBoss?null:kinds[lane]==='battle'?null:kinds[lane];
    const boss=isBoss?bossChoices.splice(Math.floor(rnd()*bossChoices.length),1)[0]:null;
-   row.push({id,name:kind?stopKinds[kind].label+' · '+name:name,kind,walls,tint:['#455462','#375d49','#66504a','#74473d','#57546a'][Math.floor(rnd()*5)],enemies,xp:400+stage*140,silver:30+stage*16,loot:null,story:kind?stopDescription({kind}):'Your party ventures into '+name+'.',boss})
+   row.push({id,name:stage===0?'Expedition Entrance':kind?stopKinds[kind].label+' · '+name:name,kind,walls,tint:['#455462','#375d49','#66504a','#74473d','#57546a'][Math.floor(rnd()*5)],enemies,xp:400+stage*140,silver:30+stage*16,loot:null,story:kind?stopDescription({kind}):'Your party ventures into '+name+'.',boss})
   }
   nodes.push(row)
  }
@@ -373,7 +375,7 @@ function scaleEncounter(source){if(!campaign||!source.enemies?.length)return sou
 // Stable encounter variety: a saved expedition node always generates the same roster.
 function variedExpeditionEnemies(node){
  const hash=Number.isInteger(node.encounterSeed)?node.encounterSeed>>>0:Array.from(node.id).reduce((h,c)=>(Math.imul(h,31)+c.charCodeAt(0))>>>0,2166136261);
- const counts=[1,2,2,3,3,4,5,6,8,10],count=counts[hash%counts.length];
+ const counts=[1,2,2,3,3,4,5,6,8,10],count=campaign?.expedition?.graphVersion===2&&campaign.chapter===0&&!campaign.ambush?2:counts[hash%counts.length];
  const source=node.enemies,positions=[];
  for(let x=8;x>=4;x--)for(let y=0;y<H;y++)if(!(node.walls||[]).includes(x+','+y)&&!(x===4&&y>=5))positions.push({x,y});
  const chosen=[];
