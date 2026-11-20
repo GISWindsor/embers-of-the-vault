@@ -28,7 +28,8 @@
 
 .scouting-intel{margin:-8px 0 20px;padding:12px 14px;background:#202e40;border:1px solid #45576d;border-radius:9px}.scouting-intel h4{color:#f6cf89;margin:0 0 10px}.scouting-entry{font-size:12px;line-height:1.6;padding:8px 0;border-top:1px solid #45576d}.scouting-entry strong{color:#eac68b}.scouting-entry div{color:#d4dce2}
 
-.expedition-legend{display:flex;flex-direction:column;gap:5px;flex:0 0 auto;min-width:110px;font-size:13px;line-height:1.3;color:#d4dce2}.expedition-legend strong{font-size:14px;letter-spacing:.06em;color:#f6cf89;margin-bottom:5px}.expedition-map-wrap{width:100%;overflow-x:auto}.expedition-legend{display:flex;gap:12px;flex-wrap:wrap;padding:8px 12px;font-size:12px}.branch-map{position:relative;min-width:760px;height:430px;background:linear-gradient(120deg,#1b2935,#263441);border:1px solid #4e6071;border-radius:12px;margin:8px 0 16px}.branch-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.branch-node{position:absolute;transform:translate(-50%,-50%);width:122px;min-height:55px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2px;padding:5px;border:1px solid #526478;border-radius:9px;background:#1a2937;color:#d5dce5;font-size:18px;z-index:1}.branch-node small{font-size:10px;line-height:1.2;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.branch-node:disabled{opacity:.55;cursor:default}.branch-node.reachable{border-color:#86d3a9;box-shadow:0 0 0 1px #86d3a955;opacity:1;cursor:pointer}.branch-node.selected{background:#29543f;outline:2px solid #86d3a9}.branch-node:not(:disabled):hover{background:#345063}
+.expedition-legend{display:flex;flex-direction:column;gap:5px;flex:0 0 auto;min-width:110px;font-size:13px;line-height:1.3;color:#d4dce2}.expedition-legend strong{font-size:14px;letter-spacing:.06em;color:#f6cf89;margin-bottom:5px}.expedition-map-wrap{width:100%;overflow-x:auto}.expedition-legend{display:flex;gap:12px;flex-wrap:wrap;padding:8px 12px;font-size:12px}.route-map-v3{position:relative;min-width:1000px;height:390px;margin:8px 0 16px;border:1px solid #6c5b45;border-radius:12px;background:radial-gradient(ellipse at center,#d4b183,#b68b5f);overflow:hidden}.route-map-v3 .branch-lines{z-index:0}.route-map-v3 .branch-node{width:52px;height:52px;min-height:0;padding:2px;border-radius:50%;background:#3b312b;color:#f3dfb7;border:2px solid #74634f;font-size:23px;box-shadow:0 3px 8px #38281e55}.route-map-v3 .branch-node small{display:none}.route-map-v3 .branch-node.reachable{background:#355c46;border-color:#c2edb6}.route-map-v3 .branch-node.selected{background:#35644b}.route-map-v3 .branch-node:disabled{opacity:.78}.route-map-v3 .branch-node:focus-visible{outline:3px solid #f8edb1}.route-map-v3 .branch-node:hover:not(:disabled){background:#456d50}
+.branch-map{position:relative;min-width:760px;height:430px;background:linear-gradient(120deg,#1b2935,#263441);border:1px solid #4e6071;border-radius:12px;margin:8px 0 16px}.branch-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.branch-node{position:absolute;transform:translate(-50%,-50%);width:122px;min-height:55px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2px;padding:5px;border:1px solid #526478;border-radius:9px;background:#1a2937;color:#d5dce5;font-size:18px;z-index:1}.branch-node small{font-size:10px;line-height:1.2;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.branch-node:disabled{opacity:.55;cursor:default}.branch-node.reachable{border-color:#86d3a9;box-shadow:0 0 0 1px #86d3a955;opacity:1;cursor:pointer}.branch-node.selected{background:#29543f;outline:2px solid #86d3a9}.branch-node:not(:disabled):hover{background:#345063}
 .expedition-map{display:flex;gap:12px;padding:18px;overflow-x:auto;min-height:220px}.expedition-stage{display:flex;flex:1;min-width:125px;flex-direction:column;gap:10px;justify-content:center}.expedition-stage strong{text-align:center;color:#eac68b;font-size:12px}.expedition-node{font-size:12px;padding:12px 6px;min-height:52px}.expedition-node.selected{outline:2px solid #74c4d6}@media(max-width:600px){.expedition-map{flex-direction:column}.expedition-stage{min-width:0;flex-direction:row;flex-wrap:wrap}.expedition-stage strong{width:100%}.expedition-node{flex:1;min-width:90px}}
 
 .companion-sheets{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:14px}.companion-sheet{display:flex;flex-direction:column;gap:6px;padding:12px;border:1px solid #526679;border-radius:8px;background:#172534;font-size:13px}.level-row{display:flex;flex-wrap:wrap;gap:8px;padding:12px 0;border-top:1px solid #43566a}.level-row>strong{width:100%}.level-row .camp-option{flex:1;min-width:140px}
@@ -277,6 +278,7 @@ const ambushes=[
 function beginAmbush(){if(!campaign?.ambush)return;chosenClass=campaign.classId;$('campaignScreen').classList.add('hidden');$('classScreen').classList.add('hidden');started=true;$('restart').textContent=campaign.ironman?'Forfeit Run':'Restart Encounter';reset();}
 
 const EXPEDITION_LENGTH=5;
+const expeditionLength=c=>c?.expedition?.nodes?.length||EXPEDITION_LENGTH;
 const expeditionLayouts=['fork','hub','gauntlet','crossroads'];
 const stopKinds={merchant:{label:'Traveling Merchant',icon:'🛒'},shrine:{label:'Ancient Shrine',icon:'✦'},cache:{label:'Hidden Cache',icon:'◇'}};
 function stopDescription(n){return n.kind==='merchant'?'A traveling trader offers equipment and provisions.':n.kind==='shrine'?'An ancient shrine offers healing for silver.':'An abandoned cache may contain valuable supplies.'}
@@ -315,7 +317,7 @@ function showMerchantModal(){
  overlay.querySelector('#merchantModalShop').appendChild(shop);
  overlay.hidden=false;overlay.style.display='flex';merchantModalOpen=true;
 }
-function visitExpeditionStop(){closeMerchantModal();if(!campaign?.routeCommitted||campaign.dead)return;if(!campaign?.expedition||campaign.cleared||campaign.ambush)return;const n=expeditionNode(campaign.route);if(!n||!n.kind)return;campaign.visitedStops=campaign.visitedStops||[];if(!campaign.visitedStops.includes(n.id)){campaign.visitedStops.push(n.id);if(n.kind==='cache'){const reward=25+campaign.level*8;campaign.silver+=reward;campaign.stopMessage='Recovered '+reward+' silver from '+n.name+'.'}else campaign.stopMessage='Visited '+n.name+'. '+stopDescription(n)}campaign.previousRoute=campaign.route;campaign.chapter++;campaign.routeCommitted=false;if(campaign.chapter>=EXPEDITION_LENGTH){campaign.chapter=EXPEDITION_LENGTH-1;campaign.cleared=true}else campaign.route=(campaign.expedition.graphVersion===2?campaign.expedition.nodes[campaign.chapter].find(n=>expeditionNode(campaign.previousRoute)?.next?.includes(n.id)):null)?.id||campaign.expedition.nodes[campaign.chapter][0].id;campaignStatus(campaign.stopMessage||'The party continues its expedition.')}
+function visitExpeditionStop(){closeMerchantModal();if(!campaign?.routeCommitted||campaign.dead)return;if(!campaign?.expedition||campaign.cleared||campaign.ambush)return;const n=expeditionNode(campaign.route);if(!n||!n.kind)return;campaign.visitedStops=campaign.visitedStops||[];if(!campaign.visitedStops.includes(n.id)){campaign.visitedStops.push(n.id);if(n.kind==='cache'){const reward=25+campaign.level*8;campaign.silver+=reward;campaign.stopMessage='Recovered '+reward+' silver from '+n.name+'.'}else campaign.stopMessage='Visited '+n.name+'. '+stopDescription(n)}campaign.previousRoute=campaign.route;campaign.chapter++;campaign.routeCommitted=false;if(campaign.chapter>=expeditionLength(campaign)){campaign.chapter=expeditionLength(campaign)-1;campaign.cleared=true}else campaign.route=(campaign.expedition.graphVersion>=2?campaign.expedition.nodes[campaign.chapter].find(n=>expeditionNode(campaign.previousRoute)?.next?.includes(n.id)):null)?.id||campaign.expedition.nodes[campaign.chapter][0].id;campaignStatus(campaign.stopMessage||'The party continues its expedition.')}
 function shrineOffering(){if(!campaign?.routeCommitted||campaign.dead)return;if(!campaign?.expedition||campaign.silver<35)return;campaign.silver-=35;campaign.hp=heroStats().hp;campaign.companionHp={};campaignStatus('The shrine restores the party for 35 silver.')}
 
 const expeditionPlaces=['Sunken Ruins','Thornwood Pass','Shattered Causeway','Whispering Fen','Moonlit Barrows','Fallen Watchtower','Ember Hollow','Forsaken Chapel','Cinder Ridge','Obsidian Gate','Stormbreak Keep','Blighted Orchard','Ashfall Basin','Forgotten Reliquary','Lost Catacombs'];
@@ -327,44 +329,47 @@ function setExpeditionNodeType(node,kind,boss=null){
  node.story=kind?stopDescription({kind}):'Your party ventures into '+baseName+'.';
 }
 function makeExpedition(number){
- const names=[...expeditionPlaces],pool=[...chapters[1].enemies,...chapters[2].enemies,...Object.values(alternateEncounters).flatMap(e=>e.enemies),...ambushes.flatMap(e=>e.enemies)];
- const seed=Math.floor(Math.random()*4294967296);let state=seed;const rnd=()=>{state=(Math.imul(state,1664525)+1013904223)>>>0;return state/4294967296};
- const layout=expeditionLayouts[Math.floor(rnd()*expeditionLayouts.length)],nodes=[];
- // Four unique non-boss route types exist: battle, shrine, merchant and cache.
- // Choose 2-4 options, within the requested 2-5 range, without duplicates.
- const patterns={fork:[1,4,4,4,3],hub:[1,4,4,4,3],gauntlet:[1,4,4,4,3],crossroads:[1,4,4,4,3]};
- for(let stage=0;stage<EXPEDITION_LENGTH;stage++){
-  const row=[],lanes=patterns[layout][stage],isBoss=stage===EXPEDITION_LENGTH-1;
-  const kinds=isBoss?[]:stage===0?['battle']:stage===2?['shrine','battle']:['battle'];
-  const extras=isBoss?[]:['shrine','merchant','cache'].filter(k=>!kinds.includes(k));
-  while(extras.length&&kinds.length<lanes){const index=Math.floor(rnd()*extras.length);kinds.push(extras.splice(index,1)[0])}
-  const bossChoices=['warlord','oracle','sentinel'];
-  for(let lane=0;lane<lanes;lane++){
-   const id='exp'+number+'-'+stage+'-'+lane,name=names.length?names.splice(Math.floor(rnd()*names.length),1)[0]:expeditionPlaces[Math.floor(rnd()*expeditionPlaces.length)],walls=[];
-   for(let j=0;j<5;j++){const w=(3+Math.floor(rnd()*3))+','+(1+Math.floor(rnd()*5));if(!walls.includes(w))walls.push(w)}
-   const enemies=[];for(let i=0;i<(stage>2?3:2);i++){const e=pool[Math.floor(rnd()*pool.length)];enemies.push({...e,id:id+'-enemy'+i,x:6+i%2,y:i===2?0:i+1})}
-   // Shared low-complexity entry encounter for every expedition.
-   if(stage===0){enemies.length=0;for(let i=0;i<2;i++)enemies.push({...chapters[1].enemies[i],id:id+'-enemy'+i,x:6+i,y:2+i});}
-   const kind=isBoss?null:kinds[lane]==='battle'?null:kinds[lane];
-   const boss=isBoss?bossChoices.splice(Math.floor(rnd()*bossChoices.length),1)[0]:null;
-   row.push({id,name:stage===0?'Expedition Entrance':kind?stopKinds[kind].label+' · '+name:name,kind,walls,tint:['#455462','#375d49','#66504a','#74473d','#57546a'][Math.floor(rnd()*5)],enemies,xp:400+stage*140,silver:30+stage*16,loot:null,story:kind?stopDescription({kind}):'Your party ventures into '+name+'.',boss})
+ const seed=Math.floor(Math.random()*4294967296);let state=seed;
+ const rnd=()=>{state=(Math.imul(state,1664525)+1013904223)>>>0;return state/4294967296};
+ const pool=[...chapters[1].enemies,...chapters[2].enemies,...Object.values(alternateEncounters).flatMap(e=>e.enemies),...ambushes.flatMap(e=>e.enemies)];
+ const nodes=[],stages=9,counts=[1,3,4,4,5,4,4,3,1];
+ for(let stage=0;stage<stages;stage++){
+  const row=[],count=counts[stage],boss=stage===stages-1;
+  for(let lane=0;lane<count;lane++){
+   const id='exp'+number+'-'+stage+'-'+lane,name=stage===0?'Expedition Entrance':boss?'Final Citadel':expeditionPlaces[Math.floor(rnd()*expeditionPlaces.length)];
+   const walls=[];for(let j=0;j<5;j++){const w=(3+Math.floor(rnd()*3))+','+(1+Math.floor(rnd()*5));if(!walls.includes(w))walls.push(w)}
+   const enemies=[];for(let j=0;j<2+(stage>5?1:0);j++){const e=stage===0?chapters[1].enemies[j]:pool[Math.floor(rnd()*pool.length)];enemies.push({...e,id:id+'-enemy'+j,x:6+j%2,y:2+j})}
+   row.push({id,name,kind:null,boss:boss?['warlord','oracle','sentinel'][Math.floor(rnd()*3)]:null,walls,tint:'#455462',enemies,xp:400+Math.min(stage,4)*140,silver:30+Math.min(stage,4)*16,loot:null,story:'Your party ventures into '+name+'.',next:[]});
   }
-  nodes.push(row)
+  nodes.push(row);
  }
- // Every expedition begins at one entry battle. Later nodes have 2-3
- // connected choices, favoring nearby lanes while retaining a combat option.
- for(let stage=0;stage<nodes.length-1;stage++){
-  const next=nodes[stage+1];
-  for(let lane=0;lane<nodes[stage].length;lane++){
-   const node=nodes[stage][lane],center=nodes[stage].length===1?1:lane;
-   const neighbors=next.map((n,i)=>({n,i,d:Math.abs(i-center)})).sort((a,b)=>a.d-b.d||a.i-b.i);
-   const selected=neighbors.slice(0,stage===0?3:2).map(v=>v.n);
-   const battle=next.find(n=>!n.kind&&!n.boss);
-   if(battle&&!selected.includes(battle))selected.push(battle);
-   node.next=selected.map(n=>n.id);
+ // Construct a spatially coherent network first; assign events afterwards.
+ // Keep a battle reachable from each decision without creating long diagonal edges.
+ for(let stage=0;stage<stages-1;stage++){
+  const row=nodes[stage],next=nodes[stage+1];
+  row.forEach((n,lane)=>{
+   const center=row.length===1?(next.length-1)/2:lane*(next.length-1)/(row.length-1);
+   const near=next.map((v,i)=>({v,i,d:Math.abs(i-center)})).sort((a,b)=>a.d-b.d||a.i-b.i);
+   const take=stage===0?3:2+(rnd()<.25?1:0);
+   n.next=near.slice(0,Math.min(take,next.length)).map(x=>x.v.id);
+  });
+ }
+ for(let stage=1;stage<stages-1;stage++){
+  const row=nodes[stage];
+  // Give each node a distinct event, with more than one battle per stage.
+  const kinds=['battle','battle','shrine','merchant','cache'];
+  if(stage===2)kinds.splice(2,1,'shrine');
+  for(let lane=0;lane<row.length;lane++){
+   const n=row[lane],kind=kinds[(lane+stage)%kinds.length];
+   if(kind!=='battle')setExpeditionNodeType(n,kind);
+  }
+  // Guarantee at least one battle among the actual outgoing neighbors of every parent.
+  for(const parent of nodes[stage-1]){
+   const reachable=row.filter(n=>parent.next.includes(n.id));
+   if(!reachable.some(n=>!n.kind)){const n=reachable[Math.floor(reachable.length/2)];setExpeditionNodeType(n,null)}
   }
  }
- return {number,seed,layout,graphVersion:2,nodes}
+ return {number,seed,layout:'branching',graphVersion:3,nodes};
 }
 function expeditionNode(id){return campaign?.expedition?.nodes.flat().find(n=>n.id===id)}
 const LEVEL_XP_THRESHOLDS=[0,1000,2200,3600,5200,7000,9000,11200,13600,16200];
@@ -375,7 +380,7 @@ function scaleEncounter(source){if(!campaign||!source.enemies?.length)return sou
 // Stable encounter variety: a saved expedition node always generates the same roster.
 function variedExpeditionEnemies(node){
  const hash=Number.isInteger(node.encounterSeed)?node.encounterSeed>>>0:Array.from(node.id).reduce((h,c)=>(Math.imul(h,31)+c.charCodeAt(0))>>>0,2166136261);
- const counts=[1,2,2,3,3,4,5,6,8,10],count=campaign?.expedition?.graphVersion===2&&campaign.chapter===0&&!campaign.ambush?2:counts[hash%counts.length];
+ const counts=[1,2,2,3,3,4,5,6,8,10],count=campaign?.expedition?.graphVersion>=2&&campaign.chapter===0&&!campaign.ambush?2:counts[hash%counts.length];
  const source=node.enemies,positions=[];
  for(let x=8;x>=4;x--)for(let y=0;y<H;y++)if(!(node.walls||[]).includes(x+','+y)&&!(x===4&&y>=5))positions.push({x,y});
  const chosen=[];
@@ -430,16 +435,25 @@ function bossRound(){
 function encounter(){if(campaign.ambush){const base=ambushes[campaign.ambush.index];const node={id:'ambush-'+campaign.ambush.index+'-'+campaign.ambush.route,encounterSeed:campaign.ambush.seed,enemies:base.enemies,walls:campaign.expedition?(expeditionNode(campaign.ambush.route)?.walls||[]):(battlefields[campaign.ambush.route]?.walls||[])};const variety=variedExpeditionEnemies(node);return balanceExpeditionGroup(scaleEncounter({...base,enemies:variety.enemies}),variety.count)}if(campaign.expedition){const n=expeditionNode(campaign.route);if(n.kind)return {title:n.name,story:n.story,xp:0,silver:0,enemies:[]};if(n.boss)return bossEncounter(n);return scoutingEncounter(n)}const id=campaign.route||routes[campaign.chapter][0].id;return scaleEncounter({...(chapters[campaign.chapter]||{}),...(alternateEncounters[id]||{}),title:routes[campaign.chapter].find(n=>n.id===id).name})}
 function availableExpeditionRoutes(){
  const row=campaign.expedition?.nodes?.[campaign.chapter]||[];
- if(campaign.expedition?.graphVersion!==2||campaign.chapter===0)return row;
+ if(campaign.expedition?.graphVersion<2||campaign.chapter===0)return row;
  const previous=expeditionNode(campaign.previousRoute);
  return previous?.next?.length?row.filter(n=>previous.next.includes(n.id)):row;
 }
 function mapScreen(){if(campaign.expedition){
  const exp=campaign.expedition,connected=new Set(availableExpeditionRoutes().map(n=>n.id));
  let h='<div class="expedition-map-wrap">';
- if(campaign.chapter<EXPEDITION_LENGTH-1&&campaign.level<2)h+='<p class="camp-note"><strong>Boss preparation:</strong> Level 2 requires 1,000 XP. You have '+campaign.xp+' XP. Choose ⚔ battle routes to earn XP before the final stage.</p>';
+ if(campaign.chapter<expeditionLength(campaign)-1&&campaign.level<2)h+='<p class="camp-note"><strong>Boss preparation:</strong> Level 2 requires 1,000 XP. You have '+campaign.xp+' XP. Choose ⚔ battle routes to earn XP before the final stage.</p>';
  h+='<div class="expedition-legend"><strong>EXPEDITION</strong><span>⚔ battle</span><span>🛒 merchant</span><span>✦ shrine</span><span>◇ cache</span><span>★ boss</span></div>';
- if(exp.graphVersion===2){
+ if(exp.graphVersion===3){
+  const position=(stage,lane,count)=>({x:6+stage*11,y:count===1?50:12+lane*76/(count-1)});
+  h+='<div class="route-map-v3"><svg class="branch-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">';
+  exp.nodes.forEach((row,stage)=>row.forEach((n,lane)=>{const a=position(stage,lane,row.length);(n.next||[]).forEach(id=>{const next=exp.nodes[stage+1]||[],j=next.findIndex(v=>v.id===id);if(j<0)return;const b=position(stage+1,j,next.length),lit=campaign.previousRoute===n.id&&stage===campaign.chapter-1;h+='<line x1="'+a.x+'" y1="'+a.y+'" x2="'+b.x+'" y2="'+b.y+'" stroke="'+(lit?'#467d53':'#78634d')+'" stroke-width="'+(lit?.65:.36)+'" stroke-dasharray="1 1" opacity="'+(lit?1:.65)+'"/>'})}));
+  h+='</svg>';
+  exp.nodes.forEach((row,stage)=>row.forEach((n,lane)=>{const p=position(stage,lane,row.length),available=stage===campaign.chapter&&connected.has(n.id),selected=campaign.routeCommitted&&campaign.route===n.id,icon=n.boss?'☠':n.kind?stopKinds[n.kind]?.icon:'⚔';
+   h+='<button type="button" class="branch-node '+(available?'reachable ':'')+(selected?'selected ':'')+'" style="left:'+p.x+'%;top:'+p.y+'%" data-route="'+n.id+'" title="'+escapeHTML(n.name)+'" aria-label="'+escapeHTML(n.name)+'" '+(!available||campaign.ambush||campaign.cleared||campaign.dead||(campaign.routeCommitted&&!selected)?'disabled':'')+'>'+icon+'</button>';
+  }));
+  h+='</div>';
+ }else if(exp.graphVersion===2){
   const pos=(stage,lane,count)=>({x:11+stage*19.5,y:count===1?50:count===3?22+lane*28:14+lane*24});
   h+='<div class="branch-map"><svg class="branch-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">';
   exp.nodes.forEach((row,stage)=>row.forEach((n,lane)=>{
@@ -466,7 +480,7 @@ function blast(caster,x,y){for(const t of units.filter(v=>alive(v)&&v.team!==cas
 // Upgrade only unvisited, uncommitted stages in older saved expeditions.
 // A committed current route is left untouched, even when its old layout is imperfect.
 function ensureCombatRoutes(c){
- if(!c?.expedition?.nodes||c.expedition.graphVersion===2)return;
+ if(!c?.expedition?.nodes||c.expedition.graphVersion>=2)return;
  const names=[...expeditionPlaces];
  for(let stage=Math.max(0,c.chapter||0);stage<Math.min(EXPEDITION_LENGTH,c.expedition.nodes.length);stage++){
   const row=c.expedition.nodes[stage];
@@ -511,7 +525,7 @@ function ensureCombatRoutes(c){
   }
  }
 }
-function normalizeCampaign(c){if(!c)return c;c.ironman=c.ironman===true;c.dead=c.dead===true;c.equipment=c.equipment&&typeof c.equipment==='object'?c.equipment:{weapon:null,armor:null,focus:null};if(!Object.hasOwn(c.equipment,'focus'))c.equipment.focus=null;c.party=Array.isArray(c.party)?c.party.filter(id=>companions[id]).slice(0,2):['cleric','rogue'];if(c.party.length!==2||new Set(c.party).size!==2)c.party=['cleric','rogue'];c.levelPicks=c.levelPicks&&typeof c.levelPicks==='object'?c.levelPicks:{};c.npcLevelPicks=c.npcLevelPicks&&typeof c.npcLevelPicks==='object'?c.npcLevelPicks:{};c.feat=typeof c.feat==='string'?c.feat:null;c.extraFeat=c.extraFeat||null;c.explored=Array.isArray(c.explored)?c.explored:[];c.scouted=Array.isArray(c.scouted)?[...new Set(c.scouted.filter(id=>c.expedition?c.expedition.nodes.flat().some(n=>n.id===id):Object.hasOwn(battlefields,id)))]:[];c.ambush=c.ambush&&Number.isInteger(c.ambush.index)&&c.ambush.index>=0&&c.ambush.index<ambushes.length&&typeof c.ambush.route==='string'?c.ambush:null;c.bombs=Number.isInteger(c.bombs)&&c.bombs>=0?c.bombs:0;c.potions=Number.isInteger(c.potions)?Math.max(0,c.potions):2;c.potionCapacity=Number.isInteger(c.potionCapacity)?Math.max(2,c.potionCapacity,c.potions):Math.max(2,c.potions);if(c.expedition){c.routeCommitted=typeof c.routeCommitted==='boolean'?c.routeCommitted:!!(c.explored.includes(c.route)||c.scouted.includes(c.route)||c.ambush||c.chapter===0&&c.expedition.nodes[0]?.length===1&&c.expedition.number===1&&c.levelPicks?.[1]);}c.route=c.expedition?(c.expedition.nodes.flat().some(n=>n.id===c.route)?c.route:c.expedition.nodes[Math.min(c.chapter,EXPEDITION_LENGTH-1)][0].id):(routes[c.chapter]?.some(n=>n.id===c.route)?c.route:routes[Math.min(c.chapter,3)][0].id);ensureCombatRoutes(c);return c;}
+function normalizeCampaign(c){if(!c)return c;c.ironman=c.ironman===true;c.dead=c.dead===true;c.equipment=c.equipment&&typeof c.equipment==='object'?c.equipment:{weapon:null,armor:null,focus:null};if(!Object.hasOwn(c.equipment,'focus'))c.equipment.focus=null;c.party=Array.isArray(c.party)?c.party.filter(id=>companions[id]).slice(0,2):['cleric','rogue'];if(c.party.length!==2||new Set(c.party).size!==2)c.party=['cleric','rogue'];c.levelPicks=c.levelPicks&&typeof c.levelPicks==='object'?c.levelPicks:{};c.npcLevelPicks=c.npcLevelPicks&&typeof c.npcLevelPicks==='object'?c.npcLevelPicks:{};c.feat=typeof c.feat==='string'?c.feat:null;c.extraFeat=c.extraFeat||null;c.explored=Array.isArray(c.explored)?c.explored:[];c.scouted=Array.isArray(c.scouted)?[...new Set(c.scouted.filter(id=>c.expedition?c.expedition.nodes.flat().some(n=>n.id===id):Object.hasOwn(battlefields,id)))]:[];c.ambush=c.ambush&&Number.isInteger(c.ambush.index)&&c.ambush.index>=0&&c.ambush.index<ambushes.length&&typeof c.ambush.route==='string'?c.ambush:null;c.bombs=Number.isInteger(c.bombs)&&c.bombs>=0?c.bombs:0;c.potions=Number.isInteger(c.potions)?Math.max(0,c.potions):2;c.potionCapacity=Number.isInteger(c.potionCapacity)?Math.max(2,c.potionCapacity,c.potions):Math.max(2,c.potions);if(c.expedition){c.routeCommitted=typeof c.routeCommitted==='boolean'?c.routeCommitted:!!(c.explored.includes(c.route)||c.scouted.includes(c.route)||c.ambush||c.chapter===0&&c.expedition.nodes[0]?.length===1&&c.expedition.number===1&&c.levelPicks?.[1]);}c.route=c.expedition?(c.expedition.nodes.flat().some(n=>n.id===c.route)?c.route:c.expedition.nodes[Math.min(c.chapter,expeditionLength(c)-1)][0].id):(routes[c.chapter]?.some(n=>n.id===c.route)?c.route:routes[Math.min(c.chapter,3)][0].id);ensureCombatRoutes(c);return c;}
 function featPicked(id){return campaign?.feat===id||campaign?.extraFeat===id}
 
 function potionHealing(level=campaign?.level||1){const tier=Math.min(5,Math.ceil(level/2));return {tier,dice:2*tier,sides:4,bonus:2*tier,min:4*tier,max:10*tier,average:7*tier}}
@@ -572,7 +586,7 @@ party.querySelectorAll('[data-companion]').forEach(b=>b.addEventListener('click'
 function freshCampaign(){const expedition=makeExpedition(1);return normalizeCampaign({ironman:!!$('ironmanMode')?.checked,dead:false,classId:chosenClass,chapter:0,route:expedition.nodes[0][0].id,expedition,xp:0,level:1,levelPicks:{},silver:0,inventory:[],potions:2,potionCapacity:2,hp:null,companionHp:{},cleared:false});}
 function slotKey(slot){return SLOT_PREFIX+slot}
 function migrateLegacySave(){try{if(localStorage.getItem(SAVE_KEY)&&!localStorage.getItem(slotKey(1)))localStorage.setItem(slotKey(1),localStorage.getItem(SAVE_KEY))}catch(e){console.warn('Legacy save migration unavailable',e)}}
-function validCampaign(raw){try{const c=JSON.parse(raw);return c&&classes[c.classId]&&Number.isInteger(c.chapter)&&c.chapter>=0&&c.chapter<=(c.expedition?EXPEDITION_LENGTH-1:3)&&Array.isArray(c.inventory)?normalizeCampaign(c):null}catch(e){return null}}
+function validCampaign(raw){try{const c=JSON.parse(raw);return c&&classes[c.classId]&&Number.isInteger(c.chapter)&&c.chapter>=0&&c.chapter<=(c.expedition?expeditionLength(c)-1:3)&&Array.isArray(c.inventory)?normalizeCampaign(c):null}catch(e){return null}}
 function saveCampaign(){if(!campaign)return;try{localStorage.setItem(slotKey(activeSlot),JSON.stringify(campaign))}catch(e){console.warn('Campaign save unavailable',e)}if(telemetry.enabled&&telemetry.run)telemetry.persist()}
 function loadCampaign(slot=activeSlot){migrateLegacySave();try{return validCampaign(localStorage.getItem(slotKey(slot)))}catch(e){return null}}
 function renderSaveSlots(){const panel=$('saveSlots');if(!panel)return;panel.innerHTML=Array.from({length:SLOT_COUNT},(_,i)=>{const n=i+1,c=loadCampaign(n),label=c?'Level '+c.level+' '+classes[c.classId].name+' · Expedition '+(c.expedition?.number||1)+(c.ironman?' · IRON MAN':'')+(c.dead?' · ENDED':''):'Empty';return '<button type="button" class="save-slot '+(activeSlot===n?'selected':'')+'" data-slot="'+n+'" aria-pressed="'+(activeSlot===n)+'"><strong>Slot '+n+'</strong><small>'+escapeHTML(label)+'</small></button>'}).join('');panel.querySelectorAll('[data-slot]').forEach(b=>b.addEventListener('click',()=>{activeSlot=Number(b.dataset.slot);updateContinue()}))}
@@ -602,7 +616,7 @@ function showEncounterResult({title,xp=0,silver=0,treasure=null,flask=false,leve
  overlay.querySelector('#encounterResultRewards').innerHTML=(campaign?.dead?'<div class="supply-result-entry">This Iron Man run is permanently over.</div>':'<div class="supply-result-entry">✦ '+xp+' XP</div><div class="supply-result-entry">🪙 '+silver+' silver</div>')+''+(flask?'<div class="supply-result-entry">🔥 1 Alchemist Fire Flask</div>':'')+(treasure?'<div class="supply-result-entry supply-result-rare">✦ '+escapeHTML(treasure)+'</div>':'')+(levelUp?'<div class="supply-result-entry">★ Level up! New improvement available.</div>':'')+(note?'<div class="supply-result-entry">'+escapeHTML(note)+'</div>':'');
  overlay.hidden=false;overlay.style.display='flex';encounterResultOpen=true;overlay.querySelector('#encounterResultContinue').focus();
 }
-function completeEncounter(){if(!campaign||campaign.cleared)return;const ch=encounter();if(campaign.expedition){campaign.xp+=ch.xp;campaign.silver+=ch.silver;const cache=10+roll(11)-1+campaign.chapter*5;campaign.silver+=cache;for(const ally of units.filter(v=>v.team==='ally'&&alive(v))){const recovered=Math.max(1,Math.floor(ally.max*.2));ally.hp=Math.min(ally.max,ally.hp+recovered)}campaign.hp=Math.max(1,units[0].hp);for(const a of units.filter(v=>v.team==='ally'&&v.id!=='hero'))campaign.companionHp[a.id]=Math.max(1,a.hp);const oldLevel=campaign.level;const levelMessage=expeditionLevelUp();const treasure=campaign.ambush?null:awardExpeditionTreasure(campaign.chapter===EXPEDITION_LENGTH-1);const treasureMessage=treasure?' Found equipment: '+treasure+'! Equip it at camp.':'';if(campaign.ambush){const supplies=awardAmbushSupplies();campaign.ambush=null;campaignStatus('Ambush defeated! Earned '+ch.xp+' XP and '+(ch.silver+cache)+' silver, plus recovered supplies: '+supplies.silver+' silver'+(supplies.flask?' and a Fire Flask':'')+(supplies.treasure?', '+supplies.treasure:'')+'.'+levelMessage);showEncounterResult({title:'Ambush Defeated',xp:ch.xp,silver:ch.silver+cache+supplies.silver,flask:supplies.flask,treasure:supplies.treasure,levelUp:campaign.level>oldLevel});return}campaign.previousRoute=campaign.route;campaign.chapter++;campaign.routeCommitted=false;if(campaign.chapter>=EXPEDITION_LENGTH){campaign.chapter=EXPEDITION_LENGTH-1;campaign.cleared=true}else campaign.route=(campaign.expedition.graphVersion===2?campaign.expedition.nodes[campaign.chapter].find(n=>expeditionNode(campaign.previousRoute)?.next?.includes(n.id)):null)?.id||campaign.expedition.nodes[campaign.chapter][0].id;campaignStatus('Victory at '+ch.title+'! Earned '+ch.xp+' XP and '+(ch.silver+cache)+' silver.'+treasureMessage+levelMessage+(campaign.cleared?' Expedition complete! Continue with this party.':' Choose your next route.'));showEncounterResult({title:campaign.cleared?'Expedition Complete!':'Victory!',xp:ch.xp,silver:ch.silver+cache,treasure,levelUp:campaign.level>oldLevel,note:ch.title});return}if(campaign.ambush){campaign.xp+=ch.xp;campaign.silver+=ch.silver;campaign.hp=Math.max(1,units[0].hp);for(const a of units.filter(v=>v.team==='ally'&&v.id!=='hero'))campaign.companionHp[a.id]=Math.max(1,a.hp);const supplies=awardAmbushSupplies();campaign.ambush=null;let levelMessage='';while(campaign.level<3&&campaign.xp>=(campaign.level===1?1000:1500)){campaign.level++;campaign.hp+=8;levelMessage=' You reached level '+campaign.level+'! Select your new feature at camp.'}campaignStatus('Ambush defeated! Earned '+ch.xp+' XP and '+ch.silver+' silver, plus recovered supplies: '+supplies.silver+' silver'+(supplies.flask?' and a Fire Flask':'')+(supplies.treasure?', '+supplies.treasure:'')+'. The main story has not advanced.'+levelMessage);showEncounterResult({title:'Ambush Defeated',xp:ch.xp,silver:ch.silver+supplies.silver,flask:supplies.flask,treasure:supplies.treasure,levelUp:!!levelMessage});return}campaign.xp+=ch.xp;campaign.silver+=ch.silver;campaign.inventory.push(ch.loot);campaign.hp=Math.max(1,units[0].hp);for(const a of units.filter(v=>v.team==='ally'&&v.id!=='hero'))campaign.companionHp[a.id]=Math.max(1,a.hp);let levelMessage='';while(campaign.level<3&&campaign.xp>=(campaign.level===1?1000:1500)){campaign.level++;campaign.hp+=8;levelMessage=' LEVEL UP! You reached level '+campaign.level+'. Choose a new class feature at camp to continue.'}campaign.chapter++;if(campaign.chapter>=routes.length){campaign.chapter=routes.length-1;campaign.cleared=true;}else campaign.route=routes[campaign.chapter][0].id;campaignStatus('Victory at '+ch.title+'! Earned '+ch.xp+' XP, '+ch.silver+' silver, and '+ch.loot+'.'+levelMessage+(campaign.cleared?' The Ember Road is safe for now.':' Next: '+encounter().story));showEncounterResult({title:campaign.cleared?'Campaign Complete!':'Victory!',xp:ch.xp,silver:ch.silver,treasure:ch.loot,levelUp:!!levelMessage,note:ch.title});}
+function completeEncounter(){if(!campaign||campaign.cleared)return;const ch=encounter();if(campaign.expedition){campaign.xp+=ch.xp;campaign.silver+=ch.silver;const cache=10+roll(11)-1+campaign.chapter*5;campaign.silver+=cache;for(const ally of units.filter(v=>v.team==='ally'&&alive(v))){const recovered=Math.max(1,Math.floor(ally.max*.2));ally.hp=Math.min(ally.max,ally.hp+recovered)}campaign.hp=Math.max(1,units[0].hp);for(const a of units.filter(v=>v.team==='ally'&&v.id!=='hero'))campaign.companionHp[a.id]=Math.max(1,a.hp);const oldLevel=campaign.level;const levelMessage=expeditionLevelUp();const treasure=campaign.ambush?null:awardExpeditionTreasure(campaign.chapter===expeditionLength(campaign)-1);const treasureMessage=treasure?' Found equipment: '+treasure+'! Equip it at camp.':'';if(campaign.ambush){const supplies=awardAmbushSupplies();campaign.ambush=null;campaignStatus('Ambush defeated! Earned '+ch.xp+' XP and '+(ch.silver+cache)+' silver, plus recovered supplies: '+supplies.silver+' silver'+(supplies.flask?' and a Fire Flask':'')+(supplies.treasure?', '+supplies.treasure:'')+'.'+levelMessage);showEncounterResult({title:'Ambush Defeated',xp:ch.xp,silver:ch.silver+cache+supplies.silver,flask:supplies.flask,treasure:supplies.treasure,levelUp:campaign.level>oldLevel});return}campaign.previousRoute=campaign.route;campaign.chapter++;campaign.routeCommitted=false;if(campaign.chapter>=expeditionLength(campaign)){campaign.chapter=expeditionLength(campaign)-1;campaign.cleared=true}else campaign.route=(campaign.expedition.graphVersion>=2?campaign.expedition.nodes[campaign.chapter].find(n=>expeditionNode(campaign.previousRoute)?.next?.includes(n.id)):null)?.id||campaign.expedition.nodes[campaign.chapter][0].id;campaignStatus('Victory at '+ch.title+'! Earned '+ch.xp+' XP and '+(ch.silver+cache)+' silver.'+treasureMessage+levelMessage+(campaign.cleared?' Expedition complete! Continue with this party.':' Choose your next route.'));showEncounterResult({title:campaign.cleared?'Expedition Complete!':'Victory!',xp:ch.xp,silver:ch.silver+cache,treasure,levelUp:campaign.level>oldLevel,note:ch.title});return}if(campaign.ambush){campaign.xp+=ch.xp;campaign.silver+=ch.silver;campaign.hp=Math.max(1,units[0].hp);for(const a of units.filter(v=>v.team==='ally'&&v.id!=='hero'))campaign.companionHp[a.id]=Math.max(1,a.hp);const supplies=awardAmbushSupplies();campaign.ambush=null;let levelMessage='';while(campaign.level<3&&campaign.xp>=(campaign.level===1?1000:1500)){campaign.level++;campaign.hp+=8;levelMessage=' You reached level '+campaign.level+'! Select your new feature at camp.'}campaignStatus('Ambush defeated! Earned '+ch.xp+' XP and '+ch.silver+' silver, plus recovered supplies: '+supplies.silver+' silver'+(supplies.flask?' and a Fire Flask':'')+(supplies.treasure?', '+supplies.treasure:'')+'. The main story has not advanced.'+levelMessage);showEncounterResult({title:'Ambush Defeated',xp:ch.xp,silver:ch.silver+supplies.silver,flask:supplies.flask,treasure:supplies.treasure,levelUp:!!levelMessage});return}campaign.xp+=ch.xp;campaign.silver+=ch.silver;campaign.inventory.push(ch.loot);campaign.hp=Math.max(1,units[0].hp);for(const a of units.filter(v=>v.team==='ally'&&v.id!=='hero'))campaign.companionHp[a.id]=Math.max(1,a.hp);let levelMessage='';while(campaign.level<3&&campaign.xp>=(campaign.level===1?1000:1500)){campaign.level++;campaign.hp+=8;levelMessage=' LEVEL UP! You reached level '+campaign.level+'. Choose a new class feature at camp to continue.'}campaign.chapter++;if(campaign.chapter>=routes.length){campaign.chapter=routes.length-1;campaign.cleared=true;}else campaign.route=routes[campaign.chapter][0].id;campaignStatus('Victory at '+ch.title+'! Earned '+ch.xp+' XP, '+ch.silver+' silver, and '+ch.loot+'.'+levelMessage+(campaign.cleared?' The Ember Road is safe for now.':' Next: '+encounter().story));showEncounterResult({title:campaign.cleared?'Campaign Complete!':'Victory!',xp:ch.xp,silver:ch.silver,treasure:ch.loot,levelUp:!!levelMessage,note:ch.title});}
 function failEncounter(){const wasAmbush=!!campaign.ambush;if(campaign.ambush)campaign.ambush=null;if(campaign.ironman){campaign.dead=true;campaign.hp=0;campaign.companionHp={};campaignStatus('Iron Man run ended. Your party was defeated. This save can no longer continue.');showEncounterResult({title:'Iron Man — Campaign Ended',note:'Your party has fallen. This campaign is permanently over.'});return}campaign.hp=null;campaign.companionHp={};campaignStatus('Your party was defeated and retreated to camp. No loot or XP was awarded.'+(wasAmbush?' The ambush has ended.':' You may retry this encounter.')+'');showEncounterResult({title:'Party Defeated',note:'No rewards earned. Your party retreated to camp.'})}
 function restAvailable(){if(!campaign||campaign.dead||campaign.cleared||campaign.ambush||!campaign.routeCommitted)return false;return ['shrine','cache'].includes(expeditionNode(campaign.route)?.kind)&&!campaign.visitedStops?.includes(campaign.route)}
 function partyNeedsCampHealing(){if(!campaign)return false;const hero=heroStats();if((campaign.hp??hero.hp)<hero.hp)return true;return campaign.party.some(id=>{const c=companions[id],max=c.hp+(campaign.level-1)*7+npcPickBonus(id,'hp');return (campaign.companionHp[id]??max)<max})}
