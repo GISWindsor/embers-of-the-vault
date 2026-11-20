@@ -340,7 +340,7 @@ function makeExpedition(number){
   while(extras.length&&kinds.length<lanes){const index=Math.floor(rnd()*extras.length);kinds.push(extras.splice(index,1)[0])}
   const bossChoices=['warlord','oracle','sentinel'];
   for(let lane=0;lane<lanes;lane++){
-   const id='exp'+number+'-'+stage+'-'+lane,name=names.splice(Math.floor(rnd()*names.length),1)[0],walls=[];
+   const id='exp'+number+'-'+stage+'-'+lane,name=names.length?names.splice(Math.floor(rnd()*names.length),1)[0]:expeditionPlaces[Math.floor(rnd()*expeditionPlaces.length)],walls=[];
    for(let j=0;j<5;j++){const w=(3+Math.floor(rnd()*3))+','+(1+Math.floor(rnd()*5));if(!walls.includes(w))walls.push(w)}
    const enemies=[];for(let i=0;i<(stage>2?3:2);i++){const e=pool[Math.floor(rnd()*pool.length)];enemies.push({...e,id:id+'-enemy'+i,x:6+i%2,y:i===2?0:i+1})}
    // Shared low-complexity entry encounter for every expedition.
@@ -440,7 +440,7 @@ function mapScreen(){if(campaign.expedition){
  if(campaign.chapter<EXPEDITION_LENGTH-1&&campaign.level<2)h+='<p class="camp-note"><strong>Boss preparation:</strong> Level 2 requires 1,000 XP. You have '+campaign.xp+' XP. Choose ⚔ battle routes to earn XP before the final stage.</p>';
  h+='<div class="expedition-legend"><strong>EXPEDITION</strong><span>⚔ battle</span><span>🛒 merchant</span><span>✦ shrine</span><span>◇ cache</span><span>★ boss</span></div>';
  if(exp.graphVersion===2){
-  const pos=(stage,lane,count)=>({x:10+stage*20,y:count===1?50:count===3?22+lane*28:14+lane*24});
+  const pos=(stage,lane,count)=>({x:11+stage*19.5,y:count===1?50:count===3?22+lane*28:14+lane*24});
   h+='<div class="branch-map"><svg class="branch-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">';
   exp.nodes.forEach((row,stage)=>row.forEach((n,lane)=>{
    if(!n.next)return;
