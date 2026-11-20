@@ -71,6 +71,10 @@
     {
       "name": "fix/iphone-world-map-scroll",
       "slug": "fix--iphone-world-map-scroll"
+    },
+    {
+      "name": "testing/balance-telemetry",
+      "slug": "testing--balance-telemetry"
     }
   ]
 }
