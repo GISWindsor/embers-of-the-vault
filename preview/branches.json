@@ -57,6 +57,10 @@
       "slug": "feature--scouting-budget-persistent-intel"
     },
     {
+      "name": "feature/shared-endurance-balance",
+      "slug": "feature--shared-endurance-balance"
+    },
+    {
       "name": "feature/supply-search-ambush",
       "slug": "feature--supply-search-ambush"
     },
@@ -67,6 +71,10 @@
     {
       "name": "fix/iphone-world-map-scroll",
       "slug": "fix--iphone-world-map-scroll"
+    },
+    {
+      "name": "testing/balance-telemetry",
+      "slug": "testing--balance-telemetry"
     }
   ]
 }
