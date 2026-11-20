@@ -318,27 +318,33 @@ function visitExpeditionStop(){closeMerchantModal();if(!campaign?.routeCommitted
 function shrineOffering(){if(!campaign?.routeCommitted||campaign.dead)return;if(!campaign?.expedition||campaign.silver<35)return;campaign.silver-=35;campaign.hp=heroStats().hp;campaign.companionHp={};campaignStatus('The shrine restores the party for 35 silver.')}
 
 const expeditionPlaces=['Sunken Ruins','Thornwood Pass','Shattered Causeway','Whispering Fen','Moonlit Barrows','Fallen Watchtower','Ember Hollow','Forsaken Chapel','Cinder Ridge','Obsidian Gate','Stormbreak Keep','Blighted Orchard','Ashfall Basin','Forgotten Reliquary','Lost Catacombs'];
+function setExpeditionNodeType(node,kind,boss=null){
+ const baseName=node.name.replace(/^(Traveling Merchant|Ancient Shrine|Hidden Cache) · /,'');
+ node.kind=kind;
+ node.boss=boss;
+ node.name=kind?stopKinds[kind].label+' · '+baseName:baseName;
+ node.story=kind?stopDescription({kind}):'Your party ventures into '+baseName+'.';
+}
 function makeExpedition(number){
  const names=[...expeditionPlaces],pool=[...chapters[1].enemies,...chapters[2].enemies,...Object.values(alternateEncounters).flatMap(e=>e.enemies),...ambushes.flatMap(e=>e.enemies)];
  const seed=Math.floor(Math.random()*4294967296);let state=seed;const rnd=()=>{state=(Math.imul(state,1664525)+1013904223)>>>0;return state/4294967296};
  const layout=expeditionLayouts[Math.floor(rnd()*expeditionLayouts.length)],nodes=[];
- const patterns={fork:[1,2,3,2,1],hub:[1,3,2,3,1],gauntlet:[1,1,2,1,1],crossroads:[1,3,3,2,1]};
+ // Four unique non-boss route types exist: battle, shrine, merchant and cache.
+ // Choose 2-4 options, within the requested 2-5 range, without duplicates.
+ const patterns={fork:[2,3,4,3,2],hub:[2,4,3,4,3],gauntlet:[2,2,3,2,2],crossroads:[3,4,4,3,3]};
  for(let stage=0;stage<EXPEDITION_LENGTH;stage++){
-  const row=[],lanes=patterns[layout][stage];
+  const row=[],lanes=patterns[layout][stage],isBoss=stage===EXPEDITION_LENGTH-1;
+  const kinds=isBoss?[]:stage===2?['shrine','battle']:['battle'];
+  const extras=isBoss?[]:['shrine','merchant','cache'].filter(k=>!kinds.includes(k));
+  while(extras.length&&kinds.length<lanes){const index=Math.floor(rnd()*extras.length);kinds.push(extras.splice(index,1)[0])}
+  const bossChoices=['warlord','oracle','sentinel'];
   for(let lane=0;lane<lanes;lane++){
    const id='exp'+number+'-'+stage+'-'+lane,name=names.splice(Math.floor(rnd()*names.length),1)[0],walls=[];
    for(let j=0;j<5;j++){const w=(3+Math.floor(rnd()*3))+','+(1+Math.floor(rnd()*5));if(!walls.includes(w))walls.push(w)}
    const enemies=[];for(let i=0;i<(stage>2?3:2);i++){const e=pool[Math.floor(rnd()*pool.length)];enemies.push({...e,id:id+'-enemy'+i,x:6+i%2,y:i===2?0:i+1})}
-   const kind=stage===EXPEDITION_LENGTH-1?null:stage===2&&lane===0?'shrine':stage>0&&rnd()<(layout==='gauntlet'?.45:.60)?['merchant','shrine','cache'][Math.floor(rnd()*3)]:null;
-   row.push({id,name:kind?stopKinds[kind].label+' · '+name:name,kind,walls,tint:['#455462','#375d49','#66504a','#74473d','#57546a'][Math.floor(rnd()*5)],enemies,xp:400+stage*140,silver:30+stage*16,loot:null,story:kind?stopDescription({kind}):'Your party ventures into '+name+'.',boss:stage===EXPEDITION_LENGTH-1?['warlord','oracle','sentinel'][Math.floor(rnd()*3)]:null})
-  }
-  // Never generate a pre-boss stage with only noncombat stops.
-  // Keep existing shrine/merchant/cache choices where other lanes allow combat.
-  if(stage<EXPEDITION_LENGTH-1&&!row.some(n=>!n.kind)){
-   const node=row[row.length-1];
-   node.kind=null;
-   node.name=node.name.replace(/^(Traveling Merchant|Ancient Shrine|Hidden Cache) · /,'');
-   node.story='Your party ventures into '+node.name+'.';
+   const kind=isBoss?null:kinds[lane]==='battle'?null:kinds[lane];
+   const boss=isBoss?bossChoices.splice(Math.floor(rnd()*bossChoices.length),1)[0]:null;
+   row.push({id,name:kind?stopKinds[kind].label+' · '+name:name,kind,walls,tint:['#455462','#375d49','#66504a','#74473d','#57546a'][Math.floor(rnd()*5)],enemies,xp:400+stage*140,silver:30+stage*16,loot:null,story:kind?stopDescription({kind}):'Your party ventures into '+name+'.',boss})
   }
   nodes.push(row)
  }
@@ -410,16 +416,52 @@ function areaDistance(a,b){return Math.hypot(a.x-b.x,a.y-b.y)}
 function blast(caster,x,y){for(const t of units.filter(v=>alive(v)&&v.team!==caster.team&&areaDistance(v,{x,y})<=1)){if(finished)break;magicAttack(caster,t,'Fire Burst',()=>damageDice(6,2,3+Math.floor((campaign.level-1)/2)+(caster.spellDamage||0)))}}
 
 // Repair legacy expeditions without touching visited or committed routes.
+// Upgrade only unvisited, uncommitted stages in older saved expeditions.
+// A committed current route is left untouched, even when its old layout is imperfect.
 function ensureCombatRoutes(c){
  if(!c?.expedition?.nodes)return;
- for(let stage=Math.max(0,c.chapter||0);stage<Math.min(EXPEDITION_LENGTH-1,c.expedition.nodes.length);stage++){
+ const names=[...expeditionPlaces];
+ for(let stage=Math.max(0,c.chapter||0);stage<Math.min(EXPEDITION_LENGTH,c.expedition.nodes.length);stage++){
   const row=c.expedition.nodes[stage];
-  if(!Array.isArray(row)||!row.length||row.some(n=>!n.kind))continue;
-  const candidate=[...row].reverse().find(n=>!(stage===c.chapter&&c.routeCommitted&&n.id===c.route)&&!(c.explored||[]).includes(n.id)&&!(c.scouted||[]).includes(n.id)&&!(c.visitedStops||[]).includes(n.id));
-  if(!candidate)continue;
-  candidate.name=candidate.name.replace(/^(Traveling Merchant|Ancient Shrine|Hidden Cache) · /,'');
-  candidate.kind=null;
-  candidate.story='Your party ventures into '+candidate.name+'.';
+  if(!Array.isArray(row)||!row.length)continue;
+  if(stage===c.chapter&&c.routeCommitted)continue;
+  if(row.some(n=>(c.explored||[]).includes(n.id)||(c.scouted||[]).includes(n.id)||(c.visitedStops||[]).includes(n.id)))continue;
+  const isBoss=stage===EXPEDITION_LENGTH-1;
+  const targetCount=isBoss?Math.max(2,Math.min(3,row.length)):Math.max(2,Math.min(4,row.length));
+  const used=new Set();
+  for(let i=0;i<row.length;i++){
+   const node=row[i];
+   if(isBoss){
+    const available=['warlord','oracle','sentinel'].filter(v=>!used.has(v));
+    const boss=available.includes(node.boss)?node.boss:available[0];
+    node.boss=boss;node.kind=null;used.add(boss);
+   }else{
+    const desired=stage===2&&i===0?'shrine':stage===2&&i===1?'battle':i===0?'battle':null;
+    const current=node.kind||'battle';
+    const type=desired||(!used.has(current)&&!(stage===2&&current==='shrine'&&used.has('shrine'))?current:['merchant','cache','shrine','battle'].find(v=>!used.has(v)&&!(stage===2&&v==='shrine'&&i!==0)));
+    setExpeditionNodeType(node,type==='battle'?null:type);
+    used.add(type);
+   }
+  }
+  // Extend old one-route stages with distinct, independently generated choices.
+  while(row.length<targetCount){
+   const template=row[0],lane=row.length,id='exp'+c.expedition.number+'-'+stage+'-'+lane;
+   const name=names[(stage*4+lane)%names.length];
+   const node={...template,id,name,walls:[...(template.walls||[])],enemies:(template.enemies||[]).map((e,i)=>({...e,id:id+'-enemy'+i})),encounterSeed:undefined};
+   if(isBoss){
+    const boss=['warlord','oracle','sentinel'].find(v=>!used.has(v));
+    setExpeditionNodeType(node,null,boss);used.add(boss);
+   }else{
+    const type=stage===2&&!used.has('battle')?'battle':['battle','merchant','cache','shrine'].find(v=>!used.has(v));
+    setExpeditionNodeType(node,type==='battle'?null:type);used.add(type);
+   }
+   row.push(node);
+  }
+  // A prior single-route stage 3 shrine must have a separate battle route.
+  if(!isBoss&&!row.some(n=>!n.kind)){
+   const candidate=row.find(n=>stage!==2||n.kind!=='shrine')||row[row.length-1];
+   setExpeditionNodeType(candidate,null);
+  }
  }
 }
 function normalizeCampaign(c){if(!c)return c;c.ironman=c.ironman===true;c.dead=c.dead===true;c.equipment=c.equipment&&typeof c.equipment==='object'?c.equipment:{weapon:null,armor:null,focus:null};if(!Object.hasOwn(c.equipment,'focus'))c.equipment.focus=null;c.party=Array.isArray(c.party)?c.party.filter(id=>companions[id]).slice(0,2):['cleric','rogue'];if(c.party.length!==2||new Set(c.party).size!==2)c.party=['cleric','rogue'];c.levelPicks=c.levelPicks&&typeof c.levelPicks==='object'?c.levelPicks:{};c.npcLevelPicks=c.npcLevelPicks&&typeof c.npcLevelPicks==='object'?c.npcLevelPicks:{};c.feat=typeof c.feat==='string'?c.feat:null;c.extraFeat=c.extraFeat||null;c.explored=Array.isArray(c.explored)?c.explored:[];c.scouted=Array.isArray(c.scouted)?[...new Set(c.scouted.filter(id=>c.expedition?c.expedition.nodes.flat().some(n=>n.id===id):Object.hasOwn(battlefields,id)))]:[];c.ambush=c.ambush&&Number.isInteger(c.ambush.index)&&c.ambush.index>=0&&c.ambush.index<ambushes.length&&typeof c.ambush.route==='string'?c.ambush:null;c.bombs=Number.isInteger(c.bombs)&&c.bombs>=0?c.bombs:0;c.potions=Number.isInteger(c.potions)?Math.max(0,c.potions):2;c.potionCapacity=Number.isInteger(c.potionCapacity)?Math.max(2,c.potionCapacity,c.potions):Math.max(2,c.potions);if(c.expedition){c.routeCommitted=typeof c.routeCommitted==='boolean'?c.routeCommitted:!!(c.explored.includes(c.route)||c.scouted.includes(c.route)||c.ambush||c.chapter===0&&c.expedition.nodes[0]?.length===1&&c.expedition.number===1&&c.levelPicks?.[1]);}c.route=c.expedition?(c.expedition.nodes.flat().some(n=>n.id===c.route)?c.route:c.expedition.nodes[Math.min(c.chapter,EXPEDITION_LENGTH-1)][0].id):(routes[c.chapter]?.some(n=>n.id===c.route)?c.route:routes[Math.min(c.chapter,3)][0].id);ensureCombatRoutes(c);return c;}
