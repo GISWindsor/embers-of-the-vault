@@ -271,19 +271,17 @@ function npcChoices(id){return [3,5,7,9].map(level=>{const option=choicesAt(leve
 function developCompanions(){if(!campaign)return;campaign.npcLevelPicks=campaign.npcLevelPicks||{};let changed=false;for(const id of Object.keys(companions)){const picks=campaign.npcLevelPicks[id]||{};campaign.npcLevelPicks[id]=picks;for(let level=1;level<=campaign.level;level++){if(picks[level]&&choicesAt(level,id).some(o=>o.id===picks[level]))continue;const options=choicesAt(level,id);if(!options.length)continue;const choice=options[Math.floor(Math.random()*options.length)];picks[level]=choice.id;changed=true}}if(changed)saveCampaign()}
 function applyTechniqueACDebuff(actor,target,name){
   if(name!=='Dirty Trick'&&name!=='Exposing Strike')return;
-  const amount=Math.min(name==='Dirty Trick'?1:2,Math.max(0,target.ac-10));
-  if(!amount)return;
-  target.ac-=amount;
-  target.acDebuff=(target.acDebuff||0)+amount;
-  telemetry.metric('debuffsApplied',actor,1,target,{ability:name,acPenalty:amount});
-  say(escapeHTML(target.name)+' loses '+amount+' AC for this encounter.');
+  applySpellPenalty(actor,target,name,'ac',name==='Dirty Trick'?1:2);
 }
 function applySpellPenalty(caster,target,name,stat,penalty){
+  if(!alive(target))return;
+  const applied=target.encounterPenalties??=new Set();
+  if(applied.has(name))return;
   const floor=stat==='ac'?10:0;
-  const after=Math.max(floor,target[stat]-penalty);
-  const amount=target[stat]-after;
-  if(amount<=0)return;
-  target[stat]=after;
+  const amount=Math.min(penalty,Math.max(0,target[stat]-floor));
+  if(!amount)return;
+  applied.add(name);
+  target[stat]-=amount;
   const badge=stat==='ac'?'acDebuff':'attackDebuff';
   target[badge]=(target[badge]||0)+amount;
   const key=stat==='ac'?'acPenalty':'attackPenalty';
@@ -294,8 +292,10 @@ function applyEnemyStatus(actor,target,ability,status){
   if(!alive(target))return;
   const effects=target.statusSources??={slow:[],bleed:[],burn:[]};
   const sources=effects[status];
-  const reapplied=sources.some(effect=>effect.source===actor&&effect.ability===ability);
-  if(!reapplied)sources.push({source:actor,ability});
+  const existing=sources.find(effect=>effect.ability===ability);
+  const reapplied=Boolean(existing);
+  if(existing)existing.source=actor;
+  else sources.push({source:actor,ability});
   const detail=status==='slow'?{strideLimit:strideLimit(target,4)}:{damageDice:'1d4',recoveryDC:11};
   telemetry.metric('debuffsApplied',actor,1,target,{ability,status,reapplied,...detail});
   say(escapeHTML(target.name)+(status==='slow'?' is slowed: next Stride is limited to '+detail.strideLimit+' tiles.':' suffers persistent 1d4 '+status+'.'));
@@ -335,7 +335,9 @@ function grantTemporaryHp(source,target,amount,ability){
   telemetry.metric('temporaryHpGranted',source,amount,target,{ability});
 }
 function refreshTemporaryHp(source,target,amount,ability){
-  const remaining=(target.tempHpGrants||[]).filter(grant=>grant.source===source.id&&grant.ability===ability).reduce((sum,grant)=>sum+grant.amount,0);
+  const grants=(target.tempHpGrants||[]).filter(grant=>grant.ability===ability);
+  const remaining=grants.reduce((sum,grant)=>sum+grant.amount,0);
+  for(const grant of grants)grant.source=source.id;
   grantTemporaryHp(source,target,Math.max(0,amount-remaining),ability);
 }
 function absorbTemporaryHp(attacker,target,damage,spell){
@@ -359,8 +361,8 @@ function absorbTemporaryHp(attacker,target,damage,spell){
 }
 function refreshCombatBuff(target,field,source,ability){
   const effects=target[field]??=[];
-  const existing=effects.find(effect=>effect.source===source.id);
-  if(existing)existing.rounds=2;
+  const existing=effects.find(effect=>effect.ability===ability);
+  if(existing){existing.rounds=2;existing.source=source.id;}
   else effects.push({source:source.id,ability,amount:2,rounds:2});
 }
 function attackBuff(unit){
@@ -393,9 +395,12 @@ function recordDefenseOutcome(attacker,target,die,total,ac,degree,kind,spell){
   telemetry.metric(metric,target,1,target,{attacker:attacker.id,kind,spell,contributors:contributors.length?contributors:bonuses});
 }
 function shieldbreakerPenalty(target){
-  return 2*units.filter(source=>alive(source)&&source.shieldbreakerTarget===target.id).length;
+  return units.some(source=>alive(source)&&source.shieldbreakerTarget===target.id)?2:0;
 }
 function applyShieldbreaker(attacker,target){
+  for(const unit of units){
+    if(unit.shieldbreakerTarget===target.id)unit.shieldbreakerTarget=null;
+  }
   attacker.shieldbreakerTarget=target.id;
   telemetry.metric('debuffsApplied',attacker,1,target,{ability:'Shieldbreaker',acPenalty:2,duration:'untilSourceNextTurn'});
   say(escapeHTML(target.name)+' loses 2 AC until '+escapeHTML(attacker.name.split(' •')[0])+'’s next turn.');
@@ -413,7 +418,7 @@ if(name==='Sunfire'){const ally=units.filter(v=>v.team===caster.team&&alive(v)).
 if(name==='Storm Lance'){const other=units.find(v=>v!==target&&v.team===target.team&&alive(v)&&meleeAdjacent(v,target));if(other){const n=roll(6);other.hp=Math.max(0,other.hp-n);say('Lightning arcs to '+escapeHTML(other.name)+' for '+n+' damage.');checkEnd()}}
 }
 function castAreaSpell(caster,x,y,name){const radius=name==='Flame Burst'?2:name==='Thunderstorm'?3:name==='Meteor Shower'?4:5;const diceCount=name==='Arcane Cataclysm'?4:name==='Meteor Shower'?3:2;const targets=units.filter(v=>alive(v)&&v.team!==caster.team&&areaDistance(v,{x,y})<=radius);say('<strong>'+escapeHTML(name)+'</strong> affects '+targets.length+' enemy targets within '+radius+' tiles.');for(const target of targets){if(finished)break;magicAttack(caster,target,name,()=>damageDice(6,diceCount,campaign.level+(caster.spellDamage||0)))}}
-function castSupportSpell(caster,target,name){const allies=units.filter(v=>v.team===caster.team&&alive(v));if(name==='Renewing Prayer'){const dice=damageDice(8,2,campaign.level);const restored=restoreHp(caster,target,dice.total,name);grantTemporaryHp(caster,target,3,name);say('<strong>Renewing Prayer</strong> heals '+escapeHTML(target.name)+': '+dice.expression+' = '+restored+' HP, plus 3 temporary HP.')}
+function castSupportSpell(caster,target,name){const allies=units.filter(v=>v.team===caster.team&&alive(v));if(name==='Renewing Prayer'){const dice=damageDice(8,2,campaign.level);const restored=restoreHp(caster,target,dice.total,name);refreshTemporaryHp(caster,target,3,name);say('<strong>Renewing Prayer</strong> heals '+escapeHTML(target.name)+': '+dice.expression+' = '+restored+' HP, plus 3 temporary HP.')}
 else if(name==='Blessing of Valor'){
   for(const ally of allies){
     refreshCombatBuff(ally,'valorSources',caster,name);
