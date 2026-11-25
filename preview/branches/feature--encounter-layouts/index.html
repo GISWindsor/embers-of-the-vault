@@ -89,7 +89,7 @@ const telemetry={
  newRun(){if(!this.enabled)return;this.run={schemaVersion:this.version,createdAt:new Date().toISOString(),runId:'run-'+Date.now()+'-'+Math.random().toString(36).slice(2,8),slot:activeSlot,build:'feature/encounter-layouts',classId:campaign?.classId,mode:campaign?.ironman?'ironman':'normal',start:this.snapshot(false),levels:[],attempts:[],events:[]};this.attempt=null;this.previous=null;this.run.levels.push({time:new Date().toISOString(),reason:'new-campaign',...this.snapshot(false)});this.persist()},
  ensure(){if(!this.enabled||!campaign)return false;if(!this.run||this.run.slot!==activeSlot||this.run.classId!==campaign.classId)this.newRun();return !!this.run},
  checkpoint(reason){if(!this.enabled||!this.run)return;const snap=this.snapshot();if(snap){this.run.levels.push({time:new Date().toISOString(),reason,...snap});this.persist()}},
- start(ch){if(!this.ensure())return;if(this.attempt&&!this.attempt.result){this.attempt.result='interrupted';this.attempt.end=this.snapshot()}const snap=this.snapshot();this.attempt={id:this.run.attempts.length+1,startedAt:new Date().toISOString(),buildRevision:"sha256:d727e45124b6a3b4a26abfe31891a3512165038a2197cf48e4f0df7729fef88e",encounterSeed:campaign.ambush?.seed??encounterSeedFor(expeditionNode(campaign.route)),expedition:snap.expedition,stage:snap.stage,route:snap.route,level:snap.level,encounter:ch?.title||null,boss:ch?.bossKind||null,mapLayout:activeEncounterLayout?.name||null,initialEnemies:(typeof units!=='undefined'?units:[]).filter(x=>x.team==='enemy').map(x=>({id:x.id,name:x.name,hp:x.hp,ac:x.ac,attack:x.attack,damage:x.damage})),start:snap,rounds:0,events:[],totals:{damageDealt:{},damageReceived:{},healing:{},criticalHits:{},knockouts:{},healingProvided:{},healingReceived:{},overhealing:{},temporaryHpGranted:{},temporaryHpAbsorbed:{},damageReduced:{},buffsApplied:{},buffRounds:{},buffAssistedHits:{},buffAssistedDamage:{},defensePreventedHits:{},damagePreventedEstimate:{},debuffsApplied:{},attacksAttempted:{},attacksHit:{},attacksMissed:{}}};this.run.attempts.push(this.attempt);this.previous=this.health();this.persist()},
+ start(ch){if(!this.ensure())return;if(this.attempt&&!this.attempt.result){this.attempt.result='interrupted';this.attempt.end=this.snapshot()}const snap=this.snapshot();this.attempt={id:this.run.attempts.length+1,startedAt:new Date().toISOString(),buildRevision:"sha256:319c775ac1c20ff1ad83341e3344dcf5e42f6e798884c028957ca81486fb4684",encounterSeed:campaign.ambush?.seed??encounterSeedFor(expeditionNode(campaign.route)),expedition:snap.expedition,stage:snap.stage,route:snap.route,level:snap.level,encounter:ch?.title||null,boss:ch?.bossKind||null,mapLayout:activeEncounterLayout?.name||null,initialEnemies:(typeof units!=='undefined'?units:[]).filter(x=>x.team==='enemy').map(x=>({id:x.id,name:x.name,hp:x.hp,ac:x.ac,attack:x.attack,damage:x.damage})),start:snap,rounds:0,events:[],totals:{damageDealt:{},damageReceived:{},healing:{},criticalHits:{},knockouts:{},healingProvided:{},healingReceived:{},overhealing:{},temporaryHpGranted:{},temporaryHpAbsorbed:{},damageReduced:{},buffsApplied:{},buffRounds:{},buffAssistedHits:{},buffAssistedDamage:{},defensePreventedHits:{},damagePreventedEstimate:{},debuffsApplied:{},attacksAttempted:{},attacksHit:{},attacksMissed:{}}};this.run.attempts.push(this.attempt);this.previous=this.health();this.persist()},
  metric(name,source,amount=1,target=null,detail=null){if(!this.enabled||!this.attempt||this.attempt.result||!amount)return;const key=source?.id||source||'unknown',totals=this.attempt.totals;if(!totals[name])totals[name]={};totals[name][key]=(totals[name][key]||0)+amount;this.attempt.events.push({round:typeof round==='number'?round:null,actor:key,metric:name,amount,target:target?.id||target||null,detail});},
  health(){return (typeof units!=='undefined'?units:[]).map(x=>({id:x.id,name:x.name,team:x.team,hp:x.hp,max:x.max})).reduce((o,x)=>(o[x.id]=x,o),{})},
  log(html,attribution){if(!this.enabled||!this.attempt||this.attempt.result)return;const text=String(html).replace(/<[^>]*>/g,' ').replace(/&[^;]+;/g,' ').replace(/\\s+/g,' ').trim();const healthNow=this.health(),changes=[],actorId=typeof current==='function'?current()?.id:null;for(const [id,u] of Object.entries(healthNow)){const old=this.previous?.[id];if(!old)continue;const delta=u.hp-old.hp;if(delta!==0){const type=delta<0?'damage':'healing';const amount=Math.abs(delta);changes.push({id,name:u.name,team:u.team,type,amount});const key=attribution?.source?.id||actorId||'unknown';
@@ -540,14 +540,14 @@ const encounterLayouts=[
  {name:'Broken Cloister',floor:['#504341','#5b4c49'],rows:[
   ' .....   ','.......  ','..p.p....','.........','..p.p.p..','.........','  ...... ','   ..... ']}
 ];
-const reliquaryLayout={name:'Sealed Reliquary',floor:['#4b4357','#554c62'],rows:[
+const reliquaryLayout={name:'Old Storeroom',floor:['#4b4357','#554c62'],rows:[
   '  .....  ',' ....... ','....p....','.........','.....c...','...p.p...','........ ',' ......  '
 ]};
 const terrainFeatures={r:{name:'Rubble',fill:'#716052',color:'#aa9277',icon:'◆'},
  t:{name:'Thicket',fill:'#233c2f',color:'#79a67e',icon:'♠'},
  p:{name:'Pillar',fill:'#60556c',color:'#b09ac1',icon:'▥'},
  '~':{name:'Deep water',fill:'#1d414d',color:'#67aabd',icon:'≈'},
- c:{name:'Reliquary chest',fill:'#76502a',color:'#f6ce78',icon:'✦'}};
+ c:{name:'Supply chest',fill:'#76502a',color:'#f6ce78',icon:'✦'}};
 let activeEncounterLayout=null;
 function isReliquary(node){
   return Boolean(node&&!node.kind&&!node.boss&&/-1-0$/.test(node.id));
@@ -674,7 +674,7 @@ function makeExpedition(number){
   }
  }
  const reliquary=nodes[1].find(isReliquary);
- if(reliquary){reliquary.name='Sealed Reliquary';reliquary.story='A closed chest waits in a silent vault.'}
+ if(reliquary){reliquary.name='Old Storeroom';reliquary.story='The room still holds a few supplies from its last occupants.'}
  return {number,seed,layout:'branching',graphVersion:3,nodes};
 }
 function expeditionNode(id){return campaign?.expedition?.nodes.flat().find(n=>n.id===id)}
@@ -923,49 +923,73 @@ function startNewCampaign(){if(loadCampaign(activeSlot)&&!confirm('Replace the e
 function reliquaryTrapped(node){
   return ((encounterSeedFor(node)^(campaign.expedition.seed||0))>>>0)%4!==0;
 }
+function reliquaryCheck(choice){
+  const rogue=campaign.classId==='rogue'||campaign.party.includes('rogue');
+  const die=roll(20),bonus=rogue?3:0,dc=choice==='inspect'?13:15;
+  return {die,bonus,dc,success:die+bonus>=dc};
+}
+function inspectReliquary(node){
+  if(campaign.reliquaryInspection?.room===node.id)return campaign.reliquaryInspection;
+  const check=reliquaryCheck('inspect');
+  campaign.reliquaryInspection={room:node.id,...check};
+  if(telemetry.ensure())telemetry.run.events.push({type:'exploration',room:node.id,choice:'inspect',...check});
+  saveCampaign();
+  return campaign.reliquaryInspection;
+}
 function resolveReliquary(node,choice){
   if(campaign.dead||campaign.cleared||!campaign.routeCommitted||campaign.route!==node.id||campaign.reliquaryAlarmRoute===node.id)return;
   const trapped=reliquaryTrapped(node);
-  if(choice==='open'&&trapped){
+  const disarming=choice==='disarm';
+  if(disarming&&(!trapped||campaign.reliquaryInspection?.room!==node.id||!campaign.reliquaryInspection.success))return;
+  const check=disarming?reliquaryCheck('disarm'):null;
+  const result=check?' Disarm: '+check.die+' + '+check.bonus+' vs DC '+check.dc+'.':'';
+  if(trapped&&(choice==='open'||(check&&!check.success))){
     const current=campaign.hp??heroStats().hp;
     const damage=Math.min(Math.max(0,current-1),4+campaign.level);
     campaign.hp=current-damage;
     campaign.reliquaryAlarmRoute=node.id;
-    if(telemetry.ensure())telemetry.run.events.push({type:'exploration',room:node.id,choice,result:'ambush',damage,target:'hero',mapLayout:reliquaryLayout.name});
+    campaign.reliquaryAlarmMessage=(check?'The disarm fails.'+result:'A dart fires as you open the chest.')+' Kael loses '+damage+' HP and the alarm summons guards.';
+    if(telemetry.ensure())telemetry.run.events.push({type:'exploration',room:node.id,choice,result:'ambush',check,damage,target:'hero',mapLayout:reliquaryLayout.name});
     saveCampaign();
     startEncounter();
     return;
   }
-  const silver=choice==='leave'?0:trapped?20+campaign.level*3:40+campaign.level*6;
+  const silver=choice==='leave'?0:40+campaign.level*6;
   const xp=choice==='leave'?0:Math.floor(node.xp*.75);
   campaign.silver+=silver;
   campaign.xp+=xp;
-  if(telemetry.ensure())telemetry.run.events.push({type:'exploration',room:node.id,choice,result:choice==='leave'?'bypassed':'looted',silver,xp});
+  if(telemetry.ensure())telemetry.run.events.push({type:'exploration',room:node.id,choice,result:choice==='leave'?'bypassed':'looted',check,silver,xp});
   advanceExpeditionRoute();
   const levelMessage=expeditionLevelUp();
-  campaignStatus((choice==='leave'?'The party leaves the chest untouched.':'Recovered '+silver+' silver and '+xp+' XP without a fight.')+levelMessage);
+  campaignStatus((choice==='leave'?'The party leaves the chest untouched.':'Recovered '+silver+' silver and '+xp+' XP without a fight.'+result)+levelMessage);
 }
 function showReliquary(node){
   if(document.querySelector('dialog.reliquary-room[open]'))return;
   const dialog=document.createElement('dialog');
   dialog.className='supply-result-dialog reliquary-room';
   dialog.setAttribute('aria-labelledby','reliquary-title');
-  dialog.innerHTML='<div class="supply-result-emblem" aria-hidden="true">✦</div><h2 id="reliquary-title">Sealed Reliquary</h2><p id="reliquary-clue">A brass-bound chest sits alone on a raised dais. Coins glint through a crack in its lid.</p><div class="camp-options"><button type="button" data-choice="inspect">Inspect the chest</button><button type="button" data-choice="open">Open the chest</button><button type="button" data-choice="leave">Leave it untouched</button></div>';
+  dialog.innerHTML='<div class="supply-result-emblem" aria-hidden="true">✦</div><h2 id="reliquary-title">Old Storeroom</h2><p id="reliquary-clue">Broken shelves line the room. A supply chest rests beneath one of them.</p><div class="camp-options"><button type="button" data-choice="inspect">Inspect the chest</button><button type="button" data-choice="open">Open the chest</button><button type="button" data-choice="leave">Leave it untouched</button></div>';
   document.body.appendChild(dialog);
   dialog.addEventListener('close',()=>dialog.remove(),{once:true});
   dialog.addEventListener('click',event=>{
     const button=event.target.closest('[data-choice]');
     if(!button)return;
     if(button.dataset.choice==='inspect'){
-      const trapped=reliquaryTrapped(node);
-      dialog.querySelector('#reliquary-clue').textContent=trapped?'A wire links the lid to a dart slot and an alarm bell. You can pry out the loose coin tray without lifting the lid.':'You find an ordinary lock and no trap. The latch can be lifted safely.';
-      if(trapped){button.textContent='Recover the loose coin tray';button.dataset.choice='salvage';}
-      else button.disabled=true;
+      showInspection(inspectReliquary(node));
       return;
     }
     dialog.close();
     resolveReliquary(node,button.dataset.choice);
   });
+  function showInspection(check){
+    const button=dialog.querySelector('[data-choice="inspect"]');
+    const found=check.success&&reliquaryTrapped(node);
+    const result='Inspection: '+check.die+' + '+check.bonus+' vs DC '+check.dc+'. ';
+    dialog.querySelector('#reliquary-clue').textContent=result+(found?'You spot a thin wire running from the latch into the wall.':check.success?'You check the latch and hinges and find no mechanism.':'You cannot get a clear look at the latch. It may still be trapped.');
+    if(found){button.textContent='Attempt to disarm (DC 15)';button.dataset.choice='disarm';}
+    else button.disabled=true;
+  }
+  if(campaign.reliquaryInspection?.room===node.id)showInspection(campaign.reliquaryInspection);
   dialog.showModal();
 }
 function startEncounter(){if(campaign?.dead)return;if(campaign?.expedition&&!campaign.routeCommitted&&!campaign.cleared)return;if(campaign?.expedition&&missingPick()){showLevelModal();return}if(campaign?.expedition&&campaign.cleared){beginNextExpedition();return}if(campaign?.ambush){beginAmbush();return}if(campaign?.expedition&&missingPick()){showLevelModal();return}if(campaign?.expedition&&expeditionNode(campaign.route)?.kind){if(expeditionNode(campaign.route).kind==='merchant'){showMerchantModal();return}visitExpeditionStop();return}if(campaign?.expedition&&expeditionNode(campaign.route)?.boss&&campaign.level<2&&!campaign.bossWarningAcknowledged?.includes(campaign.route)){const node=expeditionNode(campaign.route);if(!confirm('BOSS READINESS WARNING: '+bossTypes[node.boss].name+' is a dangerous final-stage encounter. Your party is level '+campaign.level+' ('+campaign.xp+' XP). Noncombat routes may leave you underleveled. Fight anyway?'))return;campaign.bossWarningAcknowledged=[...(campaign.bossWarningAcknowledged||[]),campaign.route];saveCampaign()}if(!campaign||campaign.cleared||campaign.party.length!==2||(campaign.expedition?missingPick():(campaign.level>=2&&!campaign.feat)||(campaign.level>=3&&!campaign.extraFeat)))return;const node=expeditionNode(campaign.route);if(isReliquary(node)&&campaign.reliquaryAlarmRoute!==node.id){showReliquary(node);return}chosenClass=campaign.classId;$('campaignScreen').classList.add('hidden');$('classScreen').classList.add('hidden');started=true;reset();}
@@ -1041,7 +1065,7 @@ if(activeEncounterLayout){
   units.filter(unit=>unit.team==='ally').forEach((unit,index)=>Object.assign(unit,spawns.allies[index]));
   foes.forEach((unit,index)=>Object.assign(unit,spawns.foes[index]));
 }
-specialMode=false;round=1;turn=0;actions=3;attacks=0;mode='move';guard=false;finished=false;busy=false;$('log').innerHTML='';telemetry.start(ch);rollInitiative();$('encounterTitle').textContent=ch.title.toUpperCase()+(activeEncounterLayout&&activeEncounterLayout.name!==ch.title?' · '+activeEncounterLayout.name:'');$('campaignBadge').textContent='Level '+campaign.level+' · '+campaign.xp+' XP · '+campaign.silver+' sp';say('<strong>'+escapeHTML(ch.title)+' begins!</strong> '+escapeHTML(ch.story));if(campaign.reliquaryAlarmRoute===campaign.route)say('The chest alarm called the chamber guards. The treasure remains sealed until they fall.');actions=current()?.team==='enemy'?(current().mobActions||3):3;barbarianTurnStart(current());advanceDead();render();if(!current().player)nextAI()}
+specialMode=false;round=1;turn=0;actions=3;attacks=0;mode='move';guard=false;finished=false;busy=false;$('log').innerHTML='';telemetry.start(ch);rollInitiative();$('encounterTitle').textContent=ch.title.toUpperCase()+(activeEncounterLayout&&activeEncounterLayout.name!==ch.title?' · '+activeEncounterLayout.name:'');$('campaignBadge').textContent='Level '+campaign.level+' · '+campaign.xp+' XP · '+campaign.silver+' sp';say('<strong>'+escapeHTML(ch.title)+' begins!</strong> '+escapeHTML(ch.story));if(campaign.reliquaryAlarmRoute===campaign.route)say(escapeHTML(campaign.reliquaryAlarmMessage||'The chest alarm called the chamber guards.'));actions=current()?.team==='enemy'?(current().mobActions||3):3;barbarianTurnStart(current());advanceDead();render();if(!current().player)nextAI()}
 function point(x,y){return [CX+(x-y)*TW/2,CY+(x+y)*TH/2]}
 function polygon(x,y){let [px,py]=point(x,y);return `${px},${py-TH/2} ${px+TW/2},${py} ${px},${py+TH/2} ${px-TW/2},${py}`}
 function canTraverse(unit,occupant){
