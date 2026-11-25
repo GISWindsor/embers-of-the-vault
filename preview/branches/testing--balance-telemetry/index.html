@@ -119,7 +119,7 @@ const classes={
 barbarian:{name:'Barbarian',hp:29,ac:15,attack:8,damage:10,icon:'🪓',color:'#dc875e',special:'Reckless Attack',description:'Power Strike replaces Strike (1 action). Reckless Attack (2 actions): advantage and ×2.5 damage; enemies attack you with advantage until your next turn. Cannot raise shield or throw fire flasks; may drink healing potions only outside combat.'},
 fighter:{name:'Fighter',hp:24,ac:18,attack:9,damage:8,icon:'⚔',color:'#6ab5e8',special:'Power Attack',description:'Heavy armor and precise weapon attacks. Power Attack costs 2 actions and deals an extra weapon die. Reactive Strike interrupts enemies leaving reach on a hit. Reactions per round: 1 at level 1, 2 at level 5, 3 at level 10.'},
 rogue:{name:'Rogue',hp:19,ac:17,attack:7,damage:6,icon:'◆',color:'#a7d5a2',special:'Sneak Attack',description:'Mobile striker. Your melee Strikes deal +1d6 precision damage to off-guard enemies.'},
-cleric:{name:'Cleric',hp:21,ac:17,attack:7,spellAttack:8,damage:6,icon:'✚',color:'#e6c883',special:'Heal',description:'Divine healer. Cast a two-action Heal spell on yourself or an ally within 6 tiles.'},
+cleric:{name:'Cleric',hp:21,ac:17,attack:7,spellAttack:8,damage:6,icon:'✚',color:'#e6c883',special:'Heal',description:'Divine healer. Cast a two-action Heal spell on yourself or an ally within 6 tiles. At level 5, gain one Reactive Strike per round.'},
 wizard:{name:'Wizard',hp:15,ac:15,attack:6,spellAttack:9,damage:4,icon:'✦',color:'#b6a3f1',special:'Force Barrage',description:'Arcane caster. Force Barrage automatically hits; other offensive spells roll against spell attack.'}
 };
 let chosenClass='fighter',started=false,specialMode=false;
@@ -863,7 +863,7 @@ function render(){let u=current(),classId=actorClass(u),svg=$('board');let r=u&&
 for(let sum=0;sum<W+H-1;sum++)for(let x=0;x<W;x++){let y=sum-x;if(y<0||y>=H)continue;let [px,py]=point(x,y),wall=terrain.has(`${x},${y}`),move=r.has(`${x},${y}`),target=u&&u.player&&(mode==='attack'||mode==='cleave'||(mode==='special'&&classId==='barbarian'))&&units.some(t=>alive(t)&&t.team==='enemy'&&t.x===x&&t.y===y&&meleeAdjacent(u,t));let inRange=range>0&&!wall&&dist(u,{x,y})<=range,preview=hoveredTarget&&blastRadius>0&&areaDistance({x,y},hoveredTarget)<=blastRadius;let fill=wall?'#675d58':move?'#29556c':preview?'#b7443f':inRange?'#71353d':target?'#703c40':(x+y)%2?'#344553':'#3b4d5b';html+=`<polygon class="tile" data-x="${x}" data-y="${y}" points="${polygon(x,y)}" fill="${fill}"/>`;if(wall)html+=`<rect x="${px-18}" y="${py-22}" width="36" height="29" fill="#8c7e70" stroke="#b5a18a"/><path d="M${px-18} ${py-12}h36 M${px} ${py-22}v29" stroke="#514d4a"/>`}
 for(let u of [...units].filter(alive).sort((a,b)=>(a.x+a.y)-(b.x+b.y))){let [px,py]=point(u.x,u.y);html+=`<g class="unit" data-unit="${u.id}" style="pointer-events:none"><ellipse cx="${px}" cy="${py+8}" rx="24" ry="11" fill="#05080c99"/>${current()===u?`<ellipse class="selected-ring" cx="${px}" cy="${py+2}" rx="26" ry="13"/>`:''}<g class="token-body" data-x="${u.x}" data-y="${u.y}" style="pointer-events:visiblePainted"><title>${escapeHTML(u.name)} · ${tokenHealthLabel(u)}</title><circle cx="${px}" cy="${py-17}" r="21" fill="${u.color}" stroke="#f7e7c8" stroke-width="2"/><text x="${px}" y="${py-10}" font-size="23" text-anchor="middle" fill="#14232b">${u.icon}</text></g><rect pointer-events="none" x="${px-22}" y="${py-48}" width="44" height="6" rx="3" fill="#541f2a"/><rect pointer-events="none" x="${px-22}" y="${py-48}" width="${44*u.hp/u.max}" height="6" rx="3" fill="#6cda8d"/>${tokenStatusMarkup(u,px,py)}</g>`}
 svg.innerHTML=html;svg.querySelectorAll('[data-x]').forEach(e=>{e.addEventListener('click',()=>clickTile(+e.dataset.x,+e.dataset.y));e.addEventListener('mouseenter',()=>{if(!blastRadius||!range)return;const x=+e.dataset.x,y=+e.dataset.y;hoveredTarget=inside(x,y)&&dist(u,{x,y})<=range&&(!isDirtyTrickSelected()||unitAt(x,y)?.team==='enemy')?{x,y}:null;updateBlastPreview()})});svg.addEventListener('mouseleave',()=>{if(hoveredTarget){hoveredTarget=null;updateBlastPreview()}});
-$('round').textContent=`Round ${round}`;$('actorName').textContent=finished?'Encounter Complete':u?.name||'Encounter';$('actorStats').innerHTML=u?`<div class="stats"><span class="stat">HP ${u.hp}/${u.max}</span><span class="stat">AC ${effectiveAC(u)}${effectiveAC(u)!==u.ac?' (base '+u.ac+')':''}</span>${classId==='fighter'?'<span class="stat">Reactions '+reactionsRemaining(u)+'</span>':''}<span class="stat">Attack +${effectiveAttack(u)}${effectiveAttack(u)!==u.attack?' (base +'+u.attack+')':''}</span><span class="stat">${u.player?'Your turn · '+(classes[classId]?.name||'Hero'):u.team==='ally'?'AI companion':'Enemy turn'}</span></div>`:'';$('pips').innerHTML=Array.from({length:3},(_,i)=>`<span class="pip ${i>=actions?'spent':''}"></span>`).join('');
+$('round').textContent=`Round ${round}`;$('actorName').textContent=finished?'Encounter Complete':u?.name||'Encounter';$('actorStats').innerHTML=u?`<div class="stats"><span class="stat">HP ${u.hp}/${u.max}</span><span class="stat">AC ${effectiveAC(u)}${effectiveAC(u)!==u.ac?' (base '+u.ac+')':''}</span>${reactionLimit(u)>0?'<span class="stat">Reactions '+reactionsRemaining(u)+'</span>':''}<span class="stat">Attack +${effectiveAttack(u)}${effectiveAttack(u)!==u.attack?' (base +'+u.attack+')':''}</span><span class="stat">${u.player?'Your turn · '+(classes[classId]?.name||'Hero'):u.team==='ally'?'AI companion':'Enemy turn'}</span></div>`:'';$('pips').innerHTML=Array.from({length:3},(_,i)=>`<span class="pip ${i>=actions?'spent':''}"></span>`).join('');
 const techniques=keepHighestUpgrade(learnedTechniques(),o=>['Sweeping Strike','Whirlwind Strike','Cleaving Arc','Tempest Sweep'].includes(o.name));
 const spells=keepHighestUpgrade(learnedSpells(),o=>o.stat==='area');
 const hasAreaSpell=spells.some(o=>o.stat==='area');
@@ -922,18 +922,23 @@ function tickPersistentDamage(unit){
     }
   }
 }
-function reactionsRemaining(fighter){
-  const limit=1+Number(campaign.level>=5)+Number(campaign.level>=10);
-  return Math.max(0,limit-(fighter.reactionsUsed||0));
+function reactionLimit(unit){
+  if(!unit||unit.team!=='ally')return 0;
+  const classId=actorClass(unit);
+  if(classId==='fighter')return 1+Number(campaign.level>=5)+Number(campaign.level>=10);
+  return Number(classId==='cleric'&&campaign.level>=5);
+}
+function reactionsRemaining(unit){
+  return Math.max(0,reactionLimit(unit)-(unit.reactionsUsed||0));
 }
 function enemyStep(unit,next){
   if(unit.team==='enemy'){
-    for(const fighter of units){
-      if(fighter.team!=='ally'||!alive(fighter)||actorClass(fighter)!=='fighter'||!reactionsRemaining(fighter))continue;
-      if(!meleeAdjacent(fighter,unit)||meleeAdjacent(fighter,next))continue;
-      fighter.reactionsUsed=(fighter.reactionsUsed||0)+1;
-      telemetry.metric('reactionsUsed',fighter,1,unit,{ability:'Reactive Strike'});
-      const hit=strike(fighter,unit,null,{reaction:true});
+    for(const reactor of units){
+      if(!alive(reactor)||!reactionsRemaining(reactor))continue;
+      if(!meleeAdjacent(reactor,unit)||meleeAdjacent(reactor,next))continue;
+      reactor.reactionsUsed=(reactor.reactionsUsed||0)+1;
+      telemetry.metric('reactionsUsed',reactor,1,unit,{ability:'Reactive Strike'});
+      const hit=strike(reactor,unit,null,{reaction:true});
       if(hit){
         if(alive(unit))say(escapeHTML(unit.name)+' stops moving.');
         return false;
