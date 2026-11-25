@@ -902,9 +902,20 @@ function finishAvatarTurn(unit){
   unit.tempHpGrants=(unit.tempHpGrants||[]).filter(grant=>grant.ability!=='Avatar of Rage');
   say('Avatar of Rage ends.');
 }
+function expireTemporaryHp(unit,shouldExpire){
+  unit.tempHpGrants=(unit.tempHpGrants||[]).filter(grant=>{
+    if(!shouldExpire(grant))return true;
+    unit.tempHp=Math.max(0,(unit.tempHp||0)-grant.amount);
+    return false;
+  });
+}
 function endTurn(){hoveredTarget=null;if(finished)return;let old=current();if(old){
   finishAvatarTurn(old);
-  if(!old.avatarTurns&&!old.wardSources?.length){old.tempHp=0;old.tempHpGrants=[]}old.persistentDamageTicked=false;old.cleavePending=false;}turn++;if(turn>=order.length){advanceCombatRound();if(finished)return}advanceDead();if(finished)return;actions=current()?.team==='enemy'?(current().mobActions||3):3;attacks=0;mode='move';if(current()){current().guardAbilities={};current().shieldbreakerTarget=null;}barbarianTurnStart(current());render();if(!current().player)nextAI()}
+  if(!old.avatarTurns&&!old.wardSources?.length)expireTemporaryHp(old,grant=>grant.ability!=='Defensive Stance');old.persistentDamageTicked=false;old.cleavePending=false;}turn++;if(turn>=order.length){advanceCombatRound();if(finished)return}advanceDead();if(finished)return;actions=current()?.team==='enemy'?(current().mobActions||3):3;attacks=0;mode='move';if(current()){
+  expireTemporaryHp(current(),grant=>grant.ability==='Defensive Stance');
+  current().guardAbilities={};
+  current().shieldbreakerTarget=null;
+}barbarianTurnStart(current());render();if(!current().player)nextAI()}
 function shortestStep(u,target){let q=[[u.x,u.y]],seen=new Set([`${u.x},${u.y}`]),parent=new Map(),found=null;for(let i=0;i<q.length;i++){let [x,y]=q[i];if(meleeAdjacent({x,y},target)){found=[x,y];break}for(let [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){let nx=x+dx,ny=y+dy,k=`${nx},${ny}`;if(!inside(nx,ny)||seen.has(k)||unitAt(nx,ny))continue;seen.add(k);parent.set(k,`${x},${y}`);q.push([nx,ny])}}if(!found)return null;let key=found.join(',');while(parent.has(key)&&parent.get(key)!==`${u.x},${u.y}`)key=parent.get(key);let [x,y]=key.split(',').map(Number);return {x,y}}
 function rangedAiStep(u,opponents){const q=[{x:u.x,y:u.y,d:0,first:null}],seen=new Set([u.x+','+u.y]);let best=null,bestScore=-Infinity;for(let i=0;i<q.length;i++){const p=q[i],distances=opponents.map(v=>Math.abs(p.x-v.x)+Math.abs(p.y-v.y)),nearest=Math.min(...distances),inRange=distances.some(d=>d<=6),adjacent=opponents.some(v=>meleeAdjacent(p,v));if(p.d>0&&inRange&&!adjacent){const score=100-Math.abs(nearest-4)*5-p.d*2;if(score>bestScore){bestScore=score;best=p.first}}if(p.d>=strideLimit(u,4))continue;for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){const x=p.x+dx,y=p.y+dy,key=x+','+y;if(!inside(x,y)||seen.has(key)||unitAt(x,y))continue;seen.add(key);q.push({x,y,d:p.d+1,first:p.first||{x,y}})}}return best}
 function tickPersistentDamage(unit){
