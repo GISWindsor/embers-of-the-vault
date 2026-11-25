@@ -89,7 +89,7 @@ const telemetry={
  newRun(){if(!this.enabled)return;this.run={schemaVersion:this.version,createdAt:new Date().toISOString(),runId:'run-'+Date.now()+'-'+Math.random().toString(36).slice(2,8),slot:activeSlot,build:'feature/encounter-layouts',classId:campaign?.classId,mode:campaign?.ironman?'ironman':'normal',start:this.snapshot(false),levels:[],attempts:[],events:[]};this.attempt=null;this.previous=null;this.run.levels.push({time:new Date().toISOString(),reason:'new-campaign',...this.snapshot(false)});this.persist()},
  ensure(){if(!this.enabled||!campaign)return false;if(!this.run||this.run.slot!==activeSlot||this.run.classId!==campaign.classId)this.newRun();return !!this.run},
  checkpoint(reason){if(!this.enabled||!this.run)return;const snap=this.snapshot();if(snap){this.run.levels.push({time:new Date().toISOString(),reason,...snap});this.persist()}},
- start(ch){if(!this.ensure())return;if(this.attempt&&!this.attempt.result){this.attempt.result='interrupted';this.attempt.end=this.snapshot()}const snap=this.snapshot();this.attempt={id:this.run.attempts.length+1,startedAt:new Date().toISOString(),buildRevision:"sha256:c01fa5738cd18e8faa10f88289b9c4fb6f4d6d9f957bc7966ac8aa641b88f38e",encounterSeed:campaign.ambush?.seed??encounterSeedFor(expeditionNode(campaign.route)),expedition:snap.expedition,stage:snap.stage,route:snap.route,level:snap.level,encounter:ch?.title||null,boss:ch?.bossKind||null,mapLayout:activeEncounterLayout?.name||null,initialEnemies:(typeof units!=='undefined'?units:[]).filter(x=>x.team==='enemy').map(x=>({id:x.id,name:x.name,hp:x.hp,ac:x.ac,attack:x.attack,damage:x.damage})),start:snap,rounds:0,events:[],totals:{damageDealt:{},damageReceived:{},healing:{},criticalHits:{},knockouts:{},healingProvided:{},healingReceived:{},overhealing:{},temporaryHpGranted:{},temporaryHpAbsorbed:{},damageReduced:{},buffsApplied:{},buffRounds:{},buffAssistedHits:{},buffAssistedDamage:{},defensePreventedHits:{},damagePreventedEstimate:{},debuffsApplied:{},attacksAttempted:{},attacksHit:{},attacksMissed:{}}};this.run.attempts.push(this.attempt);this.previous=this.health();this.persist()},
+ start(ch){if(!this.ensure())return;if(this.attempt&&!this.attempt.result){this.attempt.result='interrupted';this.attempt.end=this.snapshot()}const snap=this.snapshot();this.attempt={id:this.run.attempts.length+1,startedAt:new Date().toISOString(),buildRevision:"sha256:c5051490a9fd7998ebb3049cc0e9f0690c832e63c77feaff55b66fc41c21b8a1",encounterSeed:campaign.ambush?.seed??encounterSeedFor(expeditionNode(campaign.route)),expedition:snap.expedition,stage:snap.stage,route:snap.route,level:snap.level,encounter:ch?.title||null,boss:ch?.bossKind||null,mapLayout:activeEncounterLayout?.name||null,mapSeed:activeEncounterLayout?.seed??null,mapGeneratorVersion:activeEncounterLayout?.generatorVersion??null,mapFallback:activeEncounterLayout?.fallback??false,initialEnemies:(typeof units!=='undefined'?units:[]).filter(x=>x.team==='enemy').map(x=>({id:x.id,name:x.name,hp:x.hp,ac:x.ac,attack:x.attack,damage:x.damage})),start:snap,rounds:0,events:[],totals:{damageDealt:{},damageReceived:{},healing:{},criticalHits:{},knockouts:{},healingProvided:{},healingReceived:{},overhealing:{},temporaryHpGranted:{},temporaryHpAbsorbed:{},damageReduced:{},buffsApplied:{},buffRounds:{},buffAssistedHits:{},buffAssistedDamage:{},defensePreventedHits:{},damagePreventedEstimate:{},debuffsApplied:{},attacksAttempted:{},attacksHit:{},attacksMissed:{}}};this.run.attempts.push(this.attempt);this.previous=this.health();this.persist()},
  metric(name,source,amount=1,target=null,detail=null){if(!this.enabled||!this.attempt||this.attempt.result||!amount)return;const key=source?.id||source||'unknown',totals=this.attempt.totals;if(!totals[name])totals[name]={};totals[name][key]=(totals[name][key]||0)+amount;this.attempt.events.push({round:typeof round==='number'?round:null,actor:key,metric:name,amount,target:target?.id||target||null,detail});},
  health(){return (typeof units!=='undefined'?units:[]).map(x=>({id:x.id,name:x.name,team:x.team,hp:x.hp,max:x.max})).reduce((o,x)=>(o[x.id]=x,o),{})},
  log(html,attribution){if(!this.enabled||!this.attempt||this.attempt.result)return;const text=String(html).replace(/<[^>]*>/g,' ').replace(/&[^;]+;/g,' ').replace(/\\s+/g,' ').trim();const healthNow=this.health(),changes=[],actorId=typeof current==='function'?current()?.id:null;for(const [id,u] of Object.entries(healthNow)){const old=this.previous?.[id];if(!old)continue;const delta=u.hp-old.hp;if(delta!==0){const type=delta<0?'damage':'healing';const amount=Math.abs(delta);changes.push({id,name:u.name,team:u.team,type,amount});const key=attribution?.source?.id||actorId||'unknown';
@@ -552,12 +552,83 @@ let activeEncounterLayout=null;
 function isReliquary(node){
   return Boolean(node&&!node.kind&&!node.boss&&/-1-0$/.test(node.id));
 }
-function layoutForEncounter(node,ambush=false){
+function layoutForEncounter(node,ambushSeed=null){
   if(!node)return null;
-  if(!ambush&&isReliquary(node))return reliquaryLayout;
-  if(node.boss)return encounterLayouts[3];
+  if(ambushSeed===null&&isReliquary(node))return reliquaryLayout;
+  if(node.boss&&ambushSeed===null)return encounterLayouts[3];
   const [,stage,lane]=node.id.split('-').map(Number);
-  return encounterLayouts[((stage||0)+(lane||0)+Number(ambush))%encounterLayouts.length];
+  const expeditionSeed=campaign.expedition.seed>>>0;
+  const seed=(encounterSeedFor(node)^expeditionSeed^(ambushSeed??0))>>>0;
+  const kind=((stage||0)+(lane||0)+expeditionSeed+Number(ambushSeed!==null))%3;
+  return generateEncounterLayout(kind,seed);
+}
+function generateEncounterLayout(kind,seed){
+  const fallback=encounterLayouts[kind];
+  let state=seed;
+  const draw=(low,high)=>{
+    state=(Math.imul(1664525,state)+1013904223)>>>0;
+    return low+Math.floor(state/4294967296*(high-low+1));
+  };
+  for(let attempt=0;attempt<12;attempt++){
+    const grid=Array.from({length:H},()=>Array(W).fill('.'));
+    if(kind===0){
+      const crossings=[draw(1,3),draw(5,7)];
+      let channel=draw(3,4);
+      const wideCrossing=crossings[draw(0,1)];
+      for(let y=0;y<H;y++){
+        channel=Math.max(3,Math.min(4,channel+draw(-1,1)));
+        if(crossings.includes(y)||y===wideCrossing-1)continue;
+        const width=draw(1,2);
+        for(let x=channel;x<channel+width;x++)grid[y][x]='~';
+      }
+      for(const x of [0,W-1])if(draw(0,1))grid[draw(0,1)][x]=' ';
+    }else if(kind===1){
+      const wall=draw(3,5),door=draw(1,3),breach=draw(5,6);
+      for(let y=0;y<H;y++){
+        if(y!==door&&y!==breach&&y!==breach+1)grid[y][wall]='p';
+      }
+      for(const y of [0,H-1]){
+        const left=draw(1,3),right=draw(0,2);
+        for(let x=0;x<left;x++)grid[y][x]=' ';
+        for(let x=W-1;x>=W-right;x--)grid[y][x]=' ';
+      }
+      for(const y of [door-1,breach-1]){
+        grid[y][wall+(draw(0,1)?-1:1)]='r';
+      }
+      grid[draw(2,5)][draw(1,2)]='r';
+      grid[draw(2,5)][draw(6,7)]='r';
+    }else{
+      // A long grove divides two trails. Smaller clusters shape their approaches.
+      const core=draw(3,5),top=draw(1,2),bottom=draw(4,6),side=draw(0,1)?1:-1;
+      for(let y=top;y<=bottom;y++){
+        grid[y][core]='t';
+        if(y>top&&y<bottom&&draw(0,2)!==0)grid[y][core+side]='t';
+      }
+      for(const x of [1,7]){
+        const y=draw(1,5);
+        grid[y][x]='t';
+        if(draw(0,1))grid[y+1][x]='t';
+      }
+      grid[draw(0,1)][0]=' ';
+      grid[draw(6,7)][8]=' ';
+    }
+    const layout={...fallback,rows:grid.map(row=>row.join('')),seed,generatorVersion:1};
+    if(validEncounterLayout(layout))return layout;
+  }
+  return {...fallback,seed,generatorVersion:1,fallback:true};
+}
+function validEncounterLayout(layout){
+  const {allies,foes}=layoutSpawns(layout,10);
+  if(allies.length!==3||foes.length!==10)return false;
+  if(allies.some(a=>foes.some(e=>Math.abs(a.x-e.x)+Math.abs(a.y-e.y)<4)))return false;
+  const queue=[allies[0]],seen=new Set();
+  for(let i=0;i<queue.length;i++){
+    const {x,y}=queue[i],key=`${x},${y}`;
+    if(seen.has(key)||layoutTile(layout,x,y)!=='.')continue;
+    seen.add(key);
+    queue.push({x:x+1,y},{x:x-1,y},{x,y:y+1},{x,y:y-1});
+  }
+  return seen.size>=32&&seen.size===layout.rows.join('').split('.').length-1;
 }
 function layoutTile(layout,x,y){
   return layout.rows[y]?.[x]||' ';
@@ -1049,7 +1120,7 @@ let units,order,turn,round,actions,attacks,mode,guard,finished,busy;
 const $=id=>document.getElementById(id),roll=n=>1+Math.floor(Math.random()*n),alive=u=>u.hp>0,unitAt=(x,y)=>units.find(u=>alive(u)&&u.x===x&&u.y===y),inside=(x,y)=>x>=0&&x<W&&y>=0&&y<H&&!terrain.has(`${x},${y}`),dist=(a,b)=>Math.abs(a.x-b.x)+Math.abs(a.y-b.y),meleeAdjacent=(a,b)=>Math.max(Math.abs(a.x-b.x),Math.abs(a.y-b.y))===1,current=()=>units.find(u=>u.id===order[turn]);
 function say(s,attribution){telemetry.log(s,attribution);const p=document.createElement('p');p.innerHTML=s;$('log').prepend(p)}
 function reset(){$('actionDescription').textContent=actionDescription('move',campaign.classId,[],[]);activeBoss=null;bossWarnings=[];developCompanions();stopEndingMusic();combatSession++;units=baseUnits.map(u=>({...u}));configureHero();const ch=encounter();if(ch.bossKind)activeBoss={kind:ch.bossKind,waves:0,phase:false};const node=expeditionNode(campaign.route);
-activeEncounterLayout=layoutForEncounter(node,Boolean(campaign.ambush));
+activeEncounterLayout=layoutForEncounter(node,campaign.ambush?(campaign.ambush.seed??0):null);
 terrain.clear();
 if(activeEncounterLayout){
   for(let y=0;y<H;y++)for(let x=0;x<W;x++)if(layoutTile(activeEncounterLayout,x,y)!=='.')terrain.add(x+','+y);
