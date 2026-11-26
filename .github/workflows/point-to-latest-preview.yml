@@ -1,0 +1,64 @@
+name: Point branch preview to latest published build
+on:
+  workflow_run:
+    workflows: [Publish branch testing previews]
+    types: [completed]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: update-latest-branch-preview
+  cancel-in-progress: false
+jobs:
+  redirect:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Update latest test build redirect
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3 4 5; do
+            git fetch origin main
+            git checkout --detach origin/main
+            python3 - <<'PY'
+          import html, json, pathlib, subprocess
+          from urllib.parse import quote
+
+          latest = subprocess.check_output([
+              'git', 'log', '-1', '--format=%s', '--grep=^Publish preview for ',
+              '--', ':(glob)preview/branches/*/index.html', 'preview/branches.json',
+          ], text=True).strip().removeprefix('Publish preview for ')
+          root = pathlib.Path('preview')
+          branches = json.loads((root / 'branches.json').read_text())['branches']
+          slug = next(entry['slug'] for entry in branches if entry['name'] == latest)
+          if not (root / 'branches' / slug / 'index.html').is_file():
+              raise SystemExit('Latest preview is missing')
+          target = './' + quote(slug, safe='') + '/'
+          (root / 'branches/index.html').write_text(f'''<!doctype html>
+          <html lang="en">
+          <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width,initial-scale=1">
+          <title>Embers of the Vault — Latest Test Build</title>
+          <script>
+          const target = new URL({json.dumps(target)}, new URL(location.pathname.replace(/\\/?$/, "/"), location.origin));
+          location.replace(target.href + location.search + location.hash);
+          </script>
+          <noscript><meta http-equiv="refresh" content="0;url={html.escape(target)}"></noscript>
+          </head>
+          <body><p>Opening the latest test build… <a href="{html.escape(target)}">Continue to game</a></p></body>
+          </html>
+          ''')
+          PY
+            git add preview/branches/index.html
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m "Update latest branch preview link"
+            if git push origin HEAD:main; then exit 0; fi
+            sleep "$((attempt * 2))"
+          done
+          exit 1
