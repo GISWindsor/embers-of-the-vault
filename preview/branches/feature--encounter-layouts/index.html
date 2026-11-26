@@ -89,7 +89,7 @@ const telemetry={
  newRun(){if(!this.enabled)return;this.run={schemaVersion:this.version,createdAt:new Date().toISOString(),runId:'run-'+Date.now()+'-'+Math.random().toString(36).slice(2,8),slot:activeSlot,build:'feature/encounter-layouts',classId:campaign?.classId,mode:campaign?.ironman?'ironman':'normal',start:this.snapshot(false),levels:[],attempts:[],events:[]};this.attempt=null;this.previous=null;this.run.levels.push({time:new Date().toISOString(),reason:'new-campaign',...this.snapshot(false)});this.persist()},
  ensure(){if(!this.enabled||!campaign)return false;if(!this.run||this.run.slot!==activeSlot||this.run.classId!==campaign.classId)this.newRun();return !!this.run},
  checkpoint(reason){if(!this.enabled||!this.run)return;const snap=this.snapshot();if(snap){this.run.levels.push({time:new Date().toISOString(),reason,...snap});this.persist()}},
- start(ch){if(!this.ensure())return;if(this.attempt&&!this.attempt.result){this.attempt.result='interrupted';this.attempt.end=this.snapshot()}const snap=this.snapshot();this.attempt={id:this.run.attempts.length+1,startedAt:new Date().toISOString(),buildRevision:"sha256:b65788277e0403273ebb65e61ffc70eb513e236b18a5023bb46579bebdc9005c",encounterSeed:campaign.ambush?.seed??encounterSeedFor(expeditionNode(campaign.route)),expedition:snap.expedition,stage:snap.stage,route:snap.route,level:snap.level,encounter:ch?.title||null,boss:ch?.bossKind||null,mapLayout:activeEncounterLayout?.name||null,mapSeed:activeEncounterLayout?.seed??null,mapGeneratorVersion:activeEncounterLayout?.generatorVersion??null,mapFallback:activeEncounterLayout?.fallback??false,initialEnemies:(typeof units!=='undefined'?units:[]).filter(x=>x.team==='enemy').map(x=>({id:x.id,name:x.name,hp:x.hp,ac:x.ac,attack:x.attack,damage:x.damage})),start:snap,rounds:0,events:[],totals:{damageDealt:{},damageReceived:{},healing:{},criticalHits:{},knockouts:{},healingProvided:{},healingReceived:{},overhealing:{},temporaryHpGranted:{},temporaryHpAbsorbed:{},damageReduced:{},buffsApplied:{},buffRounds:{},buffAssistedHits:{},buffAssistedDamage:{},defensePreventedHits:{},damagePreventedEstimate:{},debuffsApplied:{},attacksAttempted:{},attacksHit:{},attacksMissed:{}}};this.run.attempts.push(this.attempt);this.previous=this.health();this.persist()},
+ start(ch){if(!this.ensure())return;if(this.attempt&&!this.attempt.result){this.attempt.result='interrupted';this.attempt.end=this.snapshot()}const snap=this.snapshot();this.attempt={id:this.run.attempts.length+1,startedAt:new Date().toISOString(),buildRevision:"sha256:cd8407bba16b4d7406a842f52b8ce6303f8218b2685a73fc0f5396e25c18a481",encounterSeed:campaign.ambush?.seed??encounterSeedFor(expeditionNode(campaign.route)),expedition:snap.expedition,expeditionSeed:campaign.expedition?.seed??null,expeditionGraphVersion:campaign.expedition?.graphVersion??null,stage:snap.stage,route:snap.route,level:snap.level,encounter:ch?.title||null,boss:ch?.bossKind||null,mapLayout:activeEncounterLayout?.name||null,mapSeed:activeEncounterLayout?.seed??null,mapGeneratorVersion:activeEncounterLayout?.generatorVersion??null,mapFallback:activeEncounterLayout?.fallback??false,initialEnemies:(typeof units!=='undefined'?units:[]).filter(x=>x.team==='enemy').map(x=>({id:x.id,name:x.name,hp:x.hp,ac:x.ac,attack:x.attack,damage:x.damage})),start:snap,rounds:0,events:[],totals:{damageDealt:{},damageReceived:{},healing:{},criticalHits:{},knockouts:{},healingProvided:{},healingReceived:{},overhealing:{},temporaryHpGranted:{},temporaryHpAbsorbed:{},damageReduced:{},buffsApplied:{},buffRounds:{},buffAssistedHits:{},buffAssistedDamage:{},defensePreventedHits:{},damagePreventedEstimate:{},debuffsApplied:{},attacksAttempted:{},attacksHit:{},attacksMissed:{}}};this.run.attempts.push(this.attempt);this.previous=this.health();this.persist()},
  metric(name,source,amount=1,target=null,detail=null){if(!this.enabled||!this.attempt||this.attempt.result||!amount)return;const key=source?.id||source||'unknown',totals=this.attempt.totals;if(!totals[name])totals[name]={};totals[name][key]=(totals[name][key]||0)+amount;this.attempt.events.push({round:typeof round==='number'?round:null,actor:key,metric:name,amount,target:target?.id||target||null,detail});},
  health(){return (typeof units!=='undefined'?units:[]).map(x=>({id:x.id,name:x.name,team:x.team,hp:x.hp,max:x.max})).reduce((o,x)=>(o[x.id]=x,o),{})},
  log(html,attribution){if(!this.enabled||!this.attempt||this.attempt.result)return;const text=String(html).replace(/<[^>]*>/g,' ').replace(/&[^;]+;/g,' ').replace(/\\s+/g,' ').trim();const healthNow=this.health(),changes=[],actorId=typeof current==='function'?current()?.id:null;for(const [id,u] of Object.entries(healthNow)){const old=this.previous?.[id];if(!old)continue;const delta=u.hp-old.hp;if(delta!==0){const type=delta<0?'damage':'healing';const amount=Math.abs(delta);changes.push({id,name:u.name,team:u.team,type,amount});const key=attribution?.source?.id||actorId||'unknown';
@@ -540,6 +540,12 @@ const encounterLayouts=[
  {name:'Broken Cloister',floor:['#504341','#5b4c49'],rows:[
   ' .....   ','.......  ','..p.p....','.........','..p.p.p..','.........','  ...... ','   ..... ']}
 ];
+const additionalLayouts=[
+ {name:'Sunken Courtyard',floor:['#494c58','#555865'],rows:encounterLayouts[3].rows},
+ {name:'Rubble Terraces',floor:['#56483d','#615347'],rows:encounterLayouts[1].rows},
+ {name:'Open Glade',floor:['#394c42','#465948'],rows:encounterLayouts[2].rows}
+];
+const regularLayouts=[...encounterLayouts.slice(0,3),...additionalLayouts];
 const reliquaryLayout={name:'Old Storeroom',floor:['#4b4357','#554c62'],rows:[
   '  .....  ',' ....... ','....p....','.........','.....c...','...p.p...','........ ',' ......  '
 ]};
@@ -551,47 +557,54 @@ const terrainFeatures={r:{name:'Rubble',fill:'#716052',color:'#aa9277',icon:'◆
  c:{name:'Supply chest',fill:'#76502a',color:'#f6ce78',icon:'✦'}};
 let activeEncounterLayout=null;
 function isReliquary(node){
-  return Boolean(node&&!node.kind&&!node.boss&&/-1-0$/.test(node.id));
+  return Boolean(node&&!node.kind&&!node.boss&&(node.reliquary??/-1-0$/.test(node.id)));
 }
 function layoutForEncounter(node,ambushSeed=null){
   if(!node)return null;
-  if(ambushSeed===null&&isReliquary(node))return reliquaryLayout;
-  if(node.boss&&ambushSeed===null)return encounterLayouts[3];
   const expeditionSeed=campaign.expedition.seed>>>0;
-  const seed=(encounterSeedFor(node)^expeditionSeed^(ambushSeed??0))>>>0;
+  const seed=(Math.imul(encounterSeedFor(node),2654435761)^expeditionSeed^(ambushSeed??0))>>>0;
+  if(ambushSeed===null&&isReliquary(node))return generateEncounterLayout(reliquaryLayout,seed);
+  if(node.boss&&ambushSeed===null)return generateEncounterLayout(encounterLayouts[3],seed);
   const key=JSON.stringify([campaign.expedition.number,node.id,ambushSeed]);
-  // Advance once per encounter, independent of the route and stable on retry.
-  if(campaign.layoutRotation?.key!==key){
-    const index=(campaign.layoutRotation?.index??-1)+1;
-    const offset=campaign.layoutRotation?.offset??expeditionSeed%3;
-    campaign.layoutRotation={key,index,offset};
+  if(campaign.layoutRotation?.key!==key||!Number.isInteger(campaign.layoutRotation.kind)){
+    const previous=campaign.layoutRotation;
+    const remaining=previous?.remaining?.length?previous.remaining:
+      regularLayouts.map((_,index)=>index);
+    const choices=remaining.filter(index=>index!==previous?.kind);
+    const pool=choices.length?choices:remaining;
+    const kind=pool[Math.floor(seededRandom(seed)()*pool.length)];
+    campaign.layoutRotation={key,kind,remaining:remaining.filter(index=>index!==kind)};
     saveCampaign();
   }
-  const {index,offset}=campaign.layoutRotation;
-  const kind=(index+offset)%3;
-  return generateEncounterLayout(kind,seed);
+  return generateEncounterLayout(regularLayouts[campaign.layoutRotation.kind],seed);
 }
-function generateEncounterLayout(kind,seed){
-  const fallback=encounterLayouts[kind];
+function seededRandom(seed){
   let state=seed;
-  const draw=(low,high)=>{
+  return ()=>{
     state=(Math.imul(1664525,state)+1013904223)>>>0;
-    return low+Math.floor(state/4294967296*(high-low+1));
+    return state/4294967296;
   };
+}
+function generateEncounterLayout(fallback,seed){
+  const rng=seededRandom(seed);
+  const draw=(low,high)=>low+Math.floor(rng()*(high-low+1));
   for(let attempt=0;attempt<12;attempt++){
     const grid=Array.from({length:H},()=>Array(W).fill('.'));
-    if(kind===0){
+    if(fallback===encounterLayouts[0]){
       const crossings=[draw(1,3)];
       if(draw(0,1))crossings.push(draw(5,6));
       // Every row shares the center channel. Bridge tiles cover the river at crossings.
-      let left=3,right=5;
+      const center=draw(3,5);
+      let left=center-1,right=center+1;
       for(let y=0;y<H;y++){
-        left=Math.max(3,Math.min(4,left+draw(-1,1)));
-        right=Math.max(4,Math.min(5,right+draw(-1,1)));
+        left=Math.max(center-1,Math.min(center,left+draw(-1,1)));
+        right=Math.max(center,Math.min(center+1,right+draw(-1,1)));
         for(let x=left;x<=right;x++)grid[y][x]=crossings.includes(y)?'b':'~';
       }
-      for(const x of [0,W-1])if(draw(0,1))grid[draw(0,1)][x]=' ';
-    }else if(kind===1){
+      for(const x of [1,7]){
+        for(let i=0,count=draw(1,3);i<count;i++)grid[draw(0,H-1)][x]=draw(0,1)?'r':'t';
+      }
+    }else if(fallback===encounterLayouts[1]){
       const wall=draw(3,5),door=draw(1,3),breach=draw(5,6);
       for(let y=0;y<H;y++){
         if(y!==door&&y!==breach&&y!==breach+1)grid[y][wall]='p';
@@ -606,7 +619,7 @@ function generateEncounterLayout(kind,seed){
       }
       grid[draw(2,5)][draw(1,2)]='r';
       grid[draw(2,5)][draw(6,7)]='r';
-    }else{
+    }else if(fallback===encounterLayouts[2]){
       // A long grove divides two trails. Smaller clusters shape their approaches.
       const core=draw(3,5),top=draw(1,2),bottom=draw(4,6),side=draw(0,1)?1:-1;
       for(let y=top;y<=bottom;y++){
@@ -620,11 +633,51 @@ function generateEncounterLayout(kind,seed){
       }
       grid[draw(0,1)][0]=' ';
       grid[draw(6,7)][8]=' ';
+    }else{
+      if(fallback===additionalLayouts[0]||fallback===encounterLayouts[3]){
+        // Interrupted colonnades with an open center or an offset aisle.
+        const aisle=draw(2,5);
+        for(const x of [2,4,6]){
+          for(const y of [draw(0,2),draw(5,7)])grid[y][x]='p';
+          if(draw(0,1))grid[aisle+(x===4?1:-1)][x]='p';
+        }
+      }else if(fallback===additionalLayouts[1]){
+        // Two offset terraces leave a route around either side.
+        const upper=draw(1,3),lower=draw(4,6);
+        for(let x=draw(1,2);x<=5;x++)grid[upper][x]='r';
+        for(let x=3,end=draw(6,7);x<=end;x++)grid[lower][x]='r';
+        grid[upper][draw(2,4)]='.';
+        grid[lower][draw(4,6)]='.';
+      }else if(fallback===additionalLayouts[2]){
+        // Clear firing lanes between groves in opposite corners.
+        const north=draw(2,4),south=draw(4,6);
+        for(const [x,y] of [[north,1],[south,6]]){
+          grid[y][x]='t';
+          grid[y][x+1]='t';
+          grid[y+(y===1?1:-1)][x+draw(0,1)]='t';
+        }
+      }else{
+        const chestX=draw(3,5),chestY=draw(2,5);
+        grid[chestY][chestX]='c';
+        for(const x of [2,4,6]){
+          const y=draw(1,6);
+          if(grid[y][x]==='.')grid[y][x]='p';
+        }
+      }
+      for(const y of [0,H-1]){
+        for(const x of [0,W-1]){
+          const step=x===0?1:-1;
+          for(let i=0,count=draw(0,3);i<count;i++)grid[y][x+i*step]=' ';
+        }
+      }
     }
-    const layout={...fallback,rows:grid.map(row=>row.join('')),seed,generatorVersion:2};
-    if(validEncounterLayout(layout))return layout;
+    if(draw(0,1))grid.reverse();
+    const layout={...fallback,rows:grid.map(row=>row.join('')),seed,generatorVersion:3};
+    if(validEncounterLayout(layout)&&
+      (fallback!==encounterLayouts[3]||[[8,1],[8,5],[7,0],[7,6],[6,1]]
+        .filter(([x,y])=>walkableLayoutTile(layoutTile(layout,x,y))).length>=3))return layout;
   }
-  return {...fallback,seed,generatorVersion:2,fallback:true};
+  return {...fallback,seed,generatorVersion:3,fallback:true};
 }
 function validEncounterLayout(layout){
   const {allies,foes}=layoutSpawns(layout,10);
@@ -714,17 +767,25 @@ function setExpeditionNodeType(node,kind,boss=null){
  node.story=kind?stopDescription({kind}):'Your party ventures into '+baseName+'.';
 }
 function makeExpedition(number){
- const seed=Math.floor(Math.random()*4294967296);let state=seed;
- const rnd=()=>{state=(Math.imul(state,1664525)+1013904223)>>>0;return state/4294967296};
+ const seed=Math.floor(Math.random()*4294967296),rnd=seededRandom(seed);
  const pool=[...chapters[1].enemies,...chapters[2].enemies,...Object.values(alternateEncounters).flatMap(e=>e.enemies),...ambushes.flatMap(e=>e.enemies)];
- const nodes=[],stages=9,counts=[1,3,4,4,5,4,4,3,1];
+ const nodes=[],stages=9;
+ const counts=[1,...Array.from({length:stages-2},()=>2+Math.floor(rnd()*4)),1];
+ const usedPlaces=new Set();
  for(let stage=0;stage<stages;stage++){
   const row=[],count=counts[stage],boss=stage===stages-1;
+  const names=expeditionPlaces.filter(place=>!usedPlaces.has(place));
+  const poolNames=names.length>=count?names:[...expeditionPlaces];
+  const center=46+rnd()*8,spread=count===1?0:Math.min(80,28+count*11+rnd()*12);
   for(let lane=0;lane<count;lane++){
-   const id='exp'+number+'-'+stage+'-'+lane,name=stage===0?'Expedition Entrance':boss?'Final Citadel':expeditionPlaces[Math.floor(rnd()*expeditionPlaces.length)];
+   const id='exp'+number+'-'+stage+'-'+lane;
+   const name=stage===0?'Expedition Entrance':boss?'Final Citadel':poolNames.splice(Math.floor(rnd()*poolNames.length),1)[0];
+   usedPlaces.add(name);
+   const mapX=4.5+stage*11.375+(stage>0&&!boss?(rnd()-.5)*4:0);
+   const mapY=count===1?center:center+spread*(lane/(count-1)-.5)+(rnd()-.5)*5;
    const walls=[];for(let j=0;j<5;j++){const w=(3+Math.floor(rnd()*3))+','+(1+Math.floor(rnd()*5));if(!walls.includes(w))walls.push(w)}
    const enemies=[];for(let j=0;j<2+(stage>5?1:0);j++){const e=stage===0?chapters[1].enemies[j]:pool[Math.floor(rnd()*pool.length)];enemies.push({...e,id:id+'-enemy'+j,x:6+j%2,y:2+j})}
-   row.push({id,name,kind:null,boss:boss?['warlord','oracle','sentinel'][Math.floor(rnd()*3)]:null,walls,tint:'#455462',enemies,xp:400+Math.min(stage,4)*140,silver:30+Math.min(stage,4)*16,loot:null,story:'Your party ventures into '+name+'.',next:[]});
+   row.push({id,name,mapX,mapY,reliquary:false,kind:null,boss:boss?['warlord','oracle','sentinel'][Math.floor(rnd()*3)]:null,walls,tint:'#455462',enemies,xp:400+Math.min(stage,4)*140,silver:30+Math.min(stage,4)*16,loot:null,story:'Your party ventures into '+name+'.',next:[]});
   }
   nodes.push(row);
  }
@@ -732,31 +793,37 @@ function makeExpedition(number){
  // Keep a battle reachable from each decision without creating long diagonal edges.
  for(let stage=0;stage<stages-1;stage++){
   const row=nodes[stage],next=nodes[stage+1];
-  row.forEach((n,lane)=>{
-   const center=row.length===1?(next.length-1)/2:lane*(next.length-1)/(row.length-1);
-   const near=next.map((v,i)=>({v,i,d:Math.abs(i-center)})).sort((a,b)=>a.d-b.d||a.i-b.i);
-   const take=stage===0?3:2+(rnd()<.25?1:0);
-   n.next=near.slice(0,Math.min(take,next.length)).map(x=>x.v.id);
-  });
+  const nearest=(options,node)=>options.slice().sort((a,b)=>Math.abs(a.mapY-node.mapY)-Math.abs(b.mapY-node.mapY));
+  for(const node of row){
+   const ordered=nearest(next,node);
+   const take=row.length===1?next.length:Math.min(next.length,2+Number(rnd()<.25));
+   node.next=ordered.slice(0,take).map(target=>target.id);
+   if(take===2&&ordered.length>2&&rnd()<.35)node.next[1]=ordered[2].id;
+  }
+  for(const target of next){
+   if(row.every(node=>!node.next.includes(target.id)))nearest(row,target)[0].next.push(target.id);
+  }
  }
  for(let stage=1;stage<stages-1;stage++){
   const row=nodes[stage];
-  // Give each node a distinct event, with more than one battle per stage.
-  const kinds=['battle','battle','shrine','merchant','cache'];
-  if(stage===2)kinds.splice(2,1,'shrine');
-  for(let lane=0;lane<row.length;lane++){
-   const n=row[lane],kind=kinds[(lane+stage)%kinds.length];
-   if(kind!=='battle')setExpeditionNodeType(n,kind);
+  const stops=['shrine','merchant','cache'];
+  for(const node of row){
+   if(stops.length&&rnd()<.55)setExpeditionNodeType(node,stops.splice(Math.floor(rnd()*stops.length),1)[0]);
   }
-  // Guarantee at least one battle among the actual outgoing neighbors of every parent.
   for(const parent of nodes[stage-1]){
-   const reachable=row.filter(n=>parent.next.includes(n.id));
-   if(!reachable.some(n=>!n.kind)){const n=reachable[Math.floor(reachable.length/2)];setExpeditionNodeType(n,null)}
+   const reachable=row.filter(node=>parent.next.includes(node.id));
+   if(reachable.every(node=>node.kind))setExpeditionNodeType(reachable[Math.floor(rnd()*reachable.length)],null);
   }
  }
- const reliquary=nodes[1].find(isReliquary);
- if(reliquary){reliquary.name='Old Storeroom';reliquary.story='The room still holds a few supplies from its last occupants.'}
- return {number,seed,layout:'branching',graphVersion:3,nodes};
+ const earlyBattles=nodes[1].filter(node=>!node.kind);
+ if(earlyBattles.length>1&&rnd()<.5){
+  const reliquary=earlyBattles[Math.floor(rnd()*earlyBattles.length)];
+  reliquary.reliquary=true;
+  reliquary.name='Old Storeroom';
+  reliquary.story='The room still holds a few supplies from its last occupants.';
+ }
+
+ return {number,seed,layout:'branching',graphVersion:4,nodes};
 }
 function expeditionNode(id){return campaign?.expedition?.nodes.flat().find(n=>n.id===id)}
 const LEVEL_XP_THRESHOLDS=[0,1000,2200,3600,5200,7000,9000,11200,13600,16200];
@@ -834,8 +901,11 @@ function mapScreen(){if(campaign.expedition){
  const exp=campaign.expedition,connected=new Set(availableExpeditionRoutes().map(n=>n.id));
  let h='<div class="expedition-map-wrap">';
  h+='<div class="expedition-legend"><strong>EXPEDITION</strong><span>⚔ battle</span><span>🛒 merchant</span><span>✦ shrine</span><span>◇ cache</span><span>★ boss</span></div>';
- if(exp.graphVersion===3){
-  const position=(stage,lane,count)=>({x:4.5+stage*11.375,y:count===1?50:9+lane*82/(count-1)});
+ if(exp.graphVersion>=3){
+  const position=(stage,lane,count)=>{
+   const node=exp.nodes[stage][lane];
+   return {x:node.mapX??4.5+stage*11.375,y:node.mapY??(count===1?50:9+lane*82/(count-1))};
+  };
   h+='<div class="route-map-v3"><svg class="branch-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">';
   exp.nodes.forEach((row,stage)=>row.forEach((n,lane)=>{const a=position(stage,lane,row.length);(n.next||[]).forEach(id=>{const next=exp.nodes[stage+1]||[],j=next.findIndex(v=>v.id===id);if(j<0)return;const b=position(stage+1,j,next.length),lit=campaign.previousRoute===n.id&&stage===campaign.chapter-1;h+='<line x1="'+a.x+'" y1="'+a.y+'" x2="'+b.x+'" y2="'+b.y+'" stroke="'+(lit?'#467d53':'#78634d')+'" stroke-width="'+(lit?.65:.36)+'" stroke-dasharray="1 1" opacity="'+(lit?1:.65)+'"/>'})}));
   h+='</svg>';
