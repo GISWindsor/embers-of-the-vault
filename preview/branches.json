@@ -25,6 +25,10 @@
       "slug": "feature--combat-log-under-map"
     },
     {
+      "name": "feature/dungeon-visibility",
+      "slug": "feature--dungeon-visibility"
+    },
+    {
       "name": "feature/encounter-layouts",
       "slug": "feature--encounter-layouts"
     },
